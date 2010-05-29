@@ -1,0 +1,48 @@
+Name:                language-r
+Version:             0.1
+Cabal-Version:       >= 1.6
+Build-Type:          Simple
+Stability:           pre-alpha
+Category:            Language
+Synopsis:            A package for parsing and compiling R/Splus code.
+Description:         Language-R aims to provide a means for compiling
+                     Splus/R source code to executable machine code.
+License:             BSD3
+License-file:        LICENSE
+Author:              David M. Rosenberg
+Maintainer:          dmr@davidrosenberg.me
+Homepage:            http://www.davidrosenberg.me/projects/language-r/
+extra-source-files:  README
+                     src/Language/R/Lexer.hs
+                     src/Language/R/Parser.hs
+                     src/Language/R/AST.hs
+                     src/Language/R/Generator.hs
+                     src/Language/R/Evaluate.hs
+                     src/Language/R/Internal.hs
+
+Library
+    Hs-source-dirs:  src
+    Exposed-modules: Language.R.Lexer
+                     Language.R.Parser
+                     Language.R.AST
+                     Language.R.Generator
+                     Language.R.Evaluate
+    Other-modules:   Language.R.Internal
+    Build-depends:   base < 5 && >= 4,
+                     parsec >= 3,
+                     pcre-light >= 0.2 && < 0.4
+    Extensions:      CPP
+
+Executable language-r
+    Main-is:         language-r.hs
+    Hs-source-dirs:  src
+    Build-depends:   base < 5 && >= 4,
+                     parsec >= 3,
+                     pcre-light >= 0.2 && < 0.4
+    Extensions:      CPP
+    Other-modules:   Language.R.Lexer
+                     Language.R.Parser
+                     Language.R.AST
+                     Language.R.Generator
+                     Language.R.Evaluate
+                     Language.R.Internal
