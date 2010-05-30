@@ -1,21 +1,12 @@
------------------------------------------------------------------------------
--- |
--- Module      : Language.R.Internal
--- Copyright   : (c) 2010 David M. Rosenberg
--- License     : BSD3
--- 
--- Maintainer  : David Rosenberg <rosenbergdm@uchicago.edu>
--- Stability   : experimental
--- Portability : portable
--- Created     : 05/28/10
--- 
--- Description :
---    DESCRIPTION HERE.
------------------------------------------------------------------------------
 
-module Language.R.Internal where
+
+import Control.Monad
 
 import Text.Parsec
+import Text.Parsec.String
+import Text.Parsec.Token
+import Text.Parsec.Language
+
 
 
 -----------------------------------------------------------------------------
@@ -88,4 +79,65 @@ data RList = RList
 
 
 
--- data RClosure = RClosure 
+
+rStyle :: LanguageDef st
+rStyle = emptyDef
+   { commentStart   = ""
+   , commentEnd     = ""
+   , commentLine    = "#"
+   , nestedComments = False
+   , identStart     = letter <|> char '.'
+   , identLetter    = alphaNum <|> oneOf "._"
+   , opStart        = opLetter emptyDef
+   , opLetter       = oneOf ":!#$%&*+./<=>?@\\^|-~"
+   , reservedOpNames= ["<-", "<<-", "->", "[[", "]]"]
+   , reservedNames  = [ "if", "else", "repeat", "while",
+                        "function", "for", "in", "next", 
+                        "break", "TRUE", "FALSE", "NULL",
+                        "Inf", "NaN", "NA", "NA_integer_",
+                        "NA_real_","NA_complex_", 
+                        "NA_character_" 
+                      ]
+   , caseSensitive  = True
+   }
+
+rlang :: TokenParser st
+rlang =  makeTokenParser rStyle
+
+rIdentifier = identifier     rlang 
+rNumber     = naturalOrFloat rlang 
+rReserved   = reserved       rlang 
+rReservedOp = reservedOp     rlang 
+rParens     = parens         rlang 
+rWhiteSpace = whiteSpace     rlang 
+rBraces     = braces         rlang 
+rOperator   = operator       rlang 
+rSemi       = semi           rlang 
+rString     = stringLiteral  rlang
+
+{-
+
+
+-- rToks ::  TokParser [RToken] pos
+rToks :: Parser [RToken]
+rToks = many1 rToken
+
+rToken = rString <|> rNumber <|> rReserved <|> rIdentifier
+
+
+getStrTok = do
+  lit <- rString
+  return $ RToken StrTok lit
+
+getNumTok = do
+  num <- rNumber
+  return $ RToken NumTok (num)
+
+-- getSymTok = do
+--   opr <- rReservedOp <|> rOperator
+--   return $ RToken SymTok (show opr)
+
+getAtomTok = do
+  atm <- rIdentifier <|> rReserved
+  return $ RToken AtomTok (show atm)
+-}

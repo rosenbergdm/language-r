@@ -19,6 +19,7 @@ extra-source-files:  README
                      src/Language/R/Generator.hs
                      src/Language/R/Evaluate.hs
                      src/Language/R/Internal.hs
+                     src/Language/R/Main.hs
 
 Library
     Hs-source-dirs:  src
@@ -27,14 +28,15 @@ Library
                      Language.R.AST
                      Language.R.Generator
                      Language.R.Evaluate
-    Other-modules:   Language.R.Internal
+                     Language.R.Internal
+    -- Other-modules:   Language.R.Internal
     Build-depends:   base < 5 && >= 4,
                      parsec >= 3,
                      pcre-light >= 0.2 && < 0.4
     Extensions:      CPP
 
 Executable language-r
-    Main-is:         language-r.hs
+    Main-is:         Main.hs
     Hs-source-dirs:  src
     Build-depends:   base < 5 && >= 4,
                      parsec >= 3,
