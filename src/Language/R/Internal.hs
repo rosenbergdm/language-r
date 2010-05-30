@@ -56,8 +56,9 @@ data Tok = StrTok String          -- ^String literal
          | ComTok String          -- ^Complete comment
   deriving (Eq, Ord, Show)
 
+-- |TODO: This should be specified better
 whiteSpace :: ParsecT String u Identity ()
-whiteSpace =  spaces               -- ^TODO: This should be specified better
+whiteSpace =  spaces               
 
 -----------------------------------------------------------------------------
 -- Basic data types
@@ -65,7 +66,7 @@ whiteSpace =  spaces               -- ^TODO: This should be specified better
 
 -- |Internally, R normally uses doubles for storing all numeric values
 -- (even when they are displayed as integers).  
-
+{-
 data RNumType = RInt  -- ^Declared as integer
               | RNum  -- ^Declared as numeric
   deriving (Eq, Ord, Show)
@@ -101,7 +102,7 @@ data RVector = Rnumeric [Double] RNumType (Maybe [String])
 
 data RList = RList 
   { rlRows :: [RVector] }
-
+-}
 
 
 -- data RClosure = RClosure 

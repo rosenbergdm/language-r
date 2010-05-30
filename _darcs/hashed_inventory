@@ -1,4 +1,4 @@
-pristine:0000000552-cf9dc8bfb9d150c4c953ee7e05e775d89f95dc5a7cc3e939641c4537094a076e
+pristine:0000000552-f1fcd2110f409f5bbeaad1563c272b6a3d38ad37ceb98a37cafff8eeb1c4e9c6
 [Initial patch
 dmr@davidrosenberg.me**20100529052101
  Ignore-this: 7a1e3910948a652530bdb1a96d029f3c
@@ -19,3 +19,8 @@ dmr@davidrosenberg.me**20100530042819
  Ignore-this: 7ef61be703c642225fdf25415519a122
 ] 
 hash: 0000023635-e81576865a05af088935d95d89df758976879280fcb13dd9eac81f3ac6c63d21
+["Working and refactored lexer"
+dmr@davidrosenberg.me**20100530073119
+ Ignore-this: e9f4bb31526d1aae48de860ef67e2ef3
+] 
+hash: 0000010544-0610d9afd60e340b972785730e8c7cde115bee04b2de965a546ee59588c3a32a
