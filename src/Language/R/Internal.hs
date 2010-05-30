@@ -10,12 +10,24 @@
 -- Created     : 05/28/10
 -- 
 -- Description :
---    DESCRIPTION HERE.
+--    Core level internal definitions.
 -----------------------------------------------------------------------------
 
 module Language.R.Internal where
 
-import Text.Parsec
+import Text.Parsec hiding (many, optional, (<|>))
+import qualified Text.Parsec.Token as T
+import Text.Parsec.Language
+import Text.Parsec.String
+import Text.Parsec.Pos
+import Text.Parsec.Char (spaces)
+
+import Control.Applicative
+import Control.Monad.Identity
+
+import Data.Either
+import Debug.Trace
+import Maybe
 
 
 -----------------------------------------------------------------------------
@@ -26,22 +38,26 @@ import Text.Parsec
 -- an abstract syntax tree.  This allows disambiguation and proper handling
 -- of peculiarities of the R language.
 
-data Tok = StrTok    -- ^String Token
-         | NumTok    -- ^Number Token
-         | AtomTok   -- ^Atom Token
-         | SymTok    -- ^Symbol Token
-         | ComTok    -- ^Comment Token
-  deriving (Eq, Ord, Show, Enum)
+type Token = (SourcePos, Tok)
 
 
--- |Tokens are defined by their 'type', the literal string used to represent
--- them in the source code, and the location where they occured.
+-- |The LexState is simply the list of all processed tokens.
+--
+type LexState = [Tok]
 
-data RToken  =  RToken
-  { tokType    :: Tok         -- ^Token type
-  , tokLiteral :: String      -- ^The literal token string
---  , tokPos     :: SourcePos   -- ^The location (row, column) of the occurance
-  } deriving (Eq, Ord, Show)
+
+-- |On first pass, tokens are identified without any lookahead based on
+-- context alone. 
+
+data Tok = StrTok String          -- ^String literal
+         | NumTok String          -- ^Numeric literal (as a string)
+         | AtmTok String          -- ^Textual atom (keyword, identifier, etc)
+         | SymTok String          -- ^Non-alphanumeric character
+         | ComTok String          -- ^Complete comment
+  deriving (Eq, Ord, Show)
+
+whiteSpace :: ParsecT String u Identity ()
+whiteSpace =  spaces               -- ^TODO: This should be specified better
 
 -----------------------------------------------------------------------------
 -- Basic data types

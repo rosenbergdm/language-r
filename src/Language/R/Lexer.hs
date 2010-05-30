@@ -17,94 +17,109 @@
 
 module Language.R.Lexer where
 
-import Text.Parsec
+import Text.Parsec hiding (many, optional, (<|>))
+import qualified Text.Parsec.Token as T
+import Text.Parsec.Language
 import Text.Parsec.String
-import Control.Monad
+import Text.Parsec.Pos
+
+import Control.Applicative
+import Control.Monad.Identity
+
+import Data.Either
+import Debug.Trace
+import Maybe
 
 
 import Language.R.Internal
-import Language.R.Generator
+-- import Language.R.Generator
 
 
--- type TokParser = Parser RToken ()
+-- | The 'top' token lexer function.  TODO: The sepBy clause is not correct.
 
-{-
-rTokenize :: (RToken -> Maybe a) -> TokParser a
-rTokenize test = token showToken posToken testToken
-  where showToken = tokLiteral
-        posToken  = tokPos
-        testToken = test
--}
+rTokens :: ParsecT String LexState Identity [Token]
+rTokens = 
+  setState [] >>
+  whiteSpace >>
+  sepBy rToken spaces
 
 
--- rToks ::  TokParser [RToken] pos
-rToks :: Parser [RToken]
-rToks = many1 rToken
+-- | Lex a single token from the input stream and add it to the LexState
+-- stack.
 
-rToken = rString <|> rNumber <|> rReserved <|> rIdentifier
-
-
-getStrTok = do
-  lit <- rString
-  return $ RToken StrTok lit
-
-getNumTok = do
-  num <- rNumber
-  return $ RToken NumTok (show num)
-
--- getSymTok = do
---   opr <- rReservedOp <|> rOperator
---   return $ RToken SymTok (show opr)
-
-getAtomTok = do
-  atm <- rIdentifier <|> rReserved
-  return $ RToken AtomTok (show atm)
-
--- rScanner :: [Char] -> ([Token], [String])
-
--- strTok :: TokParser String
--- strTok = rTokenize (\tok -> case tok of
-                              
+rToken :: ParsecT String LexState Identity Token
+rToken = do
+  sp <- getPosition
+  st <- getState
+  t <-  rComment
+    <|> rString
+    <|> rSymbol
+    <|> rNumber
+    <|> rIdent
+  return (sp, t)
 
 
-{- {{{
+-- |Comments begin with an (unquoted) pound sign and continue until the
+-- end of the line.
 
-type Token  = (SourcePos,Tok)
-data Tok    = Identifier String
-            | Reserved   String
-            | Symbol     String
-            | Price      Int
-            deriving Show
+rComment :: ParsecT String LexState Identity Tok
+rComment =  do
+  char '#'
+  content <- many1 (noneOf "\n\r")
+  return $ ComTok content
 
-scanner :: [Char] -> ([Token],[String])
-The parsers should now work on these token streams instead of the normal chararacter streams. This is reflected in the type. The type of general parsers is GenParser tok st a, where tok is the type of the tokens, st the type of the local user state and a is the type of the result. Indeed, Parser is just a type synonym for parsers that work on characters and have no state:
+-- |A string can be either single-quoted or double quoted and (within
+-- the string) backslashes serve as escapes.
+-- TODO: No escape function provided.
+-- TODO: Single-quoting not implemented.
 
-type Parser a   = GenParser Char () a
-The token parser is used to define a parser that scans a single token. The function takes three arguments: a function to show tokens, a function to extract the source position of a token and finally a test function that determines if the token is accepted or not. The first two arguments are the same for all our tokens so we define a little abstraction:
+rString :: ParsecT String LexState Identity Tok
+rString =  do 
+  char '"'
+  content <- many1 (noneOf "\"")
+  char '"'
+  return $ StrTok content
 
-type MyParser a   = GenParser Token () a
 
-mytoken :: (Tok -> Maybe a) -> MyParser a
-mytoken test
-  = token showToken posToken testToken
-  where
-    showToken (pos,tok)   = show tok
-    posToken  (pos,tok)   = pos
-    testToken (pos,tok)   = test tok
-Now, it is easy to define the basic parser that work on tokens.
+-- |A 'symbol' is any non-space, non-alphanumeric character.
 
-}}} -}
-{-
-identifier :: MyParser String
-identifier 
-  = mytoken (\tok -> case tok of 
-                       Identifier name -> Just name
-                       other           -> Nothing)
+rSymbol :: ParsecT String LexState Identity Tok
+rSymbol =  do
+  sym <- oneOf "~@%^&*_-+=$\\]}[{:?/><."
+  return $ SymTok (sym:"")
 
-reserved :: String -> MyParser ()
-reserved name
-  = mytoken (\tok -> case tok of
-                       Reserved s   | s == name  -> Just ()
-                       other        -> Nothing)
 
--}
+-- |A number is lexed as a continuous list of digits.
+
+rNumber :: ParsecT String LexState Identity Tok
+rNumber =  do
+  num <- (many1 digit) -- >> (optional (char '.' >> many digit)) 
+  -- let num' = maybe "??" id num
+  return $ NumTok num --'
+  -- num <-  T.float <|> T.integer
+  -- return $ liftM show num
+
+-- |Atoms can only begin with a letter or a period.  After the first
+-- character, any alphanumeric character or one of "-", "_", and "."
+-- are permitted.
+
+rIdent :: ParsecT String LexState Identity Tok
+rIdent =  do
+  first <- letter <|> (char '.')
+  rest  <- many (noneOf " \t\n\r")
+  --(letter <|> digit <|> (oneOf "._-"))
+  return $ AtmTok ([first] ++ rest)
+
+
+
+-- |lexRTextWithPos :: String -> Int -> Int -> String 
+--                    -> Either ParseError [Token]
+-- Given a source name (filename), start line, start
+-- column, and 'content', lex a string into a list
+-- of R tokens.
+
+lexRTextWithPos f l c = do
+  let sp = newPos f l c
+  te <- readFile f
+  let res = runParser rTokens [] f te
+  return res

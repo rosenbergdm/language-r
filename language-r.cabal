@@ -32,7 +32,8 @@ Library
     -- Other-modules:   Language.R.Internal
     Build-depends:   base < 5 && >= 4,
                      parsec >= 3,
-                     pcre-light >= 0.2 && < 0.4
+                     pcre-light >= 0.2 && < 0.4,
+                     haskell98, mtl
     Extensions:      CPP
 
 Executable language-r

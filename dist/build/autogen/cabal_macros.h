@@ -6,6 +6,18 @@
   (major1) == 4 && (major2) <  2 || \
   (major1) == 4 && (major2) == 2 && (minor) <= 0)
 
+/* package haskell98-1.0.1.1 */
+#define MIN_VERSION_haskell98(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  0 || \
+  (major1) == 1 && (major2) == 0 && (minor) <= 1)
+
+/* package mtl-1.1.0.2 */
+#define MIN_VERSION_mtl(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  1 || \
+  (major1) == 1 && (major2) == 1 && (minor) <= 0)
+
 /* package parsec-3.1.0 */
 #define MIN_VERSION_parsec(major1,major2,minor) (\
   (major1) <  3 || \
