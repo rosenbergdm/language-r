@@ -19,6 +19,7 @@ module Language.R.Generator where
 
 import Control.Monad
 import Control.Monad.Error
+import Control.Monad.Identity (Identity)
 import Monad
 import qualified Data.Map as Map
 
@@ -31,7 +32,8 @@ import Text.Parsec.Prim
 import qualified Text.Parsec.Token as T
 import qualified Text.Parsec.Language as L
 
-
+import Token
+import SrcLocation
 
 -- | @Tok@s are the most general of the *R* token-type objects, representing a
 -- single *typeclass*-ish category of functionally similar language objects.
@@ -47,10 +49,23 @@ data Tok = RIdent TokType String    -- ^An @identifier@ i.e. variable
 -- | Objects of type @TokType@ represent the result of the first (lexing) pass of
 -- the input text.  @TokType@s are identified without any lookahead or backtracing
 -- of the input.
+{-
+data TokType = LiteralConstant
+             | Identifier
+	     | ReservedWord
+	     | SpecialOperator
+	     | Separator
+	     | OperatorToken
+	     | GroupingToken
+	     | IndexingToken
+
+
+
+-}
 data TokType = Variable
              | Reserved
-             | Operator
-             | Builtin
+             | Oprator
+             | Bltin
              | Primitive
              | Strng
              | Intgr
@@ -59,14 +74,15 @@ data TokType = Variable
              | Grouping
              | Logical
              | Closure
-             | Comment
+             | Cmmnt
   deriving (Read, Eq, Ord)
+
 
 instance Show TokType where
   show Variable  = "VARIABLE"
   show Reserved  = "RESERVED"
-  show Operator  = "OPERATOR"
-  show Builtin   = "BUILTIN"
+  show Oprator  = "OPERATOR"
+  show Bltin   = "BUILTIN"
   show Primitive = "PRIMITIVE"
   show Strng     = "STRING"
   show Intgr     = "INTGR"
@@ -75,11 +91,11 @@ instance Show TokType where
   show Grouping  = "GROUPING"
   show Logical   = "LOGICAL"
   show Closure   = "CLOSURE"
-  show Comment   = "COMMENT"
+  show Cmmnt   = "COMMENT"      -- ^ Section 10.2
 
 
 -- | @Token@s are @Tok@s with the metadata of @SourcePos@
-type Token = (Tok, SourcePos)
+type TToken = (Tok, SourcePos)
 
 -- | Objects of @TokSt@ are used to store the @Token@ stack during first pass
 -- lexing.
@@ -346,6 +362,28 @@ lexRtok  = do
       <|> lexId
   return (tok, pos)
 
+lexSpecialConstant :: ParsecT String u Control.Monad.Identity.Identity Token
+lexSpecialConstant = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+  tk <- choice [ try (string "NA_integer_")
+               , try (string "NA_real_")
+	       , try (string "NA_complex_")
+	       , try (string "NA_character_")
+	       , try (string "NA")
+	       , try (string "NaN")
+	       , try (string "NULL")
+	       , try (string "Inf")
+	       , try (string "TRUE")
+	       , (string "FALSE") ] 
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = SpecialConstantToken tok_sp tk (read tk :: SpecialConstant)
+  return tok
+
+
+
 
 lexFloat = do
   tk <- float
@@ -358,7 +396,7 @@ lexInt = do
 lexSym = do
   syms <- many1 $ lexeme (oneOf ":!#$%&*+./<=>?@\\^|-~();,{}[]")
   let tk = elem syms $ map snd rResOps 
-  return $ ROper Operator syms
+  return $ ROper Oprator syms
 
 lexId = do
   tk <- identifier
@@ -367,7 +405,7 @@ lexId = do
 lexComment = do
   char '#'
   tok <-  many (noneOf "\n\r")
-  return $ RComment Comment tok
+  return $ RComment Cmmnt tok
 
 lexString = do
   tok <- quotedString

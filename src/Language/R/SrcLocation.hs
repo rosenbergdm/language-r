@@ -15,7 +15,8 @@
 -----------------------------------------------------------------------------
 
 
-module Language.R.SrcLocation where
+-- module Language.R.SrcLocation where
+module SrcLocation where
 
 
 import Data.Data

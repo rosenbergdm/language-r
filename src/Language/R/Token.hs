@@ -14,59 +14,101 @@
 --    Necessary Token definitions for parsing the Splus / R Language.
 -----------------------------------------------------------------------------
 
-module Language.R.Token (
+-- module Language.R.Token (
+module Token (
   Token (..),
 
   tokenString,
   TokenClass (..),
+  SpecialConstant (..),
 
   classifyToken
   ) where
 
-import Language.R.SrcLocation
-
+import SrcLocation
 
 import Data.Primitive.ByteArray (ByteArray)
 import Data.Data
   
+data SpecialConstant 
+  = NA 
+  | NaN 
+  | NULL 
+  | Inf 
+  | TRUE 
+  | FALSE 
+  | NA_integer_
+  | NA_real_
+  | NA_complex_
+  | NA_character_
+    deriving (Read, Show, Eq, Ord)
   
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
 -- | Lexical Tokens
-data TToken 
-  -- Whitespace
+data Token 
+  -- Whitespace -------------------------------------------------------
   = SpaceToken { token_span :: SrcSpan }
   | NewlineToken { token_span :: SrcSpan }
   | TabToken { token_span :: SrcSpan }
   
-  -- Comments
+  -- Comments ---------------------------------------------------------
   | CommentToken 
       { token_span    :: SrcSpan
       , token_literal :: String
       }
   
-  -- Literals
+  -- Literals ---------------------------------------------------------
+  ---- String Literal -----
   | StringToken
       { token_span    :: SrcSpan
       , token_literal :: String
       }
+
+  ---- Numeric Literal ----
   | NumericToken
       { token_span     :: SrcSpan
       , token_literal  :: String
-      , token_num      :: RNumType
+      , token_num      :: Double
       }
+
+  ---- Logical Literal ----
   | LogicalToken
       { token_span     :: SrcSpan
       , token_literal  :: String
       , token_logical  :: Bool
       }
-      
-  -- Identifiers
+  
+  ---- Integer Literal ----
+  | IntegerToken
+      { token_span     :: SrcSpan
+      , token_literal  :: String
+      , token_int      :: Integer
+      }
+  
+  ---- Complex Literal ----
+  | ComplexToken
+      { token_span     :: SrcSpan
+      , token_literal  :: String
+      , token_comp     :: (Double, Double)
+      }
+  
+  ---- Special Constants ----
+  | SpecialConstantToken
+      { token_span     :: SrcSpan
+      , token_literal  :: String
+      , token_special  :: SpecialConstant
+      }
+
+  -- Identifiers ------------------------------------------------------
   | IdentifierToken 
       { token_span    :: SrcSpan
       , token_literal :: String
       }
   
-  -- Keywords
-  -- Flow control
+  -- Reserved Words --------------------------------------------------
+  ---- Flow control ----
   | IfToken                     { token_span :: SrcSpan }   -- ^Keyword: \'if\'
   | ForToken                    { token_span :: SrcSpan }   -- ^Keyword: \'for\'
   | WhileToken                  { token_span :: SrcSpan }   -- ^Keyword: \'while\'
@@ -77,6 +119,23 @@ data TToken
   | SwitchToken                 { token_span :: SrcSpan }   -- ^Keyword: \'switch\'
   | BreakToken                  { token_span :: SrcSpan }   -- ^Keyword: \'break\'
   | NextToken                   { token_span :: SrcSpan }   -- ^Keyword: \'next\'
+
+  ---- Constants ----
+  -- No need to list here, captured already
+
+
+  -- Special operators ------------------------------------------------
+  | MatrixMultiplyToken { token_span :: SrcSpan }     -- ^Operator: \'%*%\'
+  | MatrixDivideToken { token_span :: SrcSpan }       -- ^Operator: \'%/%\'
+  | IntersectToken { token_span :: SrcSpan }          -- ^Operator: \'%in%\'
+  | OuterProductToken { token_span :: SrcSpan }       -- ^Operator: \'%o%\'
+  | KroneckerProductToken { token_span :: SrcSpan }   -- ^Operator: \'%x%\'
+  | CustomSpecialOpToken                              -- ^Operator: \'user defined\'
+    { token_span    :: SrcSpan
+    , token_literal :: String
+    }
+
+  -- Keywords
   -- Mathematical
   | AbsToken                    { token_span :: SrcSpan } -- ^Keyword: \'abs\'
   | SignToken                   { token_span :: SrcSpan } -- ^Keyword: \'sign\'
@@ -132,7 +191,7 @@ data TToken
   | DimnamesAssignToken         { token_span :: SrcSpan } -- ^Keyword: \'dimnames<-\'
   | LevelsAssignToken           { token_span :: SrcSpan } -- ^Keyword: \'levels<-\'
   | EnvironmentAssignToken      { token_span :: SrcSpan } -- ^Keyword: \'environment<-\'
-  | StorageModeAssignToken     { token_span :: SrcSpan } -- ^Keyword: \'storage.mode<-\'
+  | StorageModeAssignToken     { token_span :: SrcSpan }  -- ^Keyword: \'storage.mode<-\'
   
   -- Delimiters
   | SemicolonToken    { token_span :: SrcSpan }   -- ^Symbol: \';\'
@@ -147,14 +206,12 @@ data TToken
   -- Category unclear
   | ThreeDotsToken    { token_span :: SrcSpan }   -- ^Symbol: \'...\'
   | ColonToken        { token_span :: SrcSpan }   -- ^Symbol: \':\'
-  | DoubleColonToken  { token_span :: SrcSpan }   -- ^Symbol: \'::\'
+  | DoubleColonToken  { token_span :: SrcSpan }   -- ^Symbol: \':::\'
   | QuestionMarkToken { token_span :: SrcSpan }   -- ^Symbol: \'?\'
   | DoubleQMarkToken  { token_span :: SrcSpan }   -- ^Symbol: \'??\'
 
   -- Operators 
-  | SliceOperator  { token_span :: SrcSpan }      -- ^Operator: \'[\'
-  | MemberOperator  { token_span :: SrcSpan }     -- ^Operator: \'[[\'
-  | MemberOperator' { token_span :: SrcSpan }     -- ^Operator: \'$\'
+  | ModulusToken { token_span :: SrcSpan }        -- ^Operator: \'%%\'
   | SlotOperator { token_span :: SrcSpan }        -- ^Operator: \'@\'
   | PlusToken { token_span :: SrcSpan }           -- ^Operator: \'+\'
   | NegateToken { token_span :: SrcSpan }         -- ^Operator: \'!\'
@@ -169,8 +226,6 @@ data TToken
   | MultiplyToken { token_span :: SrcSpan }       -- ^Operator: \'*\'
   | DivideToken { token_span :: SrcSpan }         -- ^Operator: \'/\'
   | ExponentToken { token_span :: SrcSpan }       -- ^Operator: \'^\'
-  | ModulusToken { token_span :: SrcSpan }        -- ^Operator: \'%%\'
-  | MatrixMultiplyToken { token_span :: SrcSpan } -- ^Operator: \'%*%\'
   | LessToken { token_span :: SrcSpan }           -- ^Operator: \'<\'
   | LessEqualToken { token_span :: SrcSpan }      -- ^Operator: \'<=\'
   | EqualityToken { token_span :: SrcSpan }       -- ^Operator: \'==\'
@@ -181,7 +236,12 @@ data TToken
   | VectorOrToken { token_span :: SrcSpan }       -- ^Operator: \'||\'
   | ElementwiseAndToken { token_span :: SrcSpan } -- ^Operator: \'&\'
   | VectorAndToken { token_span :: SrcSpan }      -- ^Operator: \'&&\'
-  | MatrixDivideToken { token_span :: SrcSpan }   -- ^Operator: \'%/%\'
+
+
+  | SliceOperator  { token_span :: SrcSpan }      -- ^Operator: \'[\'
+  | MemberOperator  { token_span :: SrcSpan }     -- ^Operator: \'[[\'
+  | MemberOperator' { token_span :: SrcSpan }     -- ^Operator: \'$\'
+  deriving (Show, Ord, Eq)
 
 
 -- | TODO: These two data declartions need to go somewhere else
@@ -202,9 +262,6 @@ data RVectorMode
   -- | VecRaw ByteArray 
   deriving (Read, Ord, Eq, Show)
 
-
-
-
 -- | Classification of tokens
 data TokenClass
    = Comment
@@ -220,7 +277,7 @@ data TokenClass
    | Builtin
    deriving (Show, Eq, Ord)
 
-classifyToken :: TToken -> TokenClass
+classifyToken :: Token -> TokenClass
 classifyToken token =
   case token of
       SpaceToken             {} -> Punctuation
@@ -342,7 +399,7 @@ classifyToken token =
 
 
 -- | Produce a string from a token 
-tokenString :: TToken -> String
+tokenString :: Token -> String
 tokenString token = 
    case token of
       SpaceToken             {} -> ""
@@ -464,32 +521,3 @@ tokenString token =
       VectorAndToken      {} -> "&&"
       MatrixDivideToken   {} -> "%/%"
       
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- |From the manual R Internals / R Language Definition
--- 
---         ===================================
---         Six basic (atomic) types of vectors
---         =================================== 
---
---         typeof	mode	  storage.mode
---         -----------------------------------
---         logical	logical	  logical 
---         integer	numeric	  integer 
---         double	numeric	  double 
---         complex	complex	  complex 
---         character	character character 
---         raw	        raw	  raw 
