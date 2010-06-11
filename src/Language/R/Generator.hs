@@ -29,6 +29,7 @@ import Text.Parsec.String
 import Text.Parsec.Combinator
 import Text.Parsec.Char
 import Text.Parsec.Prim
+import Data.Char (toLower)
 import qualified Text.Parsec.Token as T
 import qualified Text.Parsec.Language as L
 
@@ -349,18 +350,23 @@ commaSep1      = T.commaSep1      rlang
 rTokenize  = 
   setState [] >>
   whiteSpace >>
-  many lexRtok
+  many lexRtok2
 
-lexRtok  = do
+lexRtok2 = do
   pos <-  getPosition
   st  <-  getState
   tok <-  lexComment
-      <|> lexInt
-      <|> lexFloat
+      <|> lexSpecialConstant
+      <|> lexInteger
+      <|> lexComplex 
+      <|> lexNumeric
+      <|> lexLogical
       <|> lexString
-      <|> lexSym
-      <|> lexId
-  return (tok, pos)
+      <|> lexOperator
+      <|> lexReserved
+      <|> lexPunctuation
+      <|> lexIdentifier
+  return tok
 
 lexSpecialConstant :: ParsecT String u Control.Monad.Identity.Identity Token
 lexSpecialConstant = do
@@ -373,9 +379,7 @@ lexSpecialConstant = do
 	       , try (string "NA")
 	       , try (string "NaN")
 	       , try (string "NULL")
-	       , try (string "Inf")
-	       , try (string "TRUE")
-	       , (string "FALSE") ] 
+	       , (string "Inf") ]
   endPos <- getPosition
   let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
       tok_sp = mkSrcSpan sp ep
@@ -383,8 +387,158 @@ lexSpecialConstant = do
   return tok
 
 
+lexComment2 :: ParsecT String u Control.Monad.Identity.Identity Token
+lexComment2 = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+  char '#'
+  tk <-  many (noneOf "\n\r")
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = CommentToken tok_sp tk 
+  return tok
+
+lexInteger :: ParsecT String u Control.Monad.Identity.Identity Token
+lexInteger = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+  tk <- many digit
+  char 'L'
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = IntegerToken tok_sp (tk ++ "L") (read tk :: Integer)
+  return tok
+
+lexNumeric :: ParsecT String u Control.Monad.Identity.Identity Token
+lexNumeric = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+  tk <- naturalOrFloat
+  let tk' = either fromIntegral id tk :: Double
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = NumericToken tok_sp (show tk) tk'
+  return tok
+
+lexComplex :: ParsecT String u Control.Monad.Identity.Identity Token
+lexComplex = do
+  startPos <- getPosition
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+  (re', im') <- do 
+    re <- naturalOrFloat
+    char '+'
+    im <- naturalOrFloat
+    char 'i'
+    let re' = either fromIntegral id re :: Double
+    let im' = either fromIntegral id im :: Double
+    return (re', im')  
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = ComplexToken tok_sp (show re' ++ " + " ++ show im' ++ "i") (re', im')
+  return tok
 
 
+lexLogical :: ParsecT String u Control.Monad.Identity.Identity Token
+lexLogical = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+  tk <- choice [ try (string "TRUE"), (string "FALSE") ]
+  let tk' = read ((head tk) : (map Data.Char.toLower $ tail tk)) :: Bool 
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = LogicalToken tok_sp tk tk' 
+  return tok
+
+
+lexString :: ParsecT String u Control.Monad.Identity.Identity Token
+lexString = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+  tk <- quotedString
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = StringToken tok_sp tk 
+  return tok
+
+
+lexOperator :: ParsecT String u Control.Monad.Identity.Identity Token
+lexOperator = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = OperatorToken tok_sp tk 
+  return tok
+
+
+lexReserved :: ParsecT String u Control.Monad.Identity.Identity Token
+lexReserved = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = ReservedToken tok_sp tk 
+  return tok
+
+lexIdentifier :: ParsecT String u Control.Monad.Identity.Identity Token
+lexIdentifier = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = IdentifierToken tok_sp tk 
+  return tok
+
+lexPunctuation :: ParsecT String u Control.Monad.Identity.Identity Token
+lexPunctuation = do
+  startPos <- getPosition 
+  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+
+  endPos <- getPosition
+  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+      tok_sp = mkSrcSpan sp ep
+      tok = PunctuationToken tok_sp tk 
+  return tok
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-- deprecated 
+--
 lexFloat = do
   tk <- float
   return $ RNumConst Dble tk
@@ -407,10 +561,20 @@ lexComment = do
   tok <-  many (noneOf "\n\r")
   return $ RComment Cmmnt tok
 
-lexString = do
-  tok <- quotedString
-  return $ RString Strng tok 
-          
+
+lexRtok  = do
+  pos <-  getPosition
+  st  <-  getState
+  tok <-  lexComment
+      <|> lexInt
+      <|> lexFloat
+      <|> lexString
+      <|> lexSym
+      <|> lexId
+  return (tok, pos)
+
+
+
 
 dblQuotedString :: (Text.Parsec.Prim.Stream s m Char) => Text.Parsec.Prim.ParsecT s u m String
 dblQuotedString = do
@@ -438,4 +602,3 @@ rLex text =
   let res       = runParser rTokenize [] "rLex first pass" text
       tokStream = either (\z -> []) id res
   in tokStream
-
