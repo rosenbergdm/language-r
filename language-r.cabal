@@ -19,7 +19,9 @@ extra-source-files:  README
                      src/Language/R/Generator.hs
                      src/Language/R/Evaluate.hs
                      src/Language/R/Internal.hs
-                     src/Language/R/Main.hs
+                     src/Language/R/SrcLocation.hs
+                     src/Language/R/Token.hs
+                     -- src/Language/R/Main.hs
 
 Library
     Hs-source-dirs:  src
@@ -29,12 +31,19 @@ Library
                      Language.R.Generator
                      Language.R.Evaluate
                      Language.R.Internal
+                     Language.R.SrcLocation
+                     Language.R.Token
     -- Other-modules:   Language.R.Internal
     Build-depends:   base < 5 && >= 4,
                      parsec >= 3,
                      pcre-light >= 0.2 && < 0.4,
-                     haskell98, mtl
-    Extensions:      CPP
+                     haskell98, 
+                     mtl,
+                     bytestring,
+                     containers,
+                     primitive
+    Extensions:      CPP, FlexibleInstances, TypeSynonymInstances, 
+                     DeriveDataTypeable, FlexibleContexts
 
 Executable language-r
     Main-is:         Main.hs
@@ -49,3 +58,5 @@ Executable language-r
                      Language.R.Generator
                      Language.R.Evaluate
                      Language.R.Internal
+                     Language.R.SrcLocation
+                     Language.R.Token
