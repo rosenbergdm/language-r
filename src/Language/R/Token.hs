@@ -31,7 +31,7 @@ import Data.Data
   
   
 -- | Lexical Tokens
-data Token 
+data TToken 
   -- Whitespace
   = SpaceToken { token_span :: SrcSpan }
   | NewlineToken { token_span :: SrcSpan }
@@ -220,7 +220,7 @@ data TokenClass
    | Builtin
    deriving (Show, Eq, Ord)
 
-classifyToken :: Token -> TokenClass
+classifyToken :: TToken -> TokenClass
 classifyToken token =
   case token of
       SpaceToken             {} -> Punctuation
@@ -342,7 +342,7 @@ classifyToken token =
 
 
 -- | Produce a string from a token 
-tokenString :: Token -> String
+tokenString :: TToken -> String
 tokenString token = 
    case token of
       SpaceToken             {} -> ""

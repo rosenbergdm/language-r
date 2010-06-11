@@ -47,9 +47,6 @@ class Span a where
 spanning :: (Span a, Span b) => a -> b -> SrcSpan
 spanning x y = combineSrcSpans (getSpan x) (getSpan y)
 
-combineSrcSpans :: SrcSpan -> SrcSpan -> SrcSpan
-combineSrcSpans a b = a
-
 instance Span a => Span [a] where
    getSpan [] = SpanEmpty
    getSpan [x] = getSpan x 
@@ -107,5 +104,80 @@ instance Span SrcLocation where
         }
    getSpan NoLocation = SpanEmpty 
 
+-- | Make a point span from the start of a span
+spanStartPoint :: SrcSpan -> SrcSpan
+spanStartPoint SpanEmpty = SpanEmpty
+spanStartPoint span = 
+   SpanPoint 
+   { span_filename = span_filename span
+   , span_row = startRow span
+   , span_column = startCol span
+   }
 
+-- | Make a span from two locations. Assumption: either the
+-- arguments are the same, or the left one preceeds the right one.
+mkSrcSpan :: SrcLocation -> SrcLocation -> SrcSpan
+mkSrcSpan NoLocation _ = SpanEmpty
+mkSrcSpan _ NoLocation = SpanEmpty 
+mkSrcSpan loc1 loc2
+  | line1 == line2 = 
+       if col2 <= col1 
+          then SpanPoint file line1 col1
+          else SpanCoLinear file line1 col1 col2
+  | otherwise = 
+       SpanMultiLine file line1 col1 line2 col2
+  where
+  line1 = sloc_row loc1
+  line2 = sloc_row loc2
+  col1 = sloc_column loc1
+  col2 = sloc_column loc2
+  file = sloc_filename loc1
+
+-- | Combines two 'SrcSpan' into one that spans at least all the characters
+-- within both spans. Assumes the "file" part is the same in both inputs
+combineSrcSpans :: SrcSpan -> SrcSpan -> SrcSpan
+combineSrcSpans SpanEmpty r = r -- this seems more useful
+combineSrcSpans l SpanEmpty = l
+combineSrcSpans start end
+ = case row1 `compare` row2 of
+     EQ -> case col1 `compare` col2 of
+                EQ -> SpanPoint file row1 col1
+                LT -> SpanCoLinear file row1 col1 col2
+                GT -> SpanCoLinear file row1 col2 col1
+     LT -> SpanMultiLine file row1 col1 row2 col2
+     GT -> SpanMultiLine file row2 col2 row1 col1
+  where
+  row1 = startRow start
+  col1 = startCol start
+  row2 = endRow end
+  col2 = endCol end
+  file = span_filename start
+
+-- | Get the row of the start of a span.
+startRow :: SrcSpan -> Int
+startRow (SpanCoLinear { span_row = row }) = row
+startRow (SpanMultiLine { span_start_row = row }) = row
+startRow (SpanPoint { span_row = row }) = row
+startRow SpanEmpty = error "startRow called on empty span"
+
+-- | Get the row of the end of a span.
+endRow :: SrcSpan -> Int
+endRow (SpanCoLinear { span_row = row }) = row
+endRow (SpanMultiLine { span_end_row = row }) = row
+endRow (SpanPoint { span_row = row }) = row
+endRow SpanEmpty = error "endRow called on empty span"
+
+-- | Get the column of the start of a span.
+startCol :: SrcSpan -> Int
+startCol (SpanCoLinear { span_start_column = col }) = col 
+startCol (SpanMultiLine { span_start_column = col }) = col 
+startCol (SpanPoint { span_column = col }) = col 
+startCol SpanEmpty = error "startCol called on empty span"
+
+-- | Get the column of the end of a span.
+endCol :: SrcSpan -> Int
+endCol (SpanCoLinear { span_end_column = col }) = col 
+endCol (SpanMultiLine { span_end_column = col }) = col 
+endCol (SpanPoint { span_column = col }) = col 
+endCol SpanEmpty = error "endCol called on empty span"
 

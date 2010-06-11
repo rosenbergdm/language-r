@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances, FlexibleContexts, CPP, DeriveDataTypeable #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      : Language.R.Lexer
@@ -17,148 +18,141 @@
 
 module Language.R.Lexer where
 
-import Text.Parsec hiding (many, optional, (<|>))
-import qualified Text.Parsec.Token as T
-import Text.Parsec.Language
-import Text.Parsec.String
-import Text.Parsec.Pos
 
-import Control.Applicative
-import Control.Monad.Identity
+import Language.R.SrcLocation
+import Language.R.Token
+import Language.R.AST
 
-import Data.Either
-import Debug.Trace
-import Maybe
-import Data.ByteString(ByteString)
+retokenize :: [Token] -> [TToken] -> Maybe [TToken]
+retokenize [] outToks     = outToks
+retokenize inToks outToks =
+   let slurp     = takeWhile (\z -> tryBuildSyntaxNode z == []) inToks'
+       inToks'   = drop (length slurp) inToks'
+       newSyntax = buildSyntaxNode slurp
+       outToks'  = concat [[newSyntax], outToks]
+   in retokenize inToks' outToks'
+  
 
-
-import Language.R.Internal
-
-
-  -- import Language.R.Generator
-
-
--- | The 'top' token lexer function.  TODO: The sepBy clause is not correct.
-
-rTokens :: ParsecT String LexState Identity [Token]
-rTokens = 
-  setState [] >>
-  whiteSpace >>
-  sepBy rToken spaces
+data IdentStatus = IdReserved 
+                 | IdBuiltin
+                 | IdDefined
+                 | IdUndefined
 
 
--- | Lex a single token from the input stream and add it to the LexState
--- stack.
+classifyIdent tk
+  | tk `elem` (map fst rFuncPrims) = IdReserved 
+  | tk `elem` rBuiltins            = IdBuiltin
+  | tk `elem` (map fst rNameTable) = IdDefined
+  | otherwise                      = IdUndefined
 
-rToken :: ParsecT String LexState Identity Token
-rToken = do
-  sp <- getPosition
-  st <- getState
-  t <-  rComment
-    <|> rString
-    <|> rSymbol
-    <|> rNumber
-    <|> rIdent
-  return (sp, t)
-
-
--- |Comments begin with an (unquoted) pound sign and continue until the
--- end of the line.
-
-rComment :: ParsecT String LexState Identity Tok
-rComment =  do
-  char '#'
-  content <- many1 (noneOf "\n\r")
-  return $ ComTok content
-
--- |A string can be either single-quoted or double quoted and (within
--- the string) backslashes serve as escapes.
--- TODO: No escape function provided.
--- TODO: Single-quoting not implemented.
-
-rString :: ParsecT String LexState Identity Tok
-rString =  do 
-  char '"'
-  content <- many1 (noneOf "\"")
-  char '"'
-  return $ StrTok content
-
-
--- |A 'symbol' is any non-space, non-alphanumeric character.
-
-rSymbol :: ParsecT String LexState Identity Tok
-rSymbol =  do
-  sym <- oneOf "~@%^&*_-+=$\\]}[{:?/><."
-  return $ SymTok (sym:"")
-
-
--- |A number is lexed as a continuous list of digits.
-
-rNumber :: ParsecT String LexState Identity Tok
-rNumber =  do
-  num <- (many1 digit) -- >> (optional (char '.' >> many digit)) 
-  -- let num' = maybe "??" id num
-  return $ NumTok num --'
-  -- num <-  T.float <|> T.integer
-  -- return $ liftM show num
-
--- |Atoms can only begin with a letter or a period.  After the first
--- character, any alphanumeric character or one of "-", "_", and "."
--- are permitted.
-
-rIdent :: ParsecT String LexState Identity Tok
-rIdent =  do
-  first <- letter <|> (char '.')
-  rest  <- many (noneOf " \t\n\r")
-  --(letter <|> digit <|> (oneOf "._-"))
-  return $ AtmTok ([first] ++ rest)
-
-
-
--- |lexRTextWithPos :: String -> Int -> Int -> String 
---                    -> Either ParseError [Token]
--- Given a source name (filename), start line, start
--- column, and 'content', lex a string into a list
--- of R tokens.
-
-lexRTextWithPos f l c = do
-  let sp = newPos f l c
-  te <- readFile f
-  let res = runParser rTokens [] f te
-  return res
+-- | Production rules
+buildStmtExpr 
 
 
 
 
 
----------------------------------
----------------------------------
-
-{-
-    typeof    mode      storage.mode
-    logical   logical   logical
-    integer   numeric   integer
-    double    numeric   double
-    complex   complex   complex
-    character character character
-    raw       raw       raw
--}
 
 
-data RStoreMode  = Logic | Intgr | Dble | Cmplx 
-                 | Chrtr | Raw
-  deriving (Eq, Ord, Read, Show)
-
-data RMode       = ModeLogic | ModeNumeric | ModeComplex
-                 | ModeChaar
-  deriving (Eq, Ord, Read, Show)
 
 
-data AtomVector =
-  TypeLogic        [Bool] 
-  | TypeInteger    [Int]
-  | TypeDouble     [Double]
-  | TypeComplex    [(Double, Double)]
-  | TypeCharacter  String
-  | TypeRaw        ByteString
-  deriving (Eq, Ord, Read, Show)
+
+
+
+
+
+
+rBuiltins = 
+ [ "zeroin2", "zeroin", "xzfile", "xspline", "X11", "wsbrowser" "writeLines"
+ , "writeChar", "writeBin", "write.table", "withVisible", "which.min"
+ , "which.max", "warning", "Version", "vector", "utf8ToInt", "url"
+ , "update.formula", "unzip", "unz", "unserializeFromConn"
+ , "unregisterNamespace", "unlockBinding", "unlist", "unlink", "unique"
+ , "undebug", "typeof", "type.convert", "truncate", "toupper", "tolower"
+ , "title", "textConnectionValue", "textConnection", "text", "terms.formula"
+ , "tempfile", "tempdir", "tcrossprod", "t.default", "system", "Sys.unsetenv"
+ , "Sys.umask", "Sys.time", "Sys.sleep", "Sys.setlocale", "Sys.setenv"
+ , "Sys.readlink", "sys.parents", "sys.parent", "sys.on.exit", "sys.nframe"
+ , "Sys.localeconv", "Sys.info", "Sys.glob", "Sys.getpid", "Sys.getlocale"
+ , "Sys.getenv", "sys.function", "sys.frames", "sys.frame", "Sys.chmod"
+ , "sys.calls", "sys.call", "symbols", "switch", "summary.connection"
+ , "substr<-", "substr", "sub", "strwidth", "strtrim", "strsplit", "strptime"
+ , "strheight", "stopHTTPD", "stop", "stdout", "stdin", "stderr", "startHTTPD"
+ , "sprintf", "split", "sort", "sockSelect", "socketConnection", "sink.number"
+ , "sink", "setwd", "setToCConverterActiveStatus", "setTimeLimit"
+ , "setSessionTimeLimit", "seterrmessage", "setEncoding", "set.seed"
+ , "serializeToConn", "select.list", "segments", "seek", "search", "scan"
+ , "saveToConn", "savePlot", "savehistory", "save.to.file", "save", "sample"
+ , "rwilcox", "rweibull", "runif", "rt", "rsignrank", "Rprofmem", "Rprof"
+ , "rpois", "rowSums", "rowMeans", "row", "rnorm", "RNGkind", "rnchisq"
+ , "rnbinom_mu", "rnbinom", "rmultinom", "rlogis", "rlnorm", "rhyper", "rgeom"
+ , "rgb2hsv", "rgb256", "rgb", "rgamma", "rf", "rexp", "restart", "rep.int"
+ , "removeToCConverterActiveStatus", "remove", "registerNamespace", "regexpr"
+ , "reg.finalizer", "rect", "recordGraphics", "Recall", "readTableHead"
+ , "readLines", "readline", "readDCF", "readChar", "readBin", "rchisq"
+ , "rcauchy", "rbinom", "rbind", "rbeta", "rawToChar", "rawToBits", "rawShift"
+ , "rawConnectionValue", "rawConnection", "rapply", "rank", "radixsort"
+ , "R.home", "qwilcox", "qweibull", "qunif", "quit", "qtukey", "qt", "qsort"
+ , "qsignrank", "qpois", "qnt", "qnorm", "qnf", "qnchisq", "qnbinom_mu"
+ , "qnbinom", "qnbeta", "qlogis", "qlnorm", "qhyper", "qgeom", "qgamma", "qf"
+ , "qexp", "qchisq", "qcauchy", "qbinom", "qbeta", "pwilcox", "pweibull"
+ , "putconst", "pushBackLength", "pushBack", "punif", "ptukey", "pt", "psort"
+ , "psignrank", "psigamma", "prmatrix", "printDeferredWarnings"
+ , "print.function", "print.default", "ppois", "POSIXlt2Date", "polyroot"
+ , "polygon", "pnt", "pnorm", "pnf", "pnchisq", "pnbinom_mu", "pnbinom"
+ , "pnbeta", "pmin", "pmax", "pmatch", "plot.xy", "plot.window", "plot.new"
+ , "plogis", "plnorm", "playSnapshot", "pkgbrowser", "pipe", "phyper", "pgeom"
+ , "pgamma", "pf", "pexp", "persp", "pchisq", "pcauchy", "pbinom", "pbeta"
+ , "path.expand", "paste", "parse_Rd", "parse", "parent.frame", "parent.env<-"
+ , "parent.env", "par", "palette", "packBits", "package.manager", "order"
+ , "options", "optimhess", "optim", "open", "object.size", "nsl"
+ , "normalizePath", "nlm", "ngettext", "nextn", "NextMethod", "new.env", "nchar"
+ , "mvfft", "mtext", "model.matrix", "model.frame", "mkUnbound", "mkCode"
+ , "mget", "merge", "menu", "memory.profile", "memDecompress", "memCompress"
+ , "mem.limits", "mean", "matrix", "match.call", "match", "makeLazy"
+ , "makeActiveBinding", "make.unique", "make.names", "machine", "ls"
+ , "lockEnvironment", "lockBinding", "locator", "loadhistory", "loadFromConn2"
+ , "load.from.file", "load", "list.files", "lib.fixup", "lchoose", "lbeta"
+ , "layout", "lapply", "l10n_info", "isSeekable", "isOpen", "isNamespaceEnv"
+ , "islistfactor", "isIncomplete", "isdebugged", "is.vector", "is.unsorted"
+ , "is.loaded", "is.builtin.internal", "intToUtf8", "intToBits"
+ , "interruptsSuspended", "inspect", "inherits", "index.search", "importIntoEnv"
+ , "image", "identify", "identical", "icuSetCollate", "iconv", "hsv"
+ , "hsbrowser", "hcl", "gzfile", "gzcon", "gsub", "grepl", "grep", "gregexpr"
+ , "grconvertY", "grconvertX", "gray", "getwd", "gettext", "getSnapshot"
+ , "getRtoCConverterStatus", "getRtoCConverterDescriptions"
+ , "getRegisteredNamespace", "getNumRtoCConverters", "getNamespaceRegistry"
+ , "getGraphicsEvent", "geterrmessage", "getConnection", "getAllConnections"
+ , "get", "gctorture", "gcinfo", "gc", "format.POSIXlt", "format.info", "format"
+ , "formals", "fmin", "flush.console", "flush", "filledcontour", "file.symlink"
+ , "file.show", "file.rename", "file.remove", "file.path", "file.info"
+ , "file.exists", "file.edit", "file.create", "file.copy", "file.choose"
+ , "file.append", "file.access", "file", "fifo", "fft", "exists"
+ , "eval.with.vis", "eval", "erase", "environmentName", "environmentIsLocked"
+ , "environment", "env2list", "env.profile", "Encoding", "encodeString", "edit"
+ , "eapply", "dyn.unload", "dyn.load", "dwilcox", "dweibull", "duplicated"
+ , "dunif", "dump", "dtukey", "dt", "dsignrank", "drop", "dput", "dpois"
+ , "download", "do.call", "dnt", "dnorm", "dnf", "dnchisq", "dnbinom_mu"
+ , "dnbinom", "dnbeta", "dlogis", "dlnorm", "disassemble", "dirname", "dirchmod"
+ , "dir.create", "dhyper", "dgeom", "dgamma", "df", "dexp", "devAskNewPage"
+ , "dev.size", "dev.set", "dev.prev", "dev.off", "dev.next", "dev.displaylist"
+ , "dev.cur", "dev.copy", "dev.control", "detach", "deriv.default", "deparseRd"
+ , "deparse", "dend.window", "dend", "delayedAssign", "debugonce", "debug"
+ , "dchisq", "dcauchy", "dbinom", "dbeta", "Date2POSIXlt", "date", "dataviewer"
+ , "dataentry", "data.manager", "D", "Cstack_info", "crossprod", "cov"
+ , "count.fields", "cor", "contourLines", "contour", "complex", "complete.cases"
+ , "comment<-", "comment", "commandArgs", "colSums", "colors", "colMeans"
+ , "col2rgb", "col", "codeFiles.append", "close", "clip", "clearPushBack"
+ , "choose", "chartr", "charToRaw", "charmatch", "cbind", "cat"
+ , "capabilitiesX11", "capabilities", "cairo", "bzfile", "builtins"
+ , "browserText", "browserSetDebug", "browserCondition", "box", "bodyCode"
+ , "body", "bindtextdomain", "bindingIsLocked", "bindingIsActive", "beta"
+ , "besselY", "besselK", "besselJ", "besselI", "bcVersion", "bcClose"
+ , "basename", "axis", "attach", "atan2", "assign", "as.vector", "as.POSIXlt"
+ , "as.POSIXct", "as.function.default", "arrows", "args", "aqua.custom.print"
+ , "aperm", "anyDuplicated", "all.names", "agrep", "addhistory", "abline"
+ , "abbreviate", ".signalCondition", ".resetCondHands", ".invokeRestart"
+ , ".getRestart", ".dfltWarn", ".dfltStop", ".addTryHandlers", ".addRestart"
+ , ".addCondHands" 
+ ]
+
