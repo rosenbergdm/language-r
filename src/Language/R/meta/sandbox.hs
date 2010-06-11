@@ -1,21 +1,16 @@
 -----------------------------------------------------------------------------
--- |
--- Module      : Language.R.Lexer
+-- Module      : sandbox
 -- Copyright   : (c) 2010 David M. Rosenberg
 -- License     : BSD3
 -- 
 -- Maintainer  : David Rosenberg <rosenbergdm@uchicago.edu>
 -- Stability   : experimental
 -- Portability : portable
--- Created     : 05/28/10
+-- Created     : 05/29/10
 -- 
 -- Description :
---    This module contains the functions used for lexing an list of
---    strings (representing either source code lines or interactive
---    input) into a stack of tokens.
+--    DESCRIPTION HERE.
 -----------------------------------------------------------------------------
-
-module Language.R.Lexer where
 
 import Text.Parsec hiding (many, optional, (<|>))
 import qualified Text.Parsec.Token as T
@@ -29,13 +24,24 @@ import Control.Monad.Identity
 import Data.Either
 import Debug.Trace
 import Maybe
-import Data.ByteString(ByteString)
 
+-- |On first pass, tokens are identified without any lookahead based on
+-- context alone. 
 
-import Language.R.Internal
+type Token = (SourcePos, Tok)
 
+-- |The LexState is simply the list of all processed tokens.
+--
+type LexState = [Tok]
 
-  -- import Language.R.Generator
+data Tok = StrTok String          -- ^String literal
+         | NumTok String          -- ^Numeric literal (as a string)
+         | AtmTok String          -- ^Textual atom (keyword, identifier, etc)
+         | SymTok String          -- ^Non-alphanumeric character
+         | ComTok String          -- ^Complete comment
+  deriving (Eq, Ord, Show)
+
+whiteSpace = spaces               -- ^TODO: This should be specified better
 
 
 -- | The 'top' token lexer function.  TODO: The sepBy clause is not correct.
@@ -126,39 +132,3 @@ lexRTextWithPos f l c = do
   te <- readFile f
   let res = runParser rTokens [] f te
   return res
-
-
-
-
-
----------------------------------
----------------------------------
-
-{-
-    typeof    mode      storage.mode
-    logical   logical   logical
-    integer   numeric   integer
-    double    numeric   double
-    complex   complex   complex
-    character character character
-    raw       raw       raw
--}
-
-
-data RStoreMode  = Logic | Intgr | Dble | Cmplx 
-                 | Chrtr | Raw
-  deriving (Eq, Ord, Read, Show)
-
-data RMode       = ModeLogic | ModeNumeric | ModeComplex
-                 | ModeChaar
-  deriving (Eq, Ord, Read, Show)
-
-
-data AtomVector =
-  TypeLogic        [Bool] 
-  | TypeInteger    [Int]
-  | TypeDouble     [Double]
-  | TypeComplex    [(Double, Double)]
-  | TypeCharacter  String
-  | TypeRaw        ByteString
-  deriving (Eq, Ord, Read, Show)

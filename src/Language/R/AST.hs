@@ -16,3 +16,13 @@
 module Language.R.AST where
 
 import Language.R.Internal
+
+data RExpr = RNumeric
+           | RCharacter
+           | RLogical
+           | ROperator
+           | RFuncDef
+           | RFuncProto
+  deriving (Read, Show, Ord, Eq)
+
+

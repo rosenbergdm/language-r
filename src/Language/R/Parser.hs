@@ -102,4 +102,116 @@ data RObject = OList RList
   deriving (Eq, Ord, Show)
 
 
+-- |From the manual R Internals / R Language Definition
+-- 
+--         ===================================
+--         Six basic (atomic) types of vectors
+--         =================================== 
+--
+--         typeof	mode	  storage.mode
+--         -----------------------------------
+--         logical	logical	  logical 
+--         integer	numeric	  integer 
+--         double	numeric	  double 
+--         complex	complex	  complex 
+--         character	character character 
+--         raw	        raw	  raw 
+--
+--------------------------------------------------------------
+--
+--                  ==================
+--                  Table of Operators
+--                  ==================
+--
+--         -	Minus, can be unary or binary 
+--         +	Plus, can be unary or binary 
+--         !	Unary not 
+--         ~	Tilde, used for model formulae, can be either unary or binary 
+--         ?	Help 
+--         :	Sequence, binary (in model formulae: interaction) 
+--         *	Multiplication, binary 
+--         /	Division, binary 
+--         ^	Exponentiation, binary 
+--         %x%	Special binary operators, x can be replaced by any valid name 
+--         %%	Modulus, binary 
+--         %/%	Integer divide, binary 
+--         %*%	Matrix product, binary 
+--         %o%	Outer product, binary 
+--         %x%	Kronecker product, binary 
+--         %in%	Matching operator, binary (in model formulae: nesting) 
+--         <	Less than, binary 
+--         >	Greater than, binary 
+--         ==	Equal to, binary 
+--         >=	Greater than or equal to, binary 
+--         <=	Less than or equal to, binary 
+--         &	And, binary, vectorized 
+--         &&	And, binary, not vectorized 
+--         |	Or, binary, vectorized 
+--         ||	Or, binary, not vectorized 
+--         <-	Left assignment, binary 
+--         ->	Right assignment, binary 
+--         $	List subset, binary 
+-- 
+-----------------------------------------------------------------
+--
+--             ======================================
+--             Reserved / Builtin functions /keywords
+--             ======================================
+--
+--                    -------------------
+--                        **Special** 
+--                    -------------------
+--          {       (         if     for      while  repeat 
+--          return  function  quote  switch   break  next
+--
+--
+--                    -------------------
+--                      **Language/Op** 
+--                    -------------------
+--
+--               [    [[    $    @    +    !
+--               <-   <<-  =    [<-  [[<-  $<-
+--               -    *    /     ^    %%   %*%
+--               <    <=   ==   !=    >=   >
+--               |    ||   &    &&    !    %/%
+--
+--  
+--                    -------------------
+--                      **Language/Op** 
+--                    -------------------
+--
+--                 abs     sign    sqrt
+--                 floor   ceiling
+--               
+--                 exp     expm1
+--                 log2    log10   log1p
+--                 cos     sin     tan
+--                 acos    asin    atan
+--                 cosh    sinh    tanh
+--                 acosh   asinh   atanh
+--               
+--                 gamma   lgamma  digamma trigamma
+--                
+--                 cumsum  cumprod cummax  cummin
+--               
+--                 Im  Re  Arg  Conj  Mod
+--
+--
+--                    -------------------
+--                      **Language/Op** 
+--                    -------------------
+--                    
+--                    length      length<-
+--                    class       class<-
+--                    oldClass    oldCLass<-
+--                    attr        attr<-
+--                    attributes  attributes<-
+--                    names       names<-
+--                    dim         dim<-
+--                    dimnames    dimnames<-
+--                    levels<-    environment<-
+--                                storage.mode<-
+--
+--
+
 
