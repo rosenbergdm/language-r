@@ -53,7 +53,7 @@ type SuiteSpan = Suite SrcSpan
 
 data Statement annot 
    -- | While loop. 
-   | While 
+   = While 
      { while_cond :: Expr annot  -- ^ Loop condition.
      , while_body :: Suite annot -- ^ Loop body.
      , stmt_annot :: annot
@@ -115,7 +115,7 @@ data Statement annot
    -- | Function definition. 
    | Fun 
      { fun_name :: Ident annot                -- ^ Function name.
-     , fun_args :: [Parameter annot]          -- ^ Function parameter list.
+     -- , fun_args :: [Parameter annot]          -- ^ Function parameter list.
      , fun_result_annot :: Maybe (Expr annot) -- ^ Optional result annotation.
      , fun_body :: Suite annot                -- ^ Function body.
      , stmt_annot :: annot 
@@ -178,10 +178,11 @@ data Expr annot
    -- | Function call. 
    | Call 
      { call_fun   :: Ident annot
-     , call_args  :: [Argument annot] -- ^ Call arguments.
+     -- , call_args  :: [Argument annot] -- ^ Call arguments.
      , expr_annot :: annot
      }
-
+   deriving (Eq,Ord,Show,Typeable,Data)
+{- 
    -- | Slicing, for example \'w [x:y:z]\'. 
    | SlicedExpr { slicee :: Expr annot, slices :: [Slice annot], expr_annot :: annot } 
 
@@ -205,7 +206,6 @@ data Expr annot
    -- | Tuple. Can be empty. 
    | Tuple { tuple_exprs :: [Expr annot], expr_annot :: annot }
 
-   deriving (Eq,Ord,Show,Typeable,Data)
 
 type ExprSpan = Expr SrcSpan
 
@@ -216,3 +216,4 @@ instance Annotated Expr where
    annot = expr_annot 
 
 
+-}

@@ -23,7 +23,9 @@ import Language.R.SrcLocation
 import Language.R.Token
 import Language.R.AST
 
-retokenize :: [Token] -> [TToken] -> Maybe [TToken]
+
+{- 
+retokenize :: [Token] -> [Token] -> Maybe [Token]
 retokenize [] outToks     = outToks
 retokenize inToks outToks =
    let slurp     = takeWhile (\z -> tryBuildSyntaxNode z == []) inToks'
@@ -46,7 +48,7 @@ classifyIdent tk
   | otherwise                      = IdUndefined
 
 -- | Production rules
-buildStmtExpr 
+-- buildStmtExpr 
 
 
 
@@ -155,4 +157,4 @@ rBuiltins =
  , ".getRestart", ".dfltWarn", ".dfltStop", ".addTryHandlers", ".addRestart"
  , ".addCondHands" 
  ]
-
+-}

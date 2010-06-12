@@ -14,8 +14,8 @@
 --    Necessary Token definitions for parsing the Splus / R Language.
 -----------------------------------------------------------------------------
 
--- module Language.R.Token (
-module Token where 
+module Language.R.Token where
+-- module Token where 
 {-(
   Token (..),
 
@@ -27,7 +27,9 @@ module Token where
   ) where
 -}
 
-import SrcLocation
+import Language.R.SrcLocation
+
+-- import SrcLocation
 
 import Data.Primitive.ByteArray (ByteArray)
 import Data.Data
@@ -137,7 +139,7 @@ data Token
   | IntersectToken { token_span :: SrcSpan }          -- ^Operator: \'%in%\'
   | OuterProductToken { token_span :: SrcSpan }       -- ^Operator: \'%o%\'
   | KroneckerProductToken { token_span :: SrcSpan }   -- ^Operator: \'%x%\'
-  | CustomSpecialOpToken                              -- ^Operator: \'user defined\'
+  | CustomSpecialOpToken
     { token_span    :: SrcSpan
     , token_literal :: String
     }

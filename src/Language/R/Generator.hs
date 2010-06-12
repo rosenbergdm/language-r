@@ -33,8 +33,14 @@ import Data.Char (toLower)
 import qualified Text.Parsec.Token as T
 import qualified Text.Parsec.Language as L
 
+{-
 import Token
 import SrcLocation
+-}
+
+import Language.R.Token
+import Language.R.SrcLocation
+
 
 --n| @Tok@s are the most general of the *R* token-type objects, representing a
 -- single *typeclass*-ish category of functionally similar language objects.
