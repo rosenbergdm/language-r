@@ -15,7 +15,8 @@
 -----------------------------------------------------------------------------
 
 -- module Language.R.Token (
-module Token (
+module Token where 
+{-(
   Token (..),
 
   tokenString,
@@ -24,11 +25,14 @@ module Token (
 
   classifyToken
   ) where
+-}
 
 import SrcLocation
 
 import Data.Primitive.ByteArray (ByteArray)
 import Data.Data
+
+import qualified Data.Map as Map
   
 data SpecialConstant 
   = NA 
@@ -119,6 +123,9 @@ data Token
   | SwitchToken                 { token_span :: SrcSpan }   -- ^Keyword: \'switch\'
   | BreakToken                  { token_span :: SrcSpan }   -- ^Keyword: \'break\'
   | NextToken                   { token_span :: SrcSpan }   -- ^Keyword: \'next\'
+
+
+  | ErrorToken                  { token_span :: SrcSpan }
 
   ---- Constants ----
   -- No need to list here, captured already
@@ -521,3 +528,127 @@ tokenString token =
       VectorAndToken      {} -> "&&"
       MatrixDivideToken   {} -> "%/%"
       
+
+-- operators
+
+operatorMap :: Map.Map String (SrcSpan -> Token)
+operatorMap =  Map.fromList 
+  [ ("...", ThreeDotsToken)
+  , (":", ColonToken)
+  , ("::", DoubleColonToken)
+  , ("?", QuestionMarkToken)
+  , ("??", DoubleQMarkToken)
+  , ("[", SliceOperator      )
+  , ("[[", MemberOperator     )
+  , ("$", MemberOperator'    )
+  , ("@", SlotOperator       )
+  , ("+", PlusToken)
+  , ("!", NegateToken)
+  , ("<-", AssignLeftToken)
+  , ("->", AssignRightToken)
+  , ("<<-", AssignLeftToken'   )
+  , ("=", EqualsToken)
+  , ("[<-", SliceReplaceToken)
+  , ("[[<-", MemberReplaceToken)
+  , ("<-", MemberReplaceToken')
+  , ("-", MinusToken)
+  , ("*", MultiplyToken)
+  , ("/", DivideToken)
+  , ("^", ExponentToken)
+  , ("%%", ModulusToken)
+  , ("%*%", MatrixMultiplyToken)
+  , ("<", LessToken)
+  , ("<=", LessEqualToken)
+  , ("==", EqualityToken)
+  , ("!=", InequalityToken)
+  , (">=", GreatEqualToken)
+  , (">", GreatToken)
+  , ("|", ElementwiseOrToken)
+  , ("||", VectorOrToken)
+  , ("&", ElementwiseAndToken)
+  , ("&&", VectorAndToken)
+  , ("%/%", MatrixDivideToken) ]
+
+-- Punctuation
+
+punctMap :: Map.Map String (SrcSpan -> Token)
+punctMap =  Map.fromList 
+  [ (";", SemicolonToken)
+  , (",", CommaToken)
+  , ("(", ParenLeftToken)
+  , (")", ParenRightToken)
+  , ("{", BraceLeftToken)
+  , ("}", BraceRightToken)
+  , ("[", BracketLeftToken)
+  , ("]", BracketRightToken) ]
+
+reservedMap :: Map.Map String (SrcSpan -> Token)
+reservedMap = Map.fromList
+  [ ("if", IfToken) 
+  , ("for", ForToken)
+  , ("while", WhileToken)
+  , ("repeat", RepeatToken)
+  , ("return", ReturnToken)
+  , ("function", FunctionToken)
+  , ("quote", QuoteToken)
+  , ("switch", SwitchToken)
+  , ("break", BreakToken)
+  , ("next", NextToken)
+  , ("length", LengthToken)
+  , ("length<-", LengthAssignToken)
+  , ("class", ClassToken)
+  , ("class<-", ClassAssignToken)
+  , ("oldClass", OldClassToken)
+  , ("oldCLass<-", OldCLassAssignToken)
+  , ("attr", AttrToken)
+  , ("attr<-", AttrAssignToken)
+  , ("attributes", AttributesToken)
+  , ("attributes<-", AttributesAssignToken)
+  , ("names", NamesToken)
+  , ("names<-", NamesAssignToken)
+  , ("dim", DimToken)
+  , ("dim<-", DimAssignToken)
+  , ("dimnames", DimnamesToken)
+  , ("dimnames<-", DimnamesAssignToken)
+  , ("levels<-", LevelsAssignToken)
+  , ("environment<-", EnvironmentAssignToken)
+  , ("storage.mode<-", StorageModeAssignToken) ]
+
+builtinsMap :: Map.Map String (SrcSpan -> Token)
+builtinsMap = Map.fromList
+  [ ("abs", AbsToken)
+  , ("sign", SignToken)
+  , ("sqrt", SqrtToken)
+  , ("floor", FloorToken)
+  , ("ceiling", CeilingToken)
+  , ("exp", ExpToken)
+  , ("expm1", Expm1Token)
+  , ("log2", Log2Token)
+  , ("log10", Log10Token)
+  , ("log1p", Log1pToken)
+  , ("cos", CosToken)
+  , ("sin", SinToken)
+  , ("tan", TanToken)
+  , ("acos", AcosToken)
+  , ("asin", AsinToken)
+  , ("atan", AtanToken)
+  , ("cosh", CoshToken)
+  , ("sinh", SinhToken)
+  , ("tanh", TanhToken)
+  , ("acosh", AcoshToken)
+  , ("asinh", AsinhToken)
+  , ("atanh", AtanhToken)
+  , ("gamma", GammaToken)
+  , ("lgamma", LgammaToken)
+  , ("digamma", DigammaToken)
+  , ("trigamma", TrigammaToken)
+  , ("cumsum", CumsumToken)
+  , ("cumprod", CumprodToken)
+  , ("cummax", CummaxToken)
+  , ("cummin", CumminToken)
+  , ("Im", ImToken)
+  , ("Re", ReToken)
+  , ("Arg", ArgToken)
+  , ("Conj", ConjToken)
+  , ("Mod", ModToken) ]
+

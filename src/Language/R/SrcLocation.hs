@@ -18,6 +18,7 @@
 -- module Language.R.SrcLocation where
 module SrcLocation where
 
+import Text.Parsec.Pos
 
 import Data.Data
 
@@ -38,6 +39,10 @@ data SrcLocation =
         } 
    | NoLocation
    deriving (Eq,Ord,Show,Typeable,Data)
+
+srcPosToLocation :: SourcePos -> SrcLocation
+srcPosToLocation sp = Sloc (sourceName sp) (sourceLine sp) (sourceColumn sp)
+
 
 -- | Types which have a span.
 class Span a where
@@ -133,6 +138,13 @@ mkSrcSpan loc1 loc2
   col1 = sloc_column loc1
   col2 = sloc_column loc2
   file = sloc_filename loc1
+
+
+mkSrcSpan' :: SourcePos -> SourcePos -> SrcSpan
+mkSrcSpan' sps spe =
+  let sl  = srcPosToLocation sps
+      sl' = srcPosToLocation spe
+  in mkSrcSpan sl sl'
 
 -- | Combines two 'SrcSpan' into one that spans at least all the characters
 -- within both spans. Assumes the "file" part is the same in both inputs
