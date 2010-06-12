@@ -16,7 +16,6 @@
 
 
 module Language.R.SrcLocation where
--- module SrcLocation where
 
 import Text.Parsec.Pos
 
