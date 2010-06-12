@@ -21,7 +21,7 @@
 ><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
 ></TD
 ><TD CLASS="title"
->language-r-0.1: A package for parsing and compiling R/Splus code.</TD
+>language-r-0.1.2: A package for parsing and compiling R/Splus code.</TD
 ><TD CLASS="topbut"
 ><A HREF="index.html"
 >Contents</A
@@ -94,6 +94,780 @@
 ></TD
 ></TR
 ><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ATok"
+>Tok</A
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3ARIdent"
+>RIdent</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AROper"
+>ROper</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ARNumConst"
+>RNumConst</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ARSymb"
+>RSymb</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ARString"
+>RString</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ARComment"
+>RComment</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ATokType"
+>TokType</A
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3AVariable"
+>Variable</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AReserved"
+>Reserved</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AOprator"
+>Oprator</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABltin"
+>Bltin</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3APrimitive"
+>Primitive</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AStrng"
+>Strng</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AIntgr"
+>Intgr</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ADble"
+>Dble</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ACtrlFl"
+>CtrlFl</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AGrouping"
+>Grouping</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ALogical"
+>Logical</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AClosure"
+>Closure</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ACmmnt"
+>Cmmnt</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ATToken"
+>TToken</A
+> = (<A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+>, SourcePos)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ATokSt"
+>TokSt</A
+> = [<A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AR_ResOp"
+>R_ResOp</A
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3ABinMinus"
+>BinMinus</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinPlus"
+>BinPlus</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AUnNot"
+>UnNot</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AUnBinTilde"
+>UnBinTilde</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AUnHelp"
+>UnHelp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinSeq"
+>BinSeq</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinMult"
+>BinMult</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinDiv"
+>BinDiv</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinExp"
+>BinExp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinUndef"
+>BinUndef</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinMod"
+>BinMod</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinIntDiv"
+>BinIntDiv</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinMatMult"
+>BinMatMult</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinOutPr"
+>BinOutPr</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinKronPr"
+>BinKronPr</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinIntrsct"
+>BinIntrsct</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinLT"
+>BinLT</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinGT"
+>BinGT</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinEQ"
+>BinEQ</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinGE"
+>BinGE</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinLE"
+>BinLE</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinVecAnd"
+>BinVecAnd</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinAnd"
+>BinAnd</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinVecOr"
+>BinVecOr</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinOr"
+>BinOr</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinAsnLeft"
+>BinAsnLeft</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinAsnRight"
+>BinAsnRight</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinElmnt"
+>BinElmnt</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinMemAsn"
+>BinMemAsn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinSlot"
+>BinSlot</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinElemnt"
+>BinElemnt</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinElemntAsn"
+>BinElemntAsn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinIndxAsn"
+>BinIndxAsn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinEql"
+>BinEql</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABinIndx"
+>BinIndx</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AR_Builtin"
+>R_Builtin</A
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3AR_MathFn"
+>R_MathFn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AR_PrgFn"
+>R_PrgFn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AR_DbgFn"
+>R_DbgFn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AR_AsnFn"
+>R_AsnFn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AR_nArgEff"
+>R_nArgEff</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AR_CtrlFlow"
+>R_CtrlFlow</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3ArResOps"
+>rResOps</A
+> :: [(<A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+>, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+>)]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AresOps"
+>resOps</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/containers-0.3.0.0/Data-Map.html#t%3AMap"
+>Map</A
+> <A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3ArFuncPrims"
+>rFuncPrims</A
+> :: [(<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+>, <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+>)]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfuncPrims"
+>funcPrims</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/containers-0.3.0.0/Data-Map.html#t%3AMap"
+>Map</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3ArStyle"
+>rStyle</A
+> ::  LanguageDef st</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Arlang"
+>rlang</A
+> ::  TokenParser st</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexSpecialConstant"
+>lexSpecialConstant</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexComment"
+>lexComment</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexInteger"
+>lexInteger</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexNumeric"
+>lexNumeric</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexComplex"
+>lexComplex</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexLogical"
+>lexLogical</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexString"
+>lexString</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexOperator"
+>lexOperator</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexReserved"
+>lexReserved</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexIdentifier"
+>lexIdentifier</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlexPunctuation"
+>lexPunctuation</A
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
 ><TD CLASS="s15"
 ></TD
 ></TR
@@ -107,15 +881,1254 @@
 ></TR
 ><TR
 ><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Tok"
+><A NAME="t%3ATok"
+></A
+></A
+><B
+>Tok</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:RIdent"
+><A NAME="v%3ARIdent"
+></A
+></A
+><B
+>RIdent</B
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+>An <TT
+>identifier</TT
+> i.e. variable
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:ROper"
+><A NAME="v%3AROper"
+></A
+></A
+><B
+>ROper</B
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+>An <TT
+>operator</TT
+> i.e. symbolic function name
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:RNumConst"
+><A NAME="v%3ARNumConst"
+></A
+></A
+><B
+>RNumConst</B
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+></TD
+><TD CLASS="rdoc"
+>All numbers are of type double
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:RSymb"
+><A NAME="v%3ARSymb"
+></A
+></A
+><B
+>RSymb</B
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+>A *punctuation* type character
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:RString"
+><A NAME="v%3ARString"
+></A
+></A
+><B
+>RString</B
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+>A literal <TT
+>String</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:RComment"
+><A NAME="v%3ARComment"
+></A
+></A
+><B
+>RComment</B
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+>A complete comment
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Tok')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Tok" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Read.html#t%3ARead"
+>Read</A
+> <A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:TokType"
+><A NAME="t%3ATokType"
+></A
+></A
+><B
+>TokType</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Objects of type <TT
+>TokType</TT
+> represent the result of the first (lexing) pass of
+ the input text.  <TT
+>TokType</TT
+>s are identified without any lookahead or backtracing
+ of the input.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:Variable"
+><A NAME="v%3AVariable"
+></A
+></A
+><B
+>Variable</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Reserved"
+><A NAME="v%3AReserved"
+></A
+></A
+><B
+>Reserved</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Oprator"
+><A NAME="v%3AOprator"
+></A
+></A
+><B
+>Oprator</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Bltin"
+><A NAME="v%3ABltin"
+></A
+></A
+><B
+>Bltin</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Primitive"
+><A NAME="v%3APrimitive"
+></A
+></A
+><B
+>Primitive</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Strng"
+><A NAME="v%3AStrng"
+></A
+></A
+><B
+>Strng</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Intgr"
+><A NAME="v%3AIntgr"
+></A
+></A
+><B
+>Intgr</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Dble"
+><A NAME="v%3ADble"
+></A
+></A
+><B
+>Dble</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:CtrlFl"
+><A NAME="v%3ACtrlFl"
+></A
+></A
+><B
+>CtrlFl</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Grouping"
+><A NAME="v%3AGrouping"
+></A
+></A
+><B
+>Grouping</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Logical"
+><A NAME="v%3ALogical"
+></A
+></A
+><B
+>Logical</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Closure"
+><A NAME="v%3AClosure"
+></A
+></A
+><B
+>Closure</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Cmmnt"
+><A NAME="v%3ACmmnt"
+></A
+></A
+><B
+>Cmmnt</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TokType')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TokType" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Read.html#t%3ARead"
+>Read</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Language-R-Generator.html#t%3ATokType"
+>TokType</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:TToken"
+><A NAME="t%3ATToken"
+></A
+></A
+><B
+>TToken</B
+> = (<A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+>, SourcePos)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>Token</TT
+>s are <TT
+>Tok</TT
+>s with the metadata of <TT
+>SourcePos</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:TokSt"
+><A NAME="t%3ATokSt"
+></A
+></A
+><B
+>TokSt</B
+> = [<A HREF="Language-R-Generator.html#t%3ATok"
+>Tok</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Objects of <TT
+>TokSt</TT
+> are used to store the <TT
+>Token</TT
+> stack during first pass
+ lexing.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:R_ResOp"
+><A NAME="t%3AR_ResOp"
+></A
+></A
+><B
+>R_ResOp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Reserved operations which cannot be overwritten and require rearrangement
+ during the second pass.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinMinus"
+><A NAME="v%3ABinMinus"
+></A
+></A
+><B
+>BinMinus</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinPlus"
+><A NAME="v%3ABinPlus"
+></A
+></A
+><B
+>BinPlus</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:UnNot"
+><A NAME="v%3AUnNot"
+></A
+></A
+><B
+>UnNot</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:UnBinTilde"
+><A NAME="v%3AUnBinTilde"
+></A
+></A
+><B
+>UnBinTilde</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:UnHelp"
+><A NAME="v%3AUnHelp"
+></A
+></A
+><B
+>UnHelp</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinSeq"
+><A NAME="v%3ABinSeq"
+></A
+></A
+><B
+>BinSeq</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinMult"
+><A NAME="v%3ABinMult"
+></A
+></A
+><B
+>BinMult</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinDiv"
+><A NAME="v%3ABinDiv"
+></A
+></A
+><B
+>BinDiv</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinExp"
+><A NAME="v%3ABinExp"
+></A
+></A
+><B
+>BinExp</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinUndef"
+><A NAME="v%3ABinUndef"
+></A
+></A
+><B
+>BinUndef</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinMod"
+><A NAME="v%3ABinMod"
+></A
+></A
+><B
+>BinMod</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinIntDiv"
+><A NAME="v%3ABinIntDiv"
+></A
+></A
+><B
+>BinIntDiv</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinMatMult"
+><A NAME="v%3ABinMatMult"
+></A
+></A
+><B
+>BinMatMult</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinOutPr"
+><A NAME="v%3ABinOutPr"
+></A
+></A
+><B
+>BinOutPr</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinKronPr"
+><A NAME="v%3ABinKronPr"
+></A
+></A
+><B
+>BinKronPr</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinIntrsct"
+><A NAME="v%3ABinIntrsct"
+></A
+></A
+><B
+>BinIntrsct</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinLT"
+><A NAME="v%3ABinLT"
+></A
+></A
+><B
+>BinLT</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinGT"
+><A NAME="v%3ABinGT"
+></A
+></A
+><B
+>BinGT</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinEQ"
+><A NAME="v%3ABinEQ"
+></A
+></A
+><B
+>BinEQ</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinGE"
+><A NAME="v%3ABinGE"
+></A
+></A
+><B
+>BinGE</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinLE"
+><A NAME="v%3ABinLE"
+></A
+></A
+><B
+>BinLE</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinVecAnd"
+><A NAME="v%3ABinVecAnd"
+></A
+></A
+><B
+>BinVecAnd</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinAnd"
+><A NAME="v%3ABinAnd"
+></A
+></A
+><B
+>BinAnd</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinVecOr"
+><A NAME="v%3ABinVecOr"
+></A
+></A
+><B
+>BinVecOr</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinOr"
+><A NAME="v%3ABinOr"
+></A
+></A
+><B
+>BinOr</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinAsnLeft"
+><A NAME="v%3ABinAsnLeft"
+></A
+></A
+><B
+>BinAsnLeft</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinAsnRight"
+><A NAME="v%3ABinAsnRight"
+></A
+></A
+><B
+>BinAsnRight</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinElmnt"
+><A NAME="v%3ABinElmnt"
+></A
+></A
+><B
+>BinElmnt</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinMemAsn"
+><A NAME="v%3ABinMemAsn"
+></A
+></A
+><B
+>BinMemAsn</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinSlot"
+><A NAME="v%3ABinSlot"
+></A
+></A
+><B
+>BinSlot</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinElemnt"
+><A NAME="v%3ABinElemnt"
+></A
+></A
+><B
+>BinElemnt</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinElemntAsn"
+><A NAME="v%3ABinElemntAsn"
+></A
+></A
+><B
+>BinElemntAsn</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinIndxAsn"
+><A NAME="v%3ABinIndxAsn"
+></A
+></A
+><B
+>BinIndxAsn</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinEql"
+><A NAME="v%3ABinEql"
+></A
+></A
+><B
+>BinEql</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BinIndx"
+><A NAME="v%3ABinIndx"
+></A
+></A
+><B
+>BinIndx</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:R_ResOp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:R_ResOp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3AEnum"
+>Enum</A
+> <A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Read.html#t%3ARead"
+>Read</A
+> <A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:R_Builtin"
+><A NAME="t%3AR_Builtin"
+></A
+></A
+><B
+>R_Builtin</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>R *builtin* functions which cannot be overwritten and are not expressed
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:R_MathFn"
+><A NAME="v%3AR_MathFn"
+></A
+></A
+><B
+>R_MathFn</B
+></TD
+><TD CLASS="rdoc"
+>Mathematical functions
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:R_PrgFn"
+><A NAME="v%3AR_PrgFn"
+></A
+></A
+><B
+>R_PrgFn</B
+></TD
+><TD CLASS="rdoc"
+>Language / programming functions
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:R_DbgFn"
+><A NAME="v%3AR_DbgFn"
+></A
+></A
+><B
+>R_DbgFn</B
+></TD
+><TD CLASS="rdoc"
+>Debugging functions
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:R_AsnFn"
+><A NAME="v%3AR_AsnFn"
+></A
+></A
+><B
+>R_AsnFn</B
+></TD
+><TD CLASS="rdoc"
+>Special syntax assignment functions
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:R_nArgEff"
+><A NAME="v%3AR_nArgEff"
+></A
+></A
+><B
+>R_nArgEff</B
+></TD
+><TD CLASS="rdoc"
+>Functions taking arbitrary length argument lists
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:R_CtrlFlow"
+><A NAME="v%3AR_CtrlFlow"
+></A
+></A
+><B
+>R_CtrlFlow</B
+></TD
+><TD CLASS="rdoc"
+>Control flow functions
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:R_Builtin')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:R_Builtin" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3AEnum"
+>Enum</A
+> <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Read.html#t%3ARead"
+>Read</A
+> <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:rResOps"
+><A NAME="v%3ArResOps"
+></A
+></A
+><B
+>rResOps</B
+> :: [(<A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+>, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+>)]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:resOps"
+><A NAME="v%3AresOps"
+></A
+></A
+><B
+>resOps</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/containers-0.3.0.0/Data-Map.html#t%3AMap"
+>Map</A
+> <A HREF="Language-R-Generator.html#t%3AR_ResOp"
+>R_ResOp</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:rFuncPrims"
+><A NAME="v%3ArFuncPrims"
+></A
+></A
+><B
+>rFuncPrims</B
+> :: [(<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+>, <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+>)]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:funcPrims"
+><A NAME="v%3AfuncPrims"
+></A
+></A
+><B
+>funcPrims</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/containers-0.3.0.0/Data-Map.html#t%3AMap"
+>Map</A
+> <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> <A HREF="Language-R-Generator.html#t%3AR_Builtin"
+>R_Builtin</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
 ><A NAME="v:rStyle"
 ><A NAME="v%3ArStyle"
 ></A
 ></A
 ><B
 >rStyle</B
-> ::  <A HREF="/usr/doc/html/Text-Parsec-Token.html#t%3ALanguageDef"
->LanguageDef</A
-> st</TD
+> ::  LanguageDef st</TD
 ></TR
 ><TR
 ><TD CLASS="s15"
@@ -129,9 +2142,227 @@
 ></A
 ><B
 >rlang</B
-> ::  <A HREF="/usr/doc/html/Text-Parsec-Token.html#t%3ATokenParser"
->TokenParser</A
-> st</TD
+> ::  TokenParser st</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexSpecialConstant"
+><A NAME="v%3AlexSpecialConstant"
+></A
+></A
+><B
+>lexSpecialConstant</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexComment"
+><A NAME="v%3AlexComment"
+></A
+></A
+><B
+>lexComment</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexInteger"
+><A NAME="v%3AlexInteger"
+></A
+></A
+><B
+>lexInteger</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexNumeric"
+><A NAME="v%3AlexNumeric"
+></A
+></A
+><B
+>lexNumeric</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexComplex"
+><A NAME="v%3AlexComplex"
+></A
+></A
+><B
+>lexComplex</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexLogical"
+><A NAME="v%3AlexLogical"
+></A
+></A
+><B
+>lexLogical</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexString"
+><A NAME="v%3AlexString"
+></A
+></A
+><B
+>lexString</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexOperator"
+><A NAME="v%3AlexOperator"
+></A
+></A
+><B
+>lexOperator</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexReserved"
+><A NAME="v%3AlexReserved"
+></A
+></A
+><B
+>lexReserved</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexIdentifier"
+><A NAME="v%3AlexIdentifier"
+></A
+></A
+><B
+>lexIdentifier</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:lexPunctuation"
+><A NAME="v%3AlexPunctuation"
+></A
+></A
+><B
+>lexPunctuation</B
+> ::  ParsecT <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+> u <A HREF="/usr/local/share/doc/mtl-1.1.0.2/html/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Language-R-Token.html#t%3AToken"
+>Token</A
+></TD
 ></TR
 ><TR
 ><TD CLASS="s15"

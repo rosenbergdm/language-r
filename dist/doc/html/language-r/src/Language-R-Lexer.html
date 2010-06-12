@@ -6,130 +6,165 @@
 <link type='text/css' rel='stylesheet' href='hscolour.css' />
 </head>
 <body>
-<pre><a name="line-1"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
-<a name="line-2"></a><span class='hs-comment'>-- |</span>
-<a name="line-3"></a><span class='hs-comment'>-- Module      : Language.R.Lexer</span>
-<a name="line-4"></a><span class='hs-comment'>-- Copyright   : (c) 2010 David M. Rosenberg</span>
-<a name="line-5"></a><span class='hs-comment'>-- License     : BSD3</span>
-<a name="line-6"></a><span class='hs-comment'>-- </span>
-<a name="line-7"></a><span class='hs-comment'>-- Maintainer  : David Rosenberg &lt;rosenbergdm@uchicago.edu&gt;</span>
-<a name="line-8"></a><span class='hs-comment'>-- Stability   : experimental</span>
-<a name="line-9"></a><span class='hs-comment'>-- Portability : portable</span>
-<a name="line-10"></a><span class='hs-comment'>-- Created     : 05/28/10</span>
-<a name="line-11"></a><span class='hs-comment'>-- </span>
-<a name="line-12"></a><span class='hs-comment'>-- Description :</span>
-<a name="line-13"></a><span class='hs-comment'>--    This module contains the functions used for lexing an list of</span>
-<a name="line-14"></a><span class='hs-comment'>--    strings (representing either source code lines or interactive</span>
-<a name="line-15"></a><span class='hs-comment'>--    input) into a stack of tokens.</span>
-<a name="line-16"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
-<a name="line-17"></a>
-<a name="line-18"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Lexer</span> <span class='hs-keyword'>where</span>
-<a name="line-19"></a>
-<a name="line-20"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span> <span class='hs-varid'>hiding</span> <span class='hs-layout'>(</span><span class='hs-varid'>many</span><span class='hs-layout'>,</span> <span class='hs-varid'>optional</span><span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-varop'>&lt;|&gt;</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
-<a name="line-21"></a><span class='hs-keyword'>import</span> <span class='hs-keyword'>qualified</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Token</span> <span class='hs-keyword'>as</span> <span class='hs-conid'>T</span>
-<a name="line-22"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Language</span>
-<a name="line-23"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>String</span>
-<a name="line-24"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Pos</span>
+<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE FlexibleInstances, TypeSynonymInstances, FlexibleContexts, CPP, DeriveDataTypeable #-}</span>
+<a name="line-2"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
+<a name="line-3"></a><span class='hs-comment'>-- |</span>
+<a name="line-4"></a><span class='hs-comment'>-- Module      : Language.R.Lexer</span>
+<a name="line-5"></a><span class='hs-comment'>-- Copyright   : (c) 2010 David M. Rosenberg</span>
+<a name="line-6"></a><span class='hs-comment'>-- License     : BSD3</span>
+<a name="line-7"></a><span class='hs-comment'>-- </span>
+<a name="line-8"></a><span class='hs-comment'>-- Maintainer  : David Rosenberg &lt;rosenbergdm@uchicago.edu&gt;</span>
+<a name="line-9"></a><span class='hs-comment'>-- Stability   : experimental</span>
+<a name="line-10"></a><span class='hs-comment'>-- Portability : portable</span>
+<a name="line-11"></a><span class='hs-comment'>-- Created     : 05/28/10</span>
+<a name="line-12"></a><span class='hs-comment'>-- </span>
+<a name="line-13"></a><span class='hs-comment'>-- Description :</span>
+<a name="line-14"></a><span class='hs-comment'>--    This module contains the functions used for lexing an list of</span>
+<a name="line-15"></a><span class='hs-comment'>--    strings (representing either source code lines or interactive</span>
+<a name="line-16"></a><span class='hs-comment'>--    input) into a stack of tokens.</span>
+<a name="line-17"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
+<a name="line-18"></a>
+<a name="line-19"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Lexer</span> <span class='hs-keyword'>where</span>
+<a name="line-20"></a>
+<a name="line-21"></a>
+<a name="line-22"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>SrcLocation</span>
+<a name="line-23"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Token</span>
+<a name="line-24"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>AST</span>
 <a name="line-25"></a>
-<a name="line-26"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Applicative</span>
-<a name="line-27"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span>
-<a name="line-28"></a>
-<a name="line-29"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Either</span>
-<a name="line-30"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Debug</span><span class='hs-varop'>.</span><span class='hs-conid'>Trace</span>
-<a name="line-31"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Maybe</span>
-<a name="line-32"></a>
-<a name="line-33"></a>
-<a name="line-34"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Internal</span>
-<a name="line-35"></a><span class='hs-comment'>-- import Language.R.Generator</span>
-<a name="line-36"></a>
+<a name="line-26"></a>
+<a name="line-27"></a><span class='hs-comment'>{- 
+<a name="line-28"></a>retokenize :: [Token] -&gt; [Token] -&gt; Maybe [Token]
+<a name="line-29"></a>retokenize [] outToks     = outToks
+<a name="line-30"></a>retokenize inToks outToks =
+<a name="line-31"></a>   let slurp     = takeWhile (\z -&gt; tryBuildSyntaxNode z == []) inToks'
+<a name="line-32"></a>       inToks'   = drop (length slurp) inToks'
+<a name="line-33"></a>       newSyntax = buildSyntaxNode slurp
+<a name="line-34"></a>       outToks'  = concat [[newSyntax], outToks]
+<a name="line-35"></a>   in retokenize inToks' outToks'
+<a name="line-36"></a>  
 <a name="line-37"></a>
-<a name="line-38"></a><span class='hs-comment'>-- | The 'top' token lexer function.  TODO: The sepBy clause is not correct.</span>
-<a name="line-39"></a>
-<a name="line-40"></a><a name="rTokens"></a><span class='hs-definition'>rTokens</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-conid'>LexState</span> <span class='hs-conid'>Identity</span> <span class='hs-keyglyph'>[</span><span class='hs-conid'>Token</span><span class='hs-keyglyph'>]</span>
-<a name="line-41"></a><span class='hs-definition'>rTokens</span> <span class='hs-keyglyph'>=</span> 
-<a name="line-42"></a>  <span class='hs-varid'>setState</span> <span class='hs-conid'>[]</span> <span class='hs-varop'>&gt;&gt;</span>
-<a name="line-43"></a>  <span class='hs-varid'>whiteSpace</span> <span class='hs-varop'>&gt;&gt;</span>
-<a name="line-44"></a>  <span class='hs-varid'>sepBy</span> <span class='hs-varid'>rToken</span> <span class='hs-varid'>spaces</span>
-<a name="line-45"></a>
-<a name="line-46"></a>
-<a name="line-47"></a><span class='hs-comment'>-- | Lex a single token from the input stream and add it to the LexState</span>
-<a name="line-48"></a><span class='hs-comment'>-- stack.</span>
+<a name="line-38"></a>data IdentStatus = IdReserved 
+<a name="line-39"></a>                 | IdBuiltin
+<a name="line-40"></a>                 | IdDefined
+<a name="line-41"></a>                 | IdUndefined
+<a name="line-42"></a>
+<a name="line-43"></a>
+<a name="line-44"></a>classifyIdent tk
+<a name="line-45"></a>  | tk `elem` (map fst rFuncPrims) = IdReserved 
+<a name="line-46"></a>  | tk `elem` rBuiltins            = IdBuiltin
+<a name="line-47"></a>  | tk `elem` (map fst rNameTable) = IdDefined
+<a name="line-48"></a>  | otherwise                      = IdUndefined
 <a name="line-49"></a>
-<a name="line-50"></a><a name="rToken"></a><span class='hs-definition'>rToken</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-conid'>LexState</span> <span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
-<a name="line-51"></a><span class='hs-definition'>rToken</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
-<a name="line-52"></a>  <span class='hs-varid'>sp</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
-<a name="line-53"></a>  <span class='hs-varid'>st</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getState</span>
-<a name="line-54"></a>  <span class='hs-varid'>t</span> <span class='hs-keyglyph'>&lt;-</span>  <span class='hs-varid'>rComment</span>
-<a name="line-55"></a>    <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>rString</span>
-<a name="line-56"></a>    <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>rSymbol</span>
-<a name="line-57"></a>    <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>rNumber</span>
-<a name="line-58"></a>    <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>rIdent</span>
-<a name="line-59"></a>  <span class='hs-varid'>return</span> <span class='hs-layout'>(</span><span class='hs-varid'>sp</span><span class='hs-layout'>,</span> <span class='hs-varid'>t</span><span class='hs-layout'>)</span>
+<a name="line-50"></a>-- | Production rules
+<a name="line-51"></a>-- buildStmtExpr 
+<a name="line-52"></a>
+<a name="line-53"></a>
+<a name="line-54"></a>
+<a name="line-55"></a>
+<a name="line-56"></a>
+<a name="line-57"></a>
+<a name="line-58"></a>
+<a name="line-59"></a>
 <a name="line-60"></a>
 <a name="line-61"></a>
-<a name="line-62"></a><span class='hs-comment'>-- |Comments begin with an (unquoted) pound sign and continue until the</span>
-<a name="line-63"></a><span class='hs-comment'>-- end of the line.</span>
+<a name="line-62"></a>
+<a name="line-63"></a>
 <a name="line-64"></a>
-<a name="line-65"></a><a name="rComment"></a><span class='hs-definition'>rComment</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-conid'>LexState</span> <span class='hs-conid'>Identity</span> <span class='hs-conid'>Tok</span>
-<a name="line-66"></a><span class='hs-definition'>rComment</span> <span class='hs-keyglyph'>=</span>  <span class='hs-keyword'>do</span>
-<a name="line-67"></a>  <span class='hs-varid'>char</span> <span class='hs-chr'>'#'</span>
-<a name="line-68"></a>  <span class='hs-varid'>content</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>many1</span> <span class='hs-layout'>(</span><span class='hs-varid'>noneOf</span> <span class='hs-str'>"\n\r"</span><span class='hs-layout'>)</span>
-<a name="line-69"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>ComTok</span> <span class='hs-varid'>content</span>
-<a name="line-70"></a>
-<a name="line-71"></a><span class='hs-comment'>-- |A string can be either single-quoted or double quoted and (within</span>
-<a name="line-72"></a><span class='hs-comment'>-- the string) backslashes serve as escapes.</span>
-<a name="line-73"></a><span class='hs-comment'>-- TODO: No escape function provided.</span>
-<a name="line-74"></a><span class='hs-comment'>-- TODO: Single-quoting not implemented.</span>
-<a name="line-75"></a>
-<a name="line-76"></a><a name="rString"></a><span class='hs-definition'>rString</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-conid'>LexState</span> <span class='hs-conid'>Identity</span> <span class='hs-conid'>Tok</span>
-<a name="line-77"></a><span class='hs-definition'>rString</span> <span class='hs-keyglyph'>=</span>  <span class='hs-keyword'>do</span> 
-<a name="line-78"></a>  <span class='hs-varid'>char</span> <span class='hs-chr'>'"'</span>
-<a name="line-79"></a>  <span class='hs-varid'>content</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>many1</span> <span class='hs-layout'>(</span><span class='hs-varid'>noneOf</span> <span class='hs-str'>"\""</span><span class='hs-layout'>)</span>
-<a name="line-80"></a>  <span class='hs-varid'>char</span> <span class='hs-chr'>'"'</span>
-<a name="line-81"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>StrTok</span> <span class='hs-varid'>content</span>
-<a name="line-82"></a>
-<a name="line-83"></a>
-<a name="line-84"></a><span class='hs-comment'>-- |A 'symbol' is any non-space, non-alphanumeric character.</span>
-<a name="line-85"></a>
-<a name="line-86"></a><a name="rSymbol"></a><span class='hs-definition'>rSymbol</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-conid'>LexState</span> <span class='hs-conid'>Identity</span> <span class='hs-conid'>Tok</span>
-<a name="line-87"></a><span class='hs-definition'>rSymbol</span> <span class='hs-keyglyph'>=</span>  <span class='hs-keyword'>do</span>
-<a name="line-88"></a>  <span class='hs-varid'>sym</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>oneOf</span> <span class='hs-str'>"~@%^&amp;*_-+=$\\]}[{:?/&gt;&lt;."</span>
-<a name="line-89"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>SymTok</span> <span class='hs-layout'>(</span><span class='hs-varid'>sym</span><span class='hs-conop'>:</span><span class='hs-str'>""</span><span class='hs-layout'>)</span>
-<a name="line-90"></a>
-<a name="line-91"></a>
-<a name="line-92"></a><span class='hs-comment'>-- |A number is lexed as a continuous list of digits.</span>
-<a name="line-93"></a>
-<a name="line-94"></a><a name="rNumber"></a><span class='hs-definition'>rNumber</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-conid'>LexState</span> <span class='hs-conid'>Identity</span> <span class='hs-conid'>Tok</span>
-<a name="line-95"></a><span class='hs-definition'>rNumber</span> <span class='hs-keyglyph'>=</span>  <span class='hs-keyword'>do</span>
-<a name="line-96"></a>  <span class='hs-varid'>num</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-layout'>(</span><span class='hs-varid'>many1</span> <span class='hs-varid'>digit</span><span class='hs-layout'>)</span> <span class='hs-comment'>-- &gt;&gt; (optional (char '.' &gt;&gt; many digit)) </span>
-<a name="line-97"></a>  <span class='hs-comment'>-- let num' = maybe "??" id num</span>
-<a name="line-98"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>NumTok</span> <span class='hs-varid'>num</span> <span class='hs-varop'>--'</span>
-<a name="line-99"></a>  <span class='hs-comment'>-- num &lt;-  T.float &lt;|&gt; T.integer</span>
-<a name="line-100"></a>  <span class='hs-comment'>-- return $ liftM show num</span>
-<a name="line-101"></a>
-<a name="line-102"></a><span class='hs-comment'>-- |Atoms can only begin with a letter or a period.  After the first</span>
-<a name="line-103"></a><span class='hs-comment'>-- character, any alphanumeric character or one of "-", "_", and "."</span>
-<a name="line-104"></a><span class='hs-comment'>-- are permitted.</span>
-<a name="line-105"></a>
-<a name="line-106"></a><a name="rIdent"></a><span class='hs-definition'>rIdent</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-conid'>LexState</span> <span class='hs-conid'>Identity</span> <span class='hs-conid'>Tok</span>
-<a name="line-107"></a><span class='hs-definition'>rIdent</span> <span class='hs-keyglyph'>=</span>  <span class='hs-keyword'>do</span>
-<a name="line-108"></a>  <span class='hs-varid'>first</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>letter</span> <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-layout'>(</span><span class='hs-varid'>char</span> <span class='hs-chr'>'.'</span><span class='hs-layout'>)</span>
-<a name="line-109"></a>  <span class='hs-varid'>rest</span>  <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>many</span> <span class='hs-layout'>(</span><span class='hs-varid'>noneOf</span> <span class='hs-str'>" \t\n\r"</span><span class='hs-layout'>)</span>
-<a name="line-110"></a>  <span class='hs-comment'>--(letter &lt;|&gt; digit &lt;|&gt; (oneOf "._-"))</span>
-<a name="line-111"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>AtmTok</span> <span class='hs-layout'>(</span><span class='hs-keyglyph'>[</span><span class='hs-varid'>first</span><span class='hs-keyglyph'>]</span> <span class='hs-varop'>++</span> <span class='hs-varid'>rest</span><span class='hs-layout'>)</span>
-<a name="line-112"></a>
-<a name="line-113"></a>
-<a name="line-114"></a>
-<a name="line-115"></a><span class='hs-comment'>-- |lexRTextWithPos :: String -&gt; Int -&gt; Int -&gt; String </span>
-<a name="line-116"></a><span class='hs-comment'>--                    -&gt; Either ParseError [Token]</span>
-<a name="line-117"></a><span class='hs-comment'>-- Given a source name (filename), start line, start</span>
-<a name="line-118"></a><span class='hs-comment'>-- column, and 'content', lex a string into a list</span>
-<a name="line-119"></a><span class='hs-comment'>-- of R tokens.</span>
-<a name="line-120"></a>
-<a name="line-121"></a><a name="lexRTextWithPos"></a><span class='hs-definition'>lexRTextWithPos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
-<a name="line-122"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>sp</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>newPos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span>
-<a name="line-123"></a>  <span class='hs-varid'>te</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>readFile</span> <span class='hs-varid'>f</span>
-<a name="line-124"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>res</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>runParser</span> <span class='hs-varid'>rTokens</span> <span class='hs-conid'>[]</span> <span class='hs-varid'>f</span> <span class='hs-varid'>te</span>
-<a name="line-125"></a>  <span class='hs-varid'>return</span> <span class='hs-varid'>res</span>
+<a name="line-65"></a>
+<a name="line-66"></a>
+<a name="line-67"></a>rBuiltins = 
+<a name="line-68"></a> [ "zeroin2", "zeroin", "xzfile", "xspline", "X11", "wsbrowser" "writeLines"
+<a name="line-69"></a> , "writeChar", "writeBin", "write.table", "withVisible", "which.min"
+<a name="line-70"></a> , "which.max", "warning", "Version", "vector", "utf8ToInt", "url"
+<a name="line-71"></a> , "update.formula", "unzip", "unz", "unserializeFromConn"
+<a name="line-72"></a> , "unregisterNamespace", "unlockBinding", "unlist", "unlink", "unique"
+<a name="line-73"></a> , "undebug", "typeof", "type.convert", "truncate", "toupper", "tolower"
+<a name="line-74"></a> , "title", "textConnectionValue", "textConnection", "text", "terms.formula"
+<a name="line-75"></a> , "tempfile", "tempdir", "tcrossprod", "t.default", "system", "Sys.unsetenv"
+<a name="line-76"></a> , "Sys.umask", "Sys.time", "Sys.sleep", "Sys.setlocale", "Sys.setenv"
+<a name="line-77"></a> , "Sys.readlink", "sys.parents", "sys.parent", "sys.on.exit", "sys.nframe"
+<a name="line-78"></a> , "Sys.localeconv", "Sys.info", "Sys.glob", "Sys.getpid", "Sys.getlocale"
+<a name="line-79"></a> , "Sys.getenv", "sys.function", "sys.frames", "sys.frame", "Sys.chmod"
+<a name="line-80"></a> , "sys.calls", "sys.call", "symbols", "switch", "summary.connection"
+<a name="line-81"></a> , "substr&lt;-", "substr", "sub", "strwidth", "strtrim", "strsplit", "strptime"
+<a name="line-82"></a> , "strheight", "stopHTTPD", "stop", "stdout", "stdin", "stderr", "startHTTPD"
+<a name="line-83"></a> , "sprintf", "split", "sort", "sockSelect", "socketConnection", "sink.number"
+<a name="line-84"></a> , "sink", "setwd", "setToCConverterActiveStatus", "setTimeLimit"
+<a name="line-85"></a> , "setSessionTimeLimit", "seterrmessage", "setEncoding", "set.seed"
+<a name="line-86"></a> , "serializeToConn", "select.list", "segments", "seek", "search", "scan"
+<a name="line-87"></a> , "saveToConn", "savePlot", "savehistory", "save.to.file", "save", "sample"
+<a name="line-88"></a> , "rwilcox", "rweibull", "runif", "rt", "rsignrank", "Rprofmem", "Rprof"
+<a name="line-89"></a> , "rpois", "rowSums", "rowMeans", "row", "rnorm", "RNGkind", "rnchisq"
+<a name="line-90"></a> , "rnbinom_mu", "rnbinom", "rmultinom", "rlogis", "rlnorm", "rhyper", "rgeom"
+<a name="line-91"></a> , "rgb2hsv", "rgb256", "rgb", "rgamma", "rf", "rexp", "restart", "rep.int"
+<a name="line-92"></a> , "removeToCConverterActiveStatus", "remove", "registerNamespace", "regexpr"
+<a name="line-93"></a> , "reg.finalizer", "rect", "recordGraphics", "Recall", "readTableHead"
+<a name="line-94"></a> , "readLines", "readline", "readDCF", "readChar", "readBin", "rchisq"
+<a name="line-95"></a> , "rcauchy", "rbinom", "rbind", "rbeta", "rawToChar", "rawToBits", "rawShift"
+<a name="line-96"></a> , "rawConnectionValue", "rawConnection", "rapply", "rank", "radixsort"
+<a name="line-97"></a> , "R.home", "qwilcox", "qweibull", "qunif", "quit", "qtukey", "qt", "qsort"
+<a name="line-98"></a> , "qsignrank", "qpois", "qnt", "qnorm", "qnf", "qnchisq", "qnbinom_mu"
+<a name="line-99"></a> , "qnbinom", "qnbeta", "qlogis", "qlnorm", "qhyper", "qgeom", "qgamma", "qf"
+<a name="line-100"></a> , "qexp", "qchisq", "qcauchy", "qbinom", "qbeta", "pwilcox", "pweibull"
+<a name="line-101"></a> , "putconst", "pushBackLength", "pushBack", "punif", "ptukey", "pt", "psort"
+<a name="line-102"></a> , "psignrank", "psigamma", "prmatrix", "printDeferredWarnings"
+<a name="line-103"></a> , "print.function", "print.default", "ppois", "POSIXlt2Date", "polyroot"
+<a name="line-104"></a> , "polygon", "pnt", "pnorm", "pnf", "pnchisq", "pnbinom_mu", "pnbinom"
+<a name="line-105"></a> , "pnbeta", "pmin", "pmax", "pmatch", "plot.xy", "plot.window", "plot.new"
+<a name="line-106"></a> , "plogis", "plnorm", "playSnapshot", "pkgbrowser", "pipe", "phyper", "pgeom"
+<a name="line-107"></a> , "pgamma", "pf", "pexp", "persp", "pchisq", "pcauchy", "pbinom", "pbeta"
+<a name="line-108"></a> , "path.expand", "paste", "parse_Rd", "parse", "parent.frame", "parent.env&lt;-"
+<a name="line-109"></a> , "parent.env", "par", "palette", "packBits", "package.manager", "order"
+<a name="line-110"></a> , "options", "optimhess", "optim", "open", "object.size", "nsl"
+<a name="line-111"></a> , "normalizePath", "nlm", "ngettext", "nextn", "NextMethod", "new.env", "nchar"
+<a name="line-112"></a> , "mvfft", "mtext", "model.matrix", "model.frame", "mkUnbound", "mkCode"
+<a name="line-113"></a> , "mget", "merge", "menu", "memory.profile", "memDecompress", "memCompress"
+<a name="line-114"></a> , "mem.limits", "mean", "matrix", "match.call", "match", "makeLazy"
+<a name="line-115"></a> , "makeActiveBinding", "make.unique", "make.names", "machine", "ls"
+<a name="line-116"></a> , "lockEnvironment", "lockBinding", "locator", "loadhistory", "loadFromConn2"
+<a name="line-117"></a> , "load.from.file", "load", "list.files", "lib.fixup", "lchoose", "lbeta"
+<a name="line-118"></a> , "layout", "lapply", "l10n_info", "isSeekable", "isOpen", "isNamespaceEnv"
+<a name="line-119"></a> , "islistfactor", "isIncomplete", "isdebugged", "is.vector", "is.unsorted"
+<a name="line-120"></a> , "is.loaded", "is.builtin.internal", "intToUtf8", "intToBits"
+<a name="line-121"></a> , "interruptsSuspended", "inspect", "inherits", "index.search", "importIntoEnv"
+<a name="line-122"></a> , "image", "identify", "identical", "icuSetCollate", "iconv", "hsv"
+<a name="line-123"></a> , "hsbrowser", "hcl", "gzfile", "gzcon", "gsub", "grepl", "grep", "gregexpr"
+<a name="line-124"></a> , "grconvertY", "grconvertX", "gray", "getwd", "gettext", "getSnapshot"
+<a name="line-125"></a> , "getRtoCConverterStatus", "getRtoCConverterDescriptions"
+<a name="line-126"></a> , "getRegisteredNamespace", "getNumRtoCConverters", "getNamespaceRegistry"
+<a name="line-127"></a> , "getGraphicsEvent", "geterrmessage", "getConnection", "getAllConnections"
+<a name="line-128"></a> , "get", "gctorture", "gcinfo", "gc", "format.POSIXlt", "format.info", "format"
+<a name="line-129"></a> , "formals", "fmin", "flush.console", "flush", "filledcontour", "file.symlink"
+<a name="line-130"></a> , "file.show", "file.rename", "file.remove", "file.path", "file.info"
+<a name="line-131"></a> , "file.exists", "file.edit", "file.create", "file.copy", "file.choose"
+<a name="line-132"></a> , "file.append", "file.access", "file", "fifo", "fft", "exists"
+<a name="line-133"></a> , "eval.with.vis", "eval", "erase", "environmentName", "environmentIsLocked"
+<a name="line-134"></a> , "environment", "env2list", "env.profile", "Encoding", "encodeString", "edit"
+<a name="line-135"></a> , "eapply", "dyn.unload", "dyn.load", "dwilcox", "dweibull", "duplicated"
+<a name="line-136"></a> , "dunif", "dump", "dtukey", "dt", "dsignrank", "drop", "dput", "dpois"
+<a name="line-137"></a> , "download", "do.call", "dnt", "dnorm", "dnf", "dnchisq", "dnbinom_mu"
+<a name="line-138"></a> , "dnbinom", "dnbeta", "dlogis", "dlnorm", "disassemble", "dirname", "dirchmod"
+<a name="line-139"></a> , "dir.create", "dhyper", "dgeom", "dgamma", "df", "dexp", "devAskNewPage"
+<a name="line-140"></a> , "dev.size", "dev.set", "dev.prev", "dev.off", "dev.next", "dev.displaylist"
+<a name="line-141"></a> , "dev.cur", "dev.copy", "dev.control", "detach", "deriv.default", "deparseRd"
+<a name="line-142"></a> , "deparse", "dend.window", "dend", "delayedAssign", "debugonce", "debug"
+<a name="line-143"></a> , "dchisq", "dcauchy", "dbinom", "dbeta", "Date2POSIXlt", "date", "dataviewer"
+<a name="line-144"></a> , "dataentry", "data.manager", "D", "Cstack_info", "crossprod", "cov"
+<a name="line-145"></a> , "count.fields", "cor", "contourLines", "contour", "complex", "complete.cases"
+<a name="line-146"></a> , "comment&lt;-", "comment", "commandArgs", "colSums", "colors", "colMeans"
+<a name="line-147"></a> , "col2rgb", "col", "codeFiles.append", "close", "clip", "clearPushBack"
+<a name="line-148"></a> , "choose", "chartr", "charToRaw", "charmatch", "cbind", "cat"
+<a name="line-149"></a> , "capabilitiesX11", "capabilities", "cairo", "bzfile", "builtins"
+<a name="line-150"></a> , "browserText", "browserSetDebug", "browserCondition", "box", "bodyCode"
+<a name="line-151"></a> , "body", "bindtextdomain", "bindingIsLocked", "bindingIsActive", "beta"
+<a name="line-152"></a> , "besselY", "besselK", "besselJ", "besselI", "bcVersion", "bcClose"
+<a name="line-153"></a> , "basename", "axis", "attach", "atan2", "assign", "as.vector", "as.POSIXlt"
+<a name="line-154"></a> , "as.POSIXct", "as.function.default", "arrows", "args", "aqua.custom.print"
+<a name="line-155"></a> , "aperm", "anyDuplicated", "all.names", "agrep", "addhistory", "abline"
+<a name="line-156"></a> , "abbreviate", ".signalCondition", ".resetCondHands", ".invokeRestart"
+<a name="line-157"></a> , ".getRestart", ".dfltWarn", ".dfltStop", ".addTryHandlers", ".addRestart"
+<a name="line-158"></a> , ".addCondHands" 
+<a name="line-159"></a> ]
+<a name="line-160"></a>-}</span>
 </pre></body>
 </html>

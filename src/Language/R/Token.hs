@@ -221,7 +221,7 @@ data Token
 
   -- Operators 
   | ModulusToken { token_span :: SrcSpan }        -- ^Operator: \'%%\'
-  | SlotOperator { token_span :: SrcSpan }        -- ^Operator: \'@\'
+  | SlotOperator { token_span :: SrcSpan }        -- ^Operator: \'\@\'
   | PlusToken { token_span :: SrcSpan }           -- ^Operator: \'+\'
   | NegateToken { token_span :: SrcSpan }         -- ^Operator: \'!\'
   | AssignLeftToken { token_span :: SrcSpan }     -- ^Operator: \'<-\'
@@ -268,7 +268,7 @@ data RVectorMode
   | VecComplex (Double, Double)
   | VecCharacter Char
   | VecRaw String
-  -- | VecRaw ByteArray 
+  --  VecRaw ByteArray 
   deriving (Read, Ord, Eq, Show)
 
 -- | Classification of tokens

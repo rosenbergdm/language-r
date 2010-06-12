@@ -40,6 +40,7 @@ import SrcLocation
 
 import Language.R.Token
 import Language.R.SrcLocation
+import Language.R.LexerUtils
 
 
 --n| @Tok@s are the most general of the *R* token-type objects, representing a
@@ -98,7 +99,7 @@ instance Show TokType where
   show Grouping  = "GROUPING"
   show Logical   = "LOGICAL"
   show Closure   = "CLOSURE"
-  show Cmmnt   = "COMMENT"      -- ^ Section 10.2
+  show Cmmnt   = "COMMENT"      -- Section 10.2
 
 
 -- | @Token@s are @Tok@s with the metadata of @SourcePos@
@@ -135,34 +136,34 @@ data R_Builtin = R_MathFn   -- ^Mathematical functions
 
 rResOps :: [(R_ResOp, String)] 
 rResOps  =  
-  [ (BinMinus, "-")      -- ^ Minus, can be unary or binary
-  , (BinPlus, "+")       -- ^ Plus, can be unary or binary
-  , (UnNot, "!")         -- ^ Unary not
-  , (UnBinTilde, "~")    -- ^ Tilde, used for model formulae, unary or binary
-  , (UnHelp, "?")        -- ^ Help
-  , (BinSeq, ":")        -- ^ Sequence, binary (in model formulae: interaction)
-  , (BinMult, "*")       -- ^ Multiplication, binary
-  , (BinDiv, "/")        -- ^ Division, binary
-  , (BinExp, "^")        -- ^ Exponentiation, binary
-  , (BinUndef, "%x%")    -- ^ Special binary operators, x can be replaced by any valid name
-  , (BinMod, "%%")       -- ^ Modulus, binary
-  , (BinIntDiv, "%/%")   -- ^ Integer divide, binary
-  , (BinMatMult, "%*%")  -- ^ Matrix product, binary
-  , (BinOutPr, "%o%")    -- ^ Outer product, binary
-  , (BinKronPr, "%x%")   -- ^ Kronecker product, binary
-  , (BinIntrsct, "%in%") -- ^ Matching operator, binary (in model formulae: nesting)
-  , (BinLT, "<")         -- ^ Less than, binary
-  , (BinGT, ">")         -- ^ Greater than, binary
-  , (BinEQ, "==")        -- ^ Equal to, binary
-  , (BinGE, ">=")        -- ^ Greater than or equal to, binary
-  , (BinLE, "<=")        -- ^ Less than or equal to, binary
-  , (BinVecAnd, "&")     -- ^ And, binary, vectorized
-  , (BinAnd, "&&")       -- ^ And, binary, not vectorized
-  , (BinVecOr, "| ")     -- ^ Or, binary, vectorized
-  , (BinOr, "||")        -- ^ Or, binary, not vectorized
-  , (BinAsnLeft, "<-")   -- ^ Left assignment, binary
-  , (BinAsnRight, "->")  -- ^ Right assignment, binary
-  , (BinElmnt, "$")      -- ^ List subset, binary
+  [ (BinMinus, "-")      -- Minus can be unary or binary
+  , (BinPlus, "+")       -- Plus can be unary or binary
+  , (UnNot, "!")         -- Unary not
+  , (UnBinTilde, "~")    -- Tilde, used for model formulae, unary or binary
+  , (UnHelp, "?")        -- Help
+  , (BinSeq, ":")        -- Sequence, binary (in model formulae: interaction)
+  , (BinMult, "*")       -- Multiplication, binary
+  , (BinDiv, "/")        -- Division, binary
+  , (BinExp, "^")        -- Exponentiation, binary
+  , (BinUndef, "%x%")    -- Special binary operators, x can be replaced by any valid name
+  , (BinMod, "%%")       -- Modulus, binary
+  , (BinIntDiv, "%/%")   -- Integer divide, binary
+  , (BinMatMult, "%*%")  -- Matrix product, binary
+  , (BinOutPr, "%o%")    -- Outer product, binary
+  , (BinKronPr, "%x%")   -- Kronecker product, binary
+  , (BinIntrsct, "%in%") -- Matching operator, binary (in model formulae: nesting)
+  , (BinLT, "<")         -- Less than, binary
+  , (BinGT, ">")         -- Greater than, binary
+  , (BinEQ, "==")        -- Equal to, binary
+  , (BinGE, ">=")        -- Greater than or equal to, binary
+  , (BinLE, "<=")        -- Less than or equal to, binary
+  , (BinVecAnd, "&")     -- And, binary, vectorized
+  , (BinAnd, "&&")       -- And, binary, not vectorized
+  , (BinVecOr, "| ")     -- Or, binary, vectorized
+  , (BinOr, "||")        -- Or, binary, not vectorized
+  , (BinAsnLeft, "<-")   -- Left assignment, binary
+  , (BinAsnRight, "->")  -- Right assignment, binary
+  , (BinElmnt, "$")      -- List subset, binary
   , (BinMemAsn, "$<-")
   , (BinSlot, "@")
   , (BinIndx, "[")
@@ -361,17 +362,17 @@ rTokenize  =
 lexRtok2 = do
   pos <-  getPosition
   st  <-  getState
-  tok <-  lexComment
-      <|> lexSpecialConstant
-      <|> lexInteger
-      <|> lexComplex 
-      <|> lexNumeric
-      <|> lexLogical
-      <|> lexString
-      <|> lexOperator
-      <|> lexReserved
---      <|> lexPunctuation
---      <|> lexIdentifier 
+  tok <-  try lexComment
+      <|> try lexSpecialConstant
+      <|> try lexInteger
+      <|> try lexComplex 
+      <|> try lexNumeric
+      <|> try lexLogical
+      <|> try lexString
+      <|> try lexOperator
+      <|> try lexReserved
+      <|> try lexPunctuation
+      <|> try lexIdentifier 
   return tok
 
 lexSpecialConstant :: ParsecT String u Control.Monad.Identity.Identity Token
@@ -481,109 +482,27 @@ lexReserved = do
               Nothing -> return ErrorToken
   return $ res (mkSrcSpan' startPos endPos) 
 
-{-
+
 lexIdentifier :: ParsecT String u Control.Monad.Identity.Identity Token
 lexIdentifier = do
   startPos <- getPosition 
-  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
   tk <- identifier
   endPos <- getPosition
-  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
-      tok_sp = mkSrcSpan sp ep
-      tok = IdentifierToken tok_sp tk 
-  return tok
+  return $ IdentifierToken (mkSrcSpan' startPos endPos) tk
+
 
 lexPunctuation :: ParsecT String u Control.Monad.Identity.Identity Token
 lexPunctuation = do
   startPos <- getPosition 
-  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
-
+  punc <- oneOf "()[]{};,"
+  let tk = Map.lookup (punc:"") punctMap
+  res <- case tk of 
+              Just x  -> return x
+              Nothing -> return ErrorToken
   endPos <- getPosition
-  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
-      tok_sp = mkSrcSpan sp ep
-      tok = PunctuationToken tok_sp tk 
-  return tok
+  return $ res (mkSrcSpan' startPos endPos)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------------------------------------
------------------------------------------------------------------------
--- deprecated 
---
-lexFloat = do
-  tk <- float
-  return $ RNumConst Dble tk
-
-lexInt = do
-  tk <- integer
-  return $ RNumConst Intgr (fromIntegral tk)
-
-lexSym = do
-  syms <- many1 $ lexeme (oneOf ":!#$%&*+./<=>?@\\^|-~();,{}[]")
-  let tk = elem syms $ map snd rResOps 
-  return $ ROper Oprator syms
-
-lexId = do
-  tk <- identifier
-  return $ RIdent Variable tk
-
-lexComment = do
-  char '#'
-  tok <-  many (noneOf "\n\r")
-  return $ RComment Cmmnt tok
-
-
-lexRtok  = do
-  pos <-  getPosition
-  st  <-  getState
-  tok <-  lexComment
-      <|> lexInt
-      <|> lexFloat
-      <|> lexString
-      <|> lexSym
-      <|> lexId
-  return (tok, pos)
-
--}
-
-
-dblQuotedString :: (Text.Parsec.Prim.Stream s m Char) => Text.Parsec.Prim.ParsecT s u m String
-dblQuotedString = do
-  capture <- (between (char '"') (char '"') (many $ choice [char '\\' >> char '"', noneOf "\""]))
-  return $ capture
-
-singQuotedString :: (Text.Parsec.Prim.Stream s m Char) => Text.Parsec.Prim.ParsecT s u m String
-singQuotedString = do
-  capture <- (between (char '\'') (char '\'') (many $ choice [char '\\' >> char '\'', noneOf "'"]))
-  return $ capture
-
-
-quotedString :: (Text.Parsec.Prim.Stream s m Char) => Text.Parsec.Prim.ParsecT s u m String
-quotedString =  try dblQuotedString
-            <|> singQuotedString
-
-{-
 testParse = do 
   text <- readFile "checkRegion.R"
   let res = runParser rTokenize [] "TEST" text
@@ -594,4 +513,4 @@ rLex text =
   let res       = runParser rTokenize [] "rLex first pass" text
       tokStream = either (\z -> []) id res
   in tokStream
--}
+

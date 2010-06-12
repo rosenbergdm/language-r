@@ -21,7 +21,7 @@
 ><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
 ></TD
 ><TD CLASS="title"
->language-r-0.1: A package for parsing and compiling R/Splus code.</TD
+>language-r-0.1.2: A package for parsing and compiling R/Splus code.</TD
 ><TD CLASS="topbut"
 ><A HREF="index.html"
 >Contents</A
@@ -85,7 +85,7 @@
 </P
 ><P
 >Description :
-    DESCRIPTION HERE.
+    Representation of the R Abstract Syntax Tree.
 </P
 ></TD
 ></TR
@@ -94,7 +94,2308 @@
 ></TD
 ></TR
 ><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
 ><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3AAnnotated"
+>Annotated</A
+> t  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aannot"
+>annot</A
+> ::  t annot -&gt; annot</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AIdent"
+>Ident</A
+> annot = <A HREF="#v%3AIdent"
+>Ident</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aident_string"
+>ident_string</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aident_annot"
+>ident_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AIdentSpan"
+>IdentSpan</A
+> = <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ASuite"
+>Suite</A
+> annot = [<A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> annot]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ASuiteSpan"
+>SuiteSpan</A
+> = <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AStatement"
+>Statement</A
+> annot </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3AWhile"
+>While</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Awhile_cond"
+>while_cond</A
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Awhile_body"
+>while_body</A
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AFor"
+>For</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Afor_target"
+>for_target</A
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Afor_values"
+>for_values</A
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Afor_body"
+>for_body</A
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AConditional"
+>Conditional</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Acond_guards"
+>cond_guards</A
+> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot, <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot)]</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Acond_else"
+>cond_else</A
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAssign"
+>Assign</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aassign_to"
+>assign_to</A
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aassign_expr"
+>assign_expr</A
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AReturn"
+>Return</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Areturn_expr"
+>return_expr</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABreak"
+>Break</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AContinue"
+>Continue</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ARepeat"
+>Repeat</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Arepeat_expr"
+>repeat_expr</A
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ASwitch"
+>Switch</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aswitch_guards"
+>switch_guards</A
+> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot, <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot)]</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AStmtExpr"
+>StmtExpr</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_expr"
+>stmt_expr</A
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3APrint"
+>Print</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aprint_exprs"
+>print_exprs</A
+> :: [<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot]</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AExec"
+>Exec</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexec_expr"
+>exec_expr</A
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexec_globals_locals"
+>exec_globals_locals</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot))</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AFun"
+>Fun</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Afun_name"
+>fun_name</A
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Afun_result_annot"
+>fun_result_annot</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Afun_body"
+>fun_body</A
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astmt_annot"
+>stmt_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AStatementSpan"
+>StatementSpan</A
+> = <A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AExpr"
+>Expr</A
+> annot </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3AVar"
+>Var</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Avar_ident"
+>var_ident</A
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ANum"
+>Num</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Anum_value"
+>num_value</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_literal"
+>expr_literal</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ABool"
+>Bool</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Alogical_value"
+>logical_value</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ANull"
+>Null</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ANaN"
+>NaN</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ANA"
+>NA</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AByteStrings"
+>ByteStrings</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Abyte_string_strings"
+>byte_string_strings</A
+> :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+>]</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AChar"
+>Char</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Astrings_strings"
+>strings_strings</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ACall"
+>Call</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Acall_fun"
+>call_fun</A
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aexpr_annot"
+>expr_annot</A
+> :: annot</TD
+></TR
+></TABLE
+>}</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:Annotated"
+><A NAME="t%3AAnnotated"
+></A
+></A
+><B
+>Annotated</B
+> t  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Convenient access to annotations in annotated types. 
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:annot"
+><A NAME="v%3Aannot"
+></A
+></A
+><B
+>annot</B
+> ::  t annot -&gt; annot</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Annotated')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Annotated" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AAnnotated"
+>Annotated</A
+> <A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AAnnotated"
+>Annotated</A
+> <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Ident"
+><A NAME="t%3AIdent"
+></A
+></A
+><B
+>Ident</B
+> annot </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Identifier.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:Ident"
+><A NAME="v%3AIdent"
+></A
+></A
+><B
+>Ident</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:ident_string"
+><A NAME="v%3Aident_string"
+></A
+></A
+><B
+>ident_string</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:ident_annot"
+><A NAME="v%3Aident_annot"
+></A
+></A
+><B
+>ident_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Ident')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Ident" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable1"
+>Typeable1</A
+> <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AAnnotated"
+>Annotated</A
+> <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> (<A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:IdentSpan"
+><A NAME="t%3AIdentSpan"
+></A
+></A
+><B
+>IdentSpan</B
+> = <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:Suite"
+><A NAME="t%3ASuite"
+></A
+></A
+><B
+>Suite</B
+> annot = [<A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> annot]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A block of statements. A suite is a group of statements controlled by a clause, 
+ for example, the body of a loop. 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:SuiteSpan"
+><A NAME="t%3ASuiteSpan"
+></A
+></A
+><B
+>SuiteSpan</B
+> = <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Statement"
+><A NAME="t%3AStatement"
+></A
+></A
+><B
+>Statement</B
+> annot </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:While"
+><A NAME="v%3AWhile"
+></A
+></A
+><B
+>While</B
+></TD
+><TD CLASS="rdoc"
+>While loop. 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:while_cond"
+><A NAME="v%3Awhile_cond"
+></A
+></A
+><B
+>while_cond</B
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+><TD CLASS="rdoc"
+>Loop condition.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:while_body"
+><A NAME="v%3Awhile_body"
+></A
+></A
+><B
+>while_body</B
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+><TD CLASS="rdoc"
+>Loop body.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:For"
+><A NAME="v%3AFor"
+></A
+></A
+><B
+>For</B
+></TD
+><TD CLASS="rdoc"
+>For loop. 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:for_target"
+><A NAME="v%3Afor_target"
+></A
+></A
+><B
+>for_target</B
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+><TD CLASS="rdoc"
+>Loop variables.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:for_values"
+><A NAME="v%3Afor_values"
+></A
+></A
+><B
+>for_values</B
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+><TD CLASS="rdoc"
+>Loop generator. 
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:for_body"
+><A NAME="v%3Afor_body"
+></A
+></A
+><B
+>for_body</B
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+><TD CLASS="rdoc"
+>Loop body
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Conditional"
+><A NAME="v%3AConditional"
+></A
+></A
+><B
+>Conditional</B
+></TD
+><TD CLASS="rdoc"
+>Conditional statement (if-elif-else). 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:cond_guards"
+><A NAME="v%3Acond_guards"
+></A
+></A
+><B
+>cond_guards</B
+> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot, <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot)]</TD
+><TD CLASS="rdoc"
+>Sequence of if-elif
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:cond_else"
+><A NAME="v%3Acond_else"
+></A
+></A
+><B
+>cond_else</B
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+><TD CLASS="rdoc"
+>Possibly empty unconditional else clause.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Assign"
+><A NAME="v%3AAssign"
+></A
+></A
+><B
+>Assign</B
+></TD
+><TD CLASS="rdoc"
+>Assignment statement. 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:assign_to"
+><A NAME="v%3Aassign_to"
+></A
+></A
+><B
+>assign_to</B
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+><TD CLASS="rdoc"
+>Entity to assign to. 
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:assign_expr"
+><A NAME="v%3Aassign_expr"
+></A
+></A
+><B
+>assign_expr</B
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+><TD CLASS="rdoc"
+>Expression to evaluate.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Return"
+><A NAME="v%3AReturn"
+></A
+></A
+><B
+>Return</B
+></TD
+><TD CLASS="rdoc"
+>Return statement 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:return_expr"
+><A NAME="v%3Areturn_expr"
+></A
+></A
+><B
+>return_expr</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Break"
+><A NAME="v%3ABreak"
+></A
+></A
+><B
+>Break</B
+></TD
+><TD CLASS="rdoc"
+>Break statement 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Continue"
+><A NAME="v%3AContinue"
+></A
+></A
+><B
+>Continue</B
+></TD
+><TD CLASS="rdoc"
+>Continue statement 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Repeat"
+><A NAME="v%3ARepeat"
+></A
+></A
+><B
+>Repeat</B
+></TD
+><TD CLASS="rdoc"
+>Repeat statment
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:repeat_expr"
+><A NAME="v%3Arepeat_expr"
+></A
+></A
+><B
+>repeat_expr</B
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Switch"
+><A NAME="v%3ASwitch"
+></A
+></A
+><B
+>Switch</B
+></TD
+><TD CLASS="rdoc"
+>Switch statement
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:switch_guards"
+><A NAME="v%3Aswitch_guards"
+></A
+></A
+><B
+>switch_guards</B
+> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot, <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot)]</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:StmtExpr"
+><A NAME="v%3AStmtExpr"
+></A
+></A
+><B
+>StmtExpr</B
+></TD
+><TD CLASS="rdoc"
+>Expression statement. 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_expr"
+><A NAME="v%3Astmt_expr"
+></A
+></A
+><B
+>stmt_expr</B
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Print"
+><A NAME="v%3APrint"
+></A
+></A
+><B
+>Print</B
+></TD
+><TD CLASS="rdoc"
+>Print statement.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:print_exprs"
+><A NAME="v%3Aprint_exprs"
+></A
+></A
+><B
+>print_exprs</B
+> :: [<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot]</TD
+><TD CLASS="rdoc"
+>Arguments to print
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Exec"
+><A NAME="v%3AExec"
+></A
+></A
+><B
+>Exec</B
+></TD
+><TD CLASS="rdoc"
+>Exec statement. <EM
+>Version 2 only</EM
+>. 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:exec_expr"
+><A NAME="v%3Aexec_expr"
+></A
+></A
+><B
+>exec_expr</B
+> :: <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot</TD
+><TD CLASS="rdoc"
+>Expression to exec.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:exec_globals_locals"
+><A NAME="v%3Aexec_globals_locals"
+></A
+></A
+><B
+>exec_globals_locals</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot))</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Fun"
+><A NAME="v%3AFun"
+></A
+></A
+><B
+>Fun</B
+></TD
+><TD CLASS="rdoc"
+>Function definition. 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:fun_name"
+><A NAME="v%3Afun_name"
+></A
+></A
+><B
+>fun_name</B
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+><TD CLASS="rdoc"
+>Function name.
+ , fun_args :: [Parameter annot]          -- ^ Function parameter list.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:fun_result_annot"
+><A NAME="v%3Afun_result_annot"
+></A
+></A
+><B
+>fun_result_annot</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+><TD CLASS="rdoc"
+>Optional result annotation.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:fun_body"
+><A NAME="v%3Afun_body"
+></A
+></A
+><B
+>fun_body</B
+> :: <A HREF="Language-R-AST.html#t%3ASuite"
+>Suite</A
+> annot</TD
+><TD CLASS="rdoc"
+>Function body.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:stmt_annot"
+><A NAME="v%3Astmt_annot"
+></A
+></A
+><B
+>stmt_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Statement')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Statement" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable1"
+>Typeable1</A
+> <A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AAnnotated"
+>Annotated</A
+> <A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> (<A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> annot)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:StatementSpan"
+><A NAME="t%3AStatementSpan"
+></A
+></A
+><B
+>StatementSpan</B
+> = <A HREF="Language-R-AST.html#t%3AStatement"
+>Statement</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Expr"
+><A NAME="t%3AExpr"
+></A
+></A
+><B
+>Expr</B
+> annot </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:Var"
+><A NAME="v%3AVar"
+></A
+></A
+><B
+>Var</B
+></TD
+><TD CLASS="rdoc"
+>Variable.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:var_ident"
+><A NAME="v%3Avar_ident"
+></A
+></A
+><B
+>var_ident</B
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Num"
+><A NAME="v%3ANum"
+></A
+></A
+><B
+>Num</B
+></TD
+><TD CLASS="rdoc"
+>Literal numerical
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:num_value"
+><A NAME="v%3Anum_value"
+></A
+></A
+><B
+>num_value</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_literal"
+><A NAME="v%3Aexpr_literal"
+></A
+></A
+><B
+>expr_literal</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Bool"
+><A NAME="v%3ABool"
+></A
+></A
+><B
+>Bool</B
+></TD
+><TD CLASS="rdoc"
+>Literal logical
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:logical_value"
+><A NAME="v%3Alogical_value"
+></A
+></A
+><B
+>logical_value</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Null"
+><A NAME="v%3ANull"
+></A
+></A
+><B
+>Null</B
+></TD
+><TD CLASS="rdoc"
+>Literal 'NULL' value.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:NaN"
+><A NAME="v%3ANaN"
+></A
+></A
+><B
+>NaN</B
+></TD
+><TD CLASS="rdoc"
+>Literal 'NaN' value.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:NA"
+><A NAME="v%3ANA"
+></A
+></A
+><B
+>NA</B
+></TD
+><TD CLASS="rdoc"
+>Literal 'NA' value.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:ByteStrings"
+><A NAME="v%3AByteStrings"
+></A
+></A
+><B
+>ByteStrings</B
+></TD
+><TD CLASS="rdoc"
+>Literal raw
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:byte_string_strings"
+><A NAME="v%3Abyte_string_strings"
+></A
+></A
+><B
+>byte_string_strings</B
+> :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+>]</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Char"
+><A NAME="v%3AChar"
+></A
+></A
+><B
+>Char</B
+></TD
+><TD CLASS="rdoc"
+>Literal character
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:strings_strings"
+><A NAME="v%3Astrings_strings"
+></A
+></A
+><B
+>strings_strings</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:Call"
+><A NAME="v%3ACall"
+></A
+></A
+><B
+>Call</B
+></TD
+><TD CLASS="rdoc"
+>Function call. 
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:call_fun"
+><A NAME="v%3Acall_fun"
+></A
+></A
+><B
+>call_fun</B
+> :: <A HREF="Language-R-AST.html#t%3AIdent"
+>Ident</A
+> annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:expr_annot"
+><A NAME="v%3Aexpr_annot"
+></A
+></A
+><B
+>expr_annot</B
+> :: annot</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Expr')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Expr" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable1"
+>Typeable1</A
+> <A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Language-R-AST.html#t%3AExpr"
+>Expr</A
+> annot)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
 ></TD
 ></TR
 ><TR

@@ -1,0 +1,1399 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Language.R.SrcLocation</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Language-R-SrcLocation.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>language-r-0.1.2: A package for parsing and compiling R/Splus code.</TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Language.R.SrcLocation</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>David Rosenberg &lt;rosenbergdm@uchicago.edu&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Created     : 06<EM
+>11</EM
+>10
+</P
+><P
+>Description :
+    DESCRIPTION HERE.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ASrcLocation"
+>SrcLocation</A
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3ASloc"
+>Sloc</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Asloc_filename"
+>sloc_filename</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Asloc_row"
+>sloc_row</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Asloc_column"
+>sloc_column</A
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ANoLocation"
+>NoLocation</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsrcPosToLocation"
+>srcPosToLocation</A
+> :: SourcePos -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3ASpan"
+>Span</A
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AgetSpan"
+>getSpan</A
+> :: a -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aspanning"
+>spanning</A
+> :: (<A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> a, <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> b) =&gt; a -&gt; b -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ASrcSpan"
+>SrcSpan</A
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3ASpanCoLinear"
+>SpanCoLinear</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_filename"
+>span_filename</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_row"
+>span_row</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_start_column"
+>span_start_column</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_end_column"
+>span_end_column</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ASpanMultiLine"
+>SpanMultiLine</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_filename"
+>span_filename</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_start_row"
+>span_start_row</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_start_column"
+>span_start_column</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_end_row"
+>span_end_row</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_end_column"
+>span_end_column</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ASpanPoint"
+>SpanPoint</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_filename"
+>span_filename</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_row"
+>span_row</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3Aspan_column"
+>span_column</A
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ASpanEmpty"
+>SpanEmpty</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AspanStartPoint"
+>spanStartPoint</A
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmkSrcSpan"
+>mkSrcSpan</A
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmkSrcSpan%27"
+>mkSrcSpan'</A
+> :: SourcePos -&gt; SourcePos -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AcombineSrcSpans"
+>combineSrcSpans</A
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AstartRow"
+>startRow</A
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AendRow"
+>endRow</A
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AstartCol"
+>startCol</A
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AendCol"
+>endCol</A
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:SrcLocation"
+><A NAME="t%3ASrcLocation"
+></A
+></A
+><B
+>SrcLocation</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>TODO: This is primarily inspired / stolen from language-python
+ Furthermore, this is not how I want to do this, this is not where 
+ this code belongs, and this is not a fully functional implementation,
+ merely a stub.
+</P
+><P
+>A location for a syntactic entity from the source code.
+ The location is specified by its filename, and starting row
+ and column. 
+</P
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:Sloc"
+><A NAME="v%3ASloc"
+></A
+></A
+><B
+>Sloc</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:sloc_filename"
+><A NAME="v%3Asloc_filename"
+></A
+></A
+><B
+>sloc_filename</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:sloc_row"
+><A NAME="v%3Asloc_row"
+></A
+></A
+><B
+>sloc_row</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:sloc_column"
+><A NAME="v%3Asloc_column"
+></A
+></A
+><B
+>sloc_column</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:NoLocation"
+><A NAME="v%3ANoLocation"
+></A
+></A
+><B
+>NoLocation</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SrcLocation')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SrcLocation" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable"
+>Typeable</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:srcPosToLocation"
+><A NAME="v%3AsrcPosToLocation"
+></A
+></A
+><B
+>srcPosToLocation</B
+> :: SourcePos -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:Span"
+><A NAME="t%3ASpan"
+></A
+></A
+><B
+>Span</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Types which have a span.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:getSpan"
+><A NAME="v%3AgetSpan"
+></A
+></A
+><B
+>getSpan</B
+> :: a -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Span')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Span" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> <A HREF="Language-R-AST.html#t%3AStatementSpan"
+>StatementSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> <A HREF="Language-R-AST.html#t%3AIdentSpan"
+>IdentSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> a =&gt; <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> [a]</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> a =&gt; <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> (<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> a, <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> b) =&gt; <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> (<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Either.html#t%3AEither"
+>Either</A
+> a b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> a, <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> b) =&gt; <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> (a, b)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:spanning"
+><A NAME="v%3Aspanning"
+></A
+></A
+><B
+>spanning</B
+> :: (<A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> a, <A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> b) =&gt; a -&gt; b -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Create a new span which encloses two spanned things.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:SrcSpan"
+><A NAME="t%3ASrcSpan"
+></A
+></A
+><B
+>SrcSpan</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Source location spanning a contiguous section of a file.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:SpanCoLinear"
+><A NAME="v%3ASpanCoLinear"
+></A
+></A
+><B
+>SpanCoLinear</B
+></TD
+><TD CLASS="rdoc"
+>A span which starts and ends on the same line.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_filename"
+><A NAME="v%3Aspan_filename"
+></A
+></A
+><B
+>span_filename</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_row"
+><A NAME="v%3Aspan_row"
+></A
+></A
+><B
+>span_row</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_start_column"
+><A NAME="v%3Aspan_start_column"
+></A
+></A
+><B
+>span_start_column</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_end_column"
+><A NAME="v%3Aspan_end_column"
+></A
+></A
+><B
+>span_end_column</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:SpanMultiLine"
+><A NAME="v%3ASpanMultiLine"
+></A
+></A
+><B
+>SpanMultiLine</B
+></TD
+><TD CLASS="rdoc"
+>A span which starts and ends on different lines.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_filename"
+><A NAME="v%3Aspan_filename"
+></A
+></A
+><B
+>span_filename</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_start_row"
+><A NAME="v%3Aspan_start_row"
+></A
+></A
+><B
+>span_start_row</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_start_column"
+><A NAME="v%3Aspan_start_column"
+></A
+></A
+><B
+>span_start_column</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_end_row"
+><A NAME="v%3Aspan_end_row"
+></A
+></A
+><B
+>span_end_row</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_end_column"
+><A NAME="v%3Aspan_end_column"
+></A
+></A
+><B
+>span_end_column</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:SpanPoint"
+><A NAME="v%3ASpanPoint"
+></A
+></A
+><B
+>SpanPoint</B
+></TD
+><TD CLASS="rdoc"
+>A span which is actually just one point in the file.
+</TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_filename"
+><A NAME="v%3Aspan_filename"
+></A
+></A
+><B
+>span_filename</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_row"
+><A NAME="v%3Aspan_row"
+></A
+></A
+><B
+>span_row</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:span_column"
+><A NAME="v%3Aspan_column"
+></A
+></A
+><B
+>span_column</B
+> :: !<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:SpanEmpty"
+><A NAME="v%3ASpanEmpty"
+></A
+></A
+><B
+>SpanEmpty</B
+></TD
+><TD CLASS="rdoc"
+>No span information.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SrcSpan')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SrcSpan" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
+>Data</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable"
+>Typeable</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-SrcLocation.html#t%3ASpan"
+>Span</A
+> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:spanStartPoint"
+><A NAME="v%3AspanStartPoint"
+></A
+></A
+><B
+>spanStartPoint</B
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Make a point span from the start of a span
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:mkSrcSpan"
+><A NAME="v%3AmkSrcSpan"
+></A
+></A
+><B
+>mkSrcSpan</B
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcLocation"
+>SrcLocation</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Make a span from two locations. Assumption: either the
+ arguments are the same, or the left one preceeds the right one.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:mkSrcSpan'"
+><A NAME="v%3AmkSrcSpan%27"
+></A
+></A
+><B
+>mkSrcSpan'</B
+> :: SourcePos -&gt; SourcePos -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:combineSrcSpans"
+><A NAME="v%3AcombineSrcSpans"
+></A
+></A
+><B
+>combineSrcSpans</B
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Combines two <TT
+><A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+></TT
+> into one that spans at least all the characters
+ within both spans. Assumes the <A HREF="file.html"
+>file</A
+> part is the same in both inputs
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:startRow"
+><A NAME="v%3AstartRow"
+></A
+></A
+><B
+>startRow</B
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Get the row of the start of a span.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:endRow"
+><A NAME="v%3AendRow"
+></A
+></A
+><B
+>endRow</B
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Get the row of the end of a span.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:startCol"
+><A NAME="v%3AstartCol"
+></A
+></A
+><B
+>startCol</B
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Get the column of the start of a span.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:endCol"
+><A NAME="v%3AendCol"
+></A
+></A
+><B
+>endCol</B
+> :: <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
+>SrcSpan</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Get the column of the end of a span.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.6.1</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

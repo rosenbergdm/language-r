@@ -6,246 +6,602 @@
 <link type='text/css' rel='stylesheet' href='hscolour.css' />
 </head>
 <body>
-<pre><a name="line-1"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
-<a name="line-2"></a><span class='hs-comment'>-- |</span>
-<a name="line-3"></a><span class='hs-comment'>-- Module      : Language.R.Generator</span>
-<a name="line-4"></a><span class='hs-comment'>-- Copyright   : (c) 2010 David M. Rosenberg</span>
-<a name="line-5"></a><span class='hs-comment'>-- License     : BSD3</span>
-<a name="line-6"></a><span class='hs-comment'>-- </span>
-<a name="line-7"></a><span class='hs-comment'>-- Maintainer  : David Rosenberg &lt;rosenbergdm@uchicago.edu&gt;</span>
-<a name="line-8"></a><span class='hs-comment'>-- Stability   : experimental</span>
-<a name="line-9"></a><span class='hs-comment'>-- Portability : portable</span>
-<a name="line-10"></a><span class='hs-comment'>-- Created     : 05/28/10</span>
-<a name="line-11"></a><span class='hs-comment'>-- </span>
-<a name="line-12"></a><span class='hs-comment'>-- Description :</span>
-<a name="line-13"></a><span class='hs-comment'>--    DESCRIPTION HERE.</span>
-<a name="line-14"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
-<a name="line-15"></a>
-<a name="line-16"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Generator</span> <span class='hs-keyword'>where</span>
-<a name="line-17"></a>
-<a name="line-18"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Internal</span>
+<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE FlexibleContexts #-}</span>
+<a name="line-2"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
+<a name="line-3"></a><span class='hs-comment'>-- |</span>
+<a name="line-4"></a><span class='hs-comment'>-- Module      : Language.R.Generator</span>
+<a name="line-5"></a><span class='hs-comment'>-- Copyright   : (c) 2010 David M. Rosenberg</span>
+<a name="line-6"></a><span class='hs-comment'>-- License     : BSD3</span>
+<a name="line-7"></a><span class='hs-comment'>-- </span>
+<a name="line-8"></a><span class='hs-comment'>-- Maintainer  : David Rosenberg &lt;rosenbergdm@uchicago.edu&gt;</span>
+<a name="line-9"></a><span class='hs-comment'>-- Stability   : experimental</span>
+<a name="line-10"></a><span class='hs-comment'>-- Portability : portable</span>
+<a name="line-11"></a><span class='hs-comment'>-- Created     : 05/28/10</span>
+<a name="line-12"></a><span class='hs-comment'>-- </span>
+<a name="line-13"></a><span class='hs-comment'>-- Description :</span>
+<a name="line-14"></a><span class='hs-comment'>--    DESCRIPTION HERE.</span>
+<a name="line-15"></a><span class='hs-comment'>-----------------------------------------------------------------------------</span>
+<a name="line-16"></a>
+<a name="line-17"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Generator</span> <span class='hs-keyword'>where</span>
+<a name="line-18"></a>
 <a name="line-19"></a>
-<a name="line-20"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span>
-<a name="line-21"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Token</span>
-<a name="line-22"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Language</span>
-<a name="line-23"></a>
-<a name="line-24"></a><a name="rStyle"></a><span class='hs-definition'>rStyle</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>LanguageDef</span> <span class='hs-varid'>st</span>
-<a name="line-25"></a><span class='hs-definition'>rStyle</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>emptyDef</span>
-<a name="line-26"></a>   <span class='hs-layout'>{</span> <span class='hs-varid'>commentStart</span>   <span class='hs-keyglyph'>=</span> <span class='hs-str'>""</span>
-<a name="line-27"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>commentEnd</span>     <span class='hs-keyglyph'>=</span> <span class='hs-str'>""</span>
-<a name="line-28"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>commentLine</span>    <span class='hs-keyglyph'>=</span> <span class='hs-str'>"#"</span>
-<a name="line-29"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>nestedComments</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>False</span>
-<a name="line-30"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>identStart</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>letter</span> <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>char</span> <span class='hs-chr'>'.'</span>
-<a name="line-31"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>identLetter</span>    <span class='hs-keyglyph'>=</span> <span class='hs-varid'>alphaNum</span> <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>oneOf</span> <span class='hs-str'>"._"</span>
-<a name="line-32"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>opStart</span>        <span class='hs-keyglyph'>=</span> <span class='hs-varid'>opLetter</span> <span class='hs-varid'>emptyDef</span>
-<a name="line-33"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>opLetter</span>       <span class='hs-keyglyph'>=</span> <span class='hs-varid'>oneOf</span> <span class='hs-str'>":!#$%&amp;*+./&lt;=&gt;?@\\^|-~"</span>
-<a name="line-34"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>reservedOpNames</span><span class='hs-keyglyph'>=</span> <span class='hs-keyglyph'>[</span><span class='hs-str'>"&lt;-"</span><span class='hs-layout'>,</span> <span class='hs-str'>"&lt;&lt;-"</span><span class='hs-layout'>,</span> <span class='hs-str'>"-&gt;"</span><span class='hs-layout'>,</span> <span class='hs-str'>"[["</span><span class='hs-layout'>,</span> <span class='hs-str'>"]]"</span><span class='hs-keyglyph'>]</span>
-<a name="line-35"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>reservedNames</span>  <span class='hs-keyglyph'>=</span> <span class='hs-keyglyph'>[</span> <span class='hs-str'>"if"</span><span class='hs-layout'>,</span> <span class='hs-str'>"else"</span><span class='hs-layout'>,</span> <span class='hs-str'>"repeat"</span><span class='hs-layout'>,</span> <span class='hs-str'>"while"</span><span class='hs-layout'>,</span>
-<a name="line-36"></a>                        <span class='hs-str'>"function"</span><span class='hs-layout'>,</span> <span class='hs-str'>"for"</span><span class='hs-layout'>,</span> <span class='hs-str'>"in"</span><span class='hs-layout'>,</span> <span class='hs-str'>"next"</span><span class='hs-layout'>,</span> 
-<a name="line-37"></a>                        <span class='hs-str'>"break"</span><span class='hs-layout'>,</span> <span class='hs-str'>"TRUE"</span><span class='hs-layout'>,</span> <span class='hs-str'>"FALSE"</span><span class='hs-layout'>,</span> <span class='hs-str'>"NULL"</span><span class='hs-layout'>,</span>
-<a name="line-38"></a>                        <span class='hs-str'>"Inf"</span><span class='hs-layout'>,</span> <span class='hs-str'>"NaN"</span><span class='hs-layout'>,</span> <span class='hs-str'>"NA"</span><span class='hs-layout'>,</span> <span class='hs-str'>"NA_integer_"</span><span class='hs-layout'>,</span>
-<a name="line-39"></a>                        <span class='hs-str'>"NA_real_"</span><span class='hs-layout'>,</span><span class='hs-str'>"NA_complex_"</span><span class='hs-layout'>,</span> 
-<a name="line-40"></a>                        <span class='hs-str'>"NA_character_"</span> 
-<a name="line-41"></a>                      <span class='hs-keyglyph'>]</span>
-<a name="line-42"></a>   <span class='hs-layout'>,</span> <span class='hs-varid'>caseSensitive</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>True</span>
-<a name="line-43"></a>   <span class='hs-layout'>}</span>
+<a name="line-20"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span>
+<a name="line-21"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Error</span>
+<a name="line-22"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-layout'>(</span><span class='hs-conid'>Identity</span><span class='hs-layout'>)</span>
+<a name="line-23"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Monad</span>
+<a name="line-24"></a><span class='hs-keyword'>import</span> <span class='hs-keyword'>qualified</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Map</span> <span class='hs-keyword'>as</span> <span class='hs-conid'>Map</span>
+<a name="line-25"></a>
+<a name="line-26"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span>
+<a name="line-27"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Pos</span>
+<a name="line-28"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>String</span>
+<a name="line-29"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Combinator</span>
+<a name="line-30"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
+<a name="line-31"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Prim</span>
+<a name="line-32"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span> <span class='hs-layout'>(</span><span class='hs-varid'>toLower</span><span class='hs-layout'>)</span>
+<a name="line-33"></a><span class='hs-keyword'>import</span> <span class='hs-keyword'>qualified</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Token</span> <span class='hs-keyword'>as</span> <span class='hs-conid'>T</span>
+<a name="line-34"></a><span class='hs-keyword'>import</span> <span class='hs-keyword'>qualified</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Language</span> <span class='hs-keyword'>as</span> <span class='hs-conid'>L</span>
+<a name="line-35"></a>
+<a name="line-36"></a><span class='hs-comment'>{-
+<a name="line-37"></a>import Token
+<a name="line-38"></a>import SrcLocation
+<a name="line-39"></a>-}</span>
+<a name="line-40"></a>
+<a name="line-41"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>Token</span>
+<a name="line-42"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Language</span><span class='hs-varop'>.</span><span class='hs-conid'>R</span><span class='hs-varop'>.</span><span class='hs-conid'>SrcLocation</span>
+<a name="line-43"></a>
 <a name="line-44"></a>
-<a name="line-45"></a><a name="rlang"></a><span class='hs-definition'>rlang</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>TokenParser</span> <span class='hs-varid'>st</span>
-<a name="line-46"></a><span class='hs-definition'>rlang</span> <span class='hs-keyglyph'>=</span>  <span class='hs-varid'>makeTokenParser</span> <span class='hs-varid'>rStyle</span>
-<a name="line-47"></a>
-<a name="line-48"></a><a name="rIdentifier"></a><span class='hs-definition'>rIdentifier</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>identifier</span>     <span class='hs-varid'>rlang</span> 
-<a name="line-49"></a><a name="rNumber"></a><span class='hs-definition'>rNumber</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>naturalOrFloat</span> <span class='hs-varid'>rlang</span> 
-<a name="line-50"></a><a name="rReserved"></a><span class='hs-definition'>rReserved</span>   <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reserved</span>       <span class='hs-varid'>rlang</span> 
-<a name="line-51"></a><a name="rReservedOp"></a><span class='hs-definition'>rReservedOp</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reservedOp</span>     <span class='hs-varid'>rlang</span> 
-<a name="line-52"></a><a name="rParens"></a><span class='hs-definition'>rParens</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>parens</span>         <span class='hs-varid'>rlang</span> 
-<a name="line-53"></a><a name="rBraces"></a><span class='hs-comment'>--rWhiteSpace = whiteSpace     rlang </span>
-<a name="line-54"></a><span class='hs-definition'>rBraces</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>braces</span>         <span class='hs-varid'>rlang</span> 
-<a name="line-55"></a><a name="rOperator"></a><span class='hs-definition'>rOperator</span>   <span class='hs-keyglyph'>=</span> <span class='hs-varid'>operator</span>       <span class='hs-varid'>rlang</span> 
-<a name="line-56"></a><a name="rSemi"></a><span class='hs-definition'>rSemi</span>       <span class='hs-keyglyph'>=</span> <span class='hs-varid'>semi</span>           <span class='hs-varid'>rlang</span> 
-<a name="line-57"></a><a name="rString"></a><span class='hs-definition'>rString</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>stringLiteral</span>  <span class='hs-varid'>rlang</span>
-<a name="line-58"></a>
-<a name="line-59"></a>
-<a name="line-60"></a><span class='hs-comment'>-- tokParser  :: Parser RToken</span>
-<a name="line-61"></a>
-<a name="line-62"></a>
-<a name="line-63"></a><span class='hs-comment'>{-
-<a name="line-64"></a>whileParser :: Parser Stmt
-<a name="line-65"></a>whileParser = whiteSpace &gt;&gt; statement
-<a name="line-66"></a>
-<a name="line-67"></a>statement ::  Parser Stmt
-<a name="line-68"></a>statement =   parens statement
-<a name="line-69"></a>          &lt;|&gt; seqOfStmt
+<a name="line-45"></a><a name="Tok"></a><span class='hs-comment'>--n| @Tok@s are the most general of the *R* token-type objects, representing a</span>
+<a name="line-46"></a><a name="Tok"></a><span class='hs-comment'>-- single *typeclass*-ish category of functionally similar language objects.</span>
+<a name="line-47"></a><a name="Tok"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>Tok</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>RIdent</span> <span class='hs-conid'>TokType</span> <span class='hs-conid'>String</span>    <span class='hs-comment'>-- ^An @identifier@ i.e. variable</span>
+<a name="line-48"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>ROper</span> <span class='hs-conid'>TokType</span> <span class='hs-conid'>String</span>     <span class='hs-comment'>-- ^An @operator@ i.e. symbolic function name</span>
+<a name="line-49"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>RNumConst</span> <span class='hs-conid'>TokType</span> <span class='hs-conid'>Double</span> <span class='hs-comment'>-- ^All numbers are of type double</span>
+<a name="line-50"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>RSymb</span> <span class='hs-conid'>TokType</span> <span class='hs-conid'>String</span>     <span class='hs-comment'>-- ^A *punctuation* type character</span>
+<a name="line-51"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>RString</span> <span class='hs-conid'>TokType</span> <span class='hs-conid'>String</span>   <span class='hs-comment'>-- ^A literal @String@</span>
+<a name="line-52"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>RComment</span> <span class='hs-conid'>TokType</span> <span class='hs-conid'>String</span>  <span class='hs-comment'>-- ^A complete comment</span>
+<a name="line-53"></a>  <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span> <span class='hs-conid'>Eq</span><span class='hs-layout'>,</span> <span class='hs-conid'>Ord</span><span class='hs-layout'>,</span> <span class='hs-conid'>Show</span><span class='hs-layout'>)</span>
+<a name="line-54"></a>
+<a name="line-55"></a>
+<a name="line-56"></a><a name="TokType"></a><span class='hs-comment'>-- | Objects of type @TokType@ represent the result of the first (lexing) pass of</span>
+<a name="line-57"></a><a name="TokType"></a><span class='hs-comment'>-- the input text.  @TokType@s are identified without any lookahead or backtracing</span>
+<a name="line-58"></a><a name="TokType"></a><span class='hs-comment'>-- of the input.</span>
+<a name="line-59"></a><a name="TokType"></a><span class='hs-comment'>{-
+<a name="line-60"></a>data TokType = LiteralConstant
+<a name="line-61"></a>             | Identifier
+<a name="line-62"></a>	     | ReservedWord
+<a name="line-63"></a>	     | SpecialOperator
+<a name="line-64"></a>	     | Separator
+<a name="line-65"></a>	     | OperatorToken
+<a name="line-66"></a>	     | GroupingToken
+<a name="line-67"></a>	     | IndexingToken
+<a name="line-68"></a>
+<a name="line-69"></a>
 <a name="line-70"></a>
-<a name="line-71"></a>seqOfStmt = do
-<a name="line-72"></a>  list &lt;- (sepBy1 statement' semi)
-<a name="line-73"></a>  res &lt;- if length list == 1
-<a name="line-74"></a>           then head list
-<a name="line-75"></a>         else Seq list
-<a name="line-76"></a>  return res
-<a name="line-77"></a>
-<a name="line-78"></a>statement' ::  Parser Stmt
-<a name="line-79"></a>statement' =   ifStmt
-<a name="line-80"></a>           &lt;|&gt; whileStmt
-<a name="line-81"></a>           &lt;|&gt; skipStmt
-<a name="line-82"></a>           &lt;|&gt; assignStmt
-<a name="line-83"></a>
-<a name="line-84"></a>-}</span>
-<a name="line-85"></a>
-<a name="line-86"></a><span class='hs-comment'>{- { {{
-<a name="line-87"></a>ifStmt :: Parser Stmt
-<a name="line-88"></a>ifStmt =
-<a name="line-89"></a>  do reserved "if"
-<a name="line-90"></a>     cond  &lt;- bExpression
-<a name="line-91"></a>     reserved "then"
-<a name="line-92"></a>     stmt1 &lt;- statement
-<a name="line-93"></a>     reserved "else"
-<a name="line-94"></a>     stmt2 &lt;- statement
-<a name="line-95"></a>     return $ If cond stmt1 stmt2
-<a name="line-96"></a> 
-<a name="line-97"></a>whileStmt :: Parser Stmt
-<a name="line-98"></a>whileStmt =
-<a name="line-99"></a>  do reserved "while"
-<a name="line-100"></a>     cond &lt;- bExpression
-<a name="line-101"></a>     reserved "do"
-<a name="line-102"></a>     stmt &lt;- statement
-<a name="line-103"></a>     return $ While cond stmt
-<a name="line-104"></a> 
-<a name="line-105"></a>assignStmt :: Parser Stmt
-<a name="line-106"></a>assignStmt =
-<a name="line-107"></a>  do var  &lt;- identifier
-<a name="line-108"></a>     reservedOp ":="
-<a name="line-109"></a>     expr &lt;- aExpression
-<a name="line-110"></a>     return $ Assign var expr
+<a name="line-71"></a>-}</span>
+<a name="line-72"></a><a name="TokType"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>TokType</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Variable</span>
+<a name="line-73"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Reserved</span>
+<a name="line-74"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Oprator</span>
+<a name="line-75"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Bltin</span>
+<a name="line-76"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Primitive</span>
+<a name="line-77"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Strng</span>
+<a name="line-78"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Intgr</span>
+<a name="line-79"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Dble</span>
+<a name="line-80"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>CtrlFl</span>
+<a name="line-81"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Grouping</span>
+<a name="line-82"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Logical</span>
+<a name="line-83"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Closure</span>
+<a name="line-84"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Cmmnt</span>
+<a name="line-85"></a>  <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span> <span class='hs-conid'>Eq</span><span class='hs-layout'>,</span> <span class='hs-conid'>Ord</span><span class='hs-layout'>)</span>
+<a name="line-86"></a>
+<a name="line-87"></a>
+<a name="line-88"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Show</span> <span class='hs-conid'>TokType</span> <span class='hs-keyword'>where</span>
+<a name="line-89"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Variable</span>  <span class='hs-keyglyph'>=</span> <span class='hs-str'>"VARIABLE"</span>
+<a name="line-90"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Reserved</span>  <span class='hs-keyglyph'>=</span> <span class='hs-str'>"RESERVED"</span>
+<a name="line-91"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Oprator</span>  <span class='hs-keyglyph'>=</span> <span class='hs-str'>"OPERATOR"</span>
+<a name="line-92"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Bltin</span>   <span class='hs-keyglyph'>=</span> <span class='hs-str'>"BUILTIN"</span>
+<a name="line-93"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Primitive</span> <span class='hs-keyglyph'>=</span> <span class='hs-str'>"PRIMITIVE"</span>
+<a name="line-94"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Strng</span>     <span class='hs-keyglyph'>=</span> <span class='hs-str'>"STRING"</span>
+<a name="line-95"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Intgr</span>     <span class='hs-keyglyph'>=</span> <span class='hs-str'>"INTGR"</span>
+<a name="line-96"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Dble</span>      <span class='hs-keyglyph'>=</span> <span class='hs-str'>"DBLE"</span>
+<a name="line-97"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>CtrlFl</span>    <span class='hs-keyglyph'>=</span> <span class='hs-str'>"CTRLFL"</span>
+<a name="line-98"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Grouping</span>  <span class='hs-keyglyph'>=</span> <span class='hs-str'>"GROUPING"</span>
+<a name="line-99"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Logical</span>   <span class='hs-keyglyph'>=</span> <span class='hs-str'>"LOGICAL"</span>
+<a name="line-100"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Closure</span>   <span class='hs-keyglyph'>=</span> <span class='hs-str'>"CLOSURE"</span>
+<a name="line-101"></a>  <span class='hs-varid'>show</span> <span class='hs-conid'>Cmmnt</span>   <span class='hs-keyglyph'>=</span> <span class='hs-str'>"COMMENT"</span>      <span class='hs-comment'>-- Section 10.2</span>
+<a name="line-102"></a>
+<a name="line-103"></a>
+<a name="line-104"></a><a name="TToken"></a><span class='hs-comment'>-- | @Token@s are @Tok@s with the metadata of @SourcePos@</span>
+<a name="line-105"></a><a name="TToken"></a><span class='hs-keyword'>type</span> <span class='hs-conid'>TToken</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-conid'>Tok</span><span class='hs-layout'>,</span> <span class='hs-conid'>SourcePos</span><span class='hs-layout'>)</span>
+<a name="line-106"></a>
+<a name="line-107"></a><a name="TokSt"></a><span class='hs-comment'>-- | Objects of @TokSt@ are used to store the @Token@ stack during first pass</span>
+<a name="line-108"></a><a name="TokSt"></a><span class='hs-comment'>-- lexing.</span>
+<a name="line-109"></a><a name="TokSt"></a><span class='hs-keyword'>type</span> <span class='hs-conid'>TokSt</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyglyph'>[</span><span class='hs-conid'>Tok</span><span class='hs-keyglyph'>]</span>
+<a name="line-110"></a>
 <a name="line-111"></a>
-<a name="line-112"></a>}}} -}</span>
-<a name="line-113"></a><span class='hs-comment'>{- {{{
-<a name="line-114"></a>whileParser :: Parser Stmt
-<a name="line-115"></a>whileParser = whiteSpace &gt;&gt; statement
-<a name="line-116"></a>Now because any statement might be actually a sequence of statements separated by semicolon, we use sepBy1 to parse at least one statement. The result is a list of statements. We also allow grouping statements by the parenthesis, which is useful, for instance, in the while loop.
-<a name="line-117"></a>
-<a name="line-118"></a>statement :: Parser Stmt
-<a name="line-119"></a>statement =   parens statement
-<a name="line-120"></a>          &lt;|&gt; sequenceOfStmt
-<a name="line-121"></a> 
-<a name="line-122"></a>sequenceOfStmt =
-<a name="line-123"></a>  do list &lt;- (sepBy1 statement' semi)
-<a name="line-124"></a>     -- If there's only one statement return it without using Seq.
-<a name="line-125"></a>     return $ if length list == 1 then head list else Seq list
-<a name="line-126"></a>Now a single statement is quite simple, it's either an if conditional, a while loop, an assignment or simply a skip statement. We use &lt;|&gt; to express choice. So a &lt;|&gt; b will first try parser a and if it fails (but without actually consuming any input) then parser b will be used. Note: this means that the order is important.
-<a name="line-127"></a>
-<a name="line-128"></a>statement' :: Parser Stmt
-<a name="line-129"></a>statement' =   ifStmt
-<a name="line-130"></a>           &lt;|&gt; whileStmt
-<a name="line-131"></a>           &lt;|&gt; skipStmt
-<a name="line-132"></a>           &lt;|&gt; assignStmt
-<a name="line-133"></a>}}} -}</span>
+<a name="line-112"></a>
+<a name="line-113"></a><a name="R_ResOp"></a><span class='hs-comment'>-- | Reserved operations which cannot be overwritten and require rearrangement</span>
+<a name="line-114"></a><a name="R_ResOp"></a><span class='hs-comment'>-- during the second pass.</span>
+<a name="line-115"></a><a name="R_ResOp"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>R_ResOp</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>BinMinus</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinPlus</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>UnNot</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>UnBinTilde</span> 
+<a name="line-116"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>UnHelp</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinSeq</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinMult</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinDiv</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinExp</span> 
+<a name="line-117"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinUndef</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinMod</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinIntDiv</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinMatMult</span> 
+<a name="line-118"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinOutPr</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinKronPr</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinIntrsct</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinLT</span> 
+<a name="line-119"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinGT</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinEQ</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinGE</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinLE</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinVecAnd</span> 
+<a name="line-120"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinAnd</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinVecOr</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinOr</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinAsnLeft</span> 
+<a name="line-121"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinAsnRight</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinElmnt</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinMemAsn</span>
+<a name="line-122"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinSlot</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinElemnt</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinElemntAsn</span> 
+<a name="line-123"></a>              <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinIndxAsn</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinEql</span> <span class='hs-keyglyph'>|</span> <span class='hs-conid'>BinIndx</span>
+<a name="line-124"></a>  <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span> <span class='hs-conid'>Ord</span><span class='hs-layout'>,</span> <span class='hs-conid'>Show</span><span class='hs-layout'>,</span> <span class='hs-conid'>Eq</span><span class='hs-layout'>,</span> <span class='hs-conid'>Enum</span><span class='hs-layout'>)</span>
+<a name="line-125"></a>
+<a name="line-126"></a><a name="R_Builtin"></a><span class='hs-comment'>-- | R *builtin* functions which cannot be overwritten and are not expressed</span>
+<a name="line-127"></a><a name="R_Builtin"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>R_Builtin</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>R_MathFn</span>   <span class='hs-comment'>-- ^Mathematical functions</span>
+<a name="line-128"></a>               <span class='hs-keyglyph'>|</span> <span class='hs-conid'>R_PrgFn</span>    <span class='hs-comment'>-- ^Language / programming functions</span>
+<a name="line-129"></a>               <span class='hs-keyglyph'>|</span> <span class='hs-conid'>R_DbgFn</span>    <span class='hs-comment'>-- ^Debugging functions</span>
+<a name="line-130"></a>               <span class='hs-keyglyph'>|</span> <span class='hs-conid'>R_AsnFn</span>    <span class='hs-comment'>-- ^Special syntax assignment functions</span>
+<a name="line-131"></a>               <span class='hs-keyglyph'>|</span> <span class='hs-conid'>R_nArgEff</span>  <span class='hs-comment'>-- ^Functions taking arbitrary length argument lists</span>
+<a name="line-132"></a>               <span class='hs-keyglyph'>|</span> <span class='hs-conid'>R_CtrlFlow</span> <span class='hs-comment'>-- ^Control flow functions</span>
+<a name="line-133"></a>  <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span> <span class='hs-conid'>Show</span><span class='hs-layout'>,</span> <span class='hs-conid'>Eq</span><span class='hs-layout'>,</span> <span class='hs-conid'>Ord</span><span class='hs-layout'>,</span> <span class='hs-conid'>Enum</span><span class='hs-layout'>)</span>
 <a name="line-134"></a>
 <a name="line-135"></a>
-<a name="line-136"></a>
-<a name="line-137"></a><span class='hs-comment'>{- {{{
-<a name="line-138"></a>emptyDef    
-<a name="line-139"></a> = LanguageDef 
-<a name="line-140"></a>   { commentStart   = ""
-<a name="line-141"></a>   , commentEnd     = ""
-<a name="line-142"></a>   , commentLine    = ""
-<a name="line-143"></a>   , nestedComments = True
-<a name="line-144"></a>   , identStart     = letter &lt;|&gt; char '_'
-<a name="line-145"></a>   , identLetter    = alphaNum &lt;|&gt; oneOf "_'"
-<a name="line-146"></a>   , opStart        = opLetter emptyDef
-<a name="line-147"></a>   , opLetter       = oneOf ":!#$%&amp;*+./&lt;=&gt;?@\\^|-~"
-<a name="line-148"></a>   , reservedOpNames= []
-<a name="line-149"></a>   , reservedNames  = []
-<a name="line-150"></a>   , caseSensitive  = True
-<a name="line-151"></a>   }
-<a name="line-152"></a>
-<a name="line-153"></a>javaStyle :: LanguageDef st
-<a name="line-154"></a>This is a minimal token definition for Java style languages. It defines the style of comments, valid identifiers and case sensitivity. It does not define any reserved words or operators.
-<a name="line-155"></a>javaStyle   
-<a name="line-156"></a>    = emptyDef
-<a name="line-157"></a>    { commentStart   = "/*"
-<a name="line-158"></a>    , commentEnd     = "*/"
-<a name="line-159"></a>    , commentLine    = "//"
-<a name="line-160"></a>    , nestedComments = True
-<a name="line-161"></a>    , identStart     = letter
-<a name="line-162"></a>    , identLetter    = alphaNum &lt;|&gt; oneOf "_'"
-<a name="line-163"></a>    , reservedNames  = []
-<a name="line-164"></a>    , reservedOpNames= []	
-<a name="line-165"></a>    , caseSensitive  = False	   
-<a name="line-166"></a>    }
-<a name="line-167"></a>
-<a name="line-168"></a>haskellStyle :: LanguageDef st
-<a name="line-169"></a>This is a minimal token definition for Haskell style languages. It defines the style of comments, valid identifiers and case sensitivity. It does not define any reserved words or operators.
-<a name="line-170"></a>haskellStyle
-<a name="line-171"></a>    = emptyDef
-<a name="line-172"></a>    { commentStart   = "{-"
-<a name="line-173"></a>    , commentEnd     = "-}"
-<a name="line-174"></a>    , commentLine    = "--"
-<a name="line-175"></a>    , nestedComments = True
-<a name="line-176"></a>    , identStart     = letter
-<a name="line-177"></a>    , identLetter    = alphaNum &lt;|&gt; oneOf "_'"
-<a name="line-178"></a>    , opStart        = opLetter haskell
-<a name="line-179"></a>    , opLetter       = oneOf ":!#$%&amp;*+./&lt;=&gt;?@\\^|-~"              
-<a name="line-180"></a>    , reservedOpNames= []
-<a name="line-181"></a>    , reservedNames  = []
-<a name="line-182"></a>    , caseSensitive  = True                                   
-<a name="line-183"></a>    }         
-<a name="line-184"></a>
-<a name="line-185"></a>mondrianDef :: LanguageDef st
-<a name="line-186"></a>The language definition for the language Mondrian.
-<a name="line-187"></a>mondrian    
-<a name="line-188"></a>    = javaStyle
-<a name="line-189"></a>    { reservedNames  = [ "case", "class", "default"
-<a name="line-190"></a>                       , "extends"
-<a name="line-191"></a>                       , "import", "in", "let"
-<a name="line-192"></a>                       , "new", "of", "package"
-<a name="line-193"></a>                       ]	
-<a name="line-194"></a>    , caseSensitive  = True
-<a name="line-195"></a>    }
-<a name="line-196"></a>
-<a name="line-197"></a>haskell98Def :: LanguageDef st
-<a name="line-198"></a>The language definition for the language Haskell98.
-<a name="line-199"></a>haskell98Def     
-<a name="line-200"></a>    = haskellStyle
-<a name="line-201"></a>    { reservedOpNames= ["::","..","=","\\","|"
-<a name="line-202"></a>                       ,"&lt;-","-&gt;","@","~","=&gt;"
-<a name="line-203"></a>                       ]
-<a name="line-204"></a>    , reservedNames  = ["let","in","case","of"
-<a name="line-205"></a>                       ,"if","then","else"
-<a name="line-206"></a>                       ,"data","type",
-<a name="line-207"></a>                       ,"class","default","deriving"
-<a name="line-208"></a>                       ,"do","import",
-<a name="line-209"></a>                       ,"infix","infixl","infixr"
-<a name="line-210"></a>                       ,"instance","module"
-<a name="line-211"></a>                       ,"newtype","where"
-<a name="line-212"></a>                       ,"primitive"
-<a name="line-213"></a>                        -- "as","qualified","hiding"
-<a name="line-214"></a>                       ]
-<a name="line-215"></a>    }               
-<a name="line-216"></a>
-<a name="line-217"></a>haskellDef :: LanguageDef st
-<a name="line-218"></a>The language definition for the Haskell language.
-<a name="line-219"></a>haskellDef   
-<a name="line-220"></a>  = haskell98Def
-<a name="line-221"></a>    { identLetter    = identLetter haskell98Def &lt;|&gt; char '#'
-<a name="line-222"></a>    , reservedNames  = reservedNames haskell98Def ++ 
-<a name="line-223"></a>                       ["foreign","import","export","primitive"
-<a name="line-224"></a>                       ,"_ccall_","_casm_"
-<a name="line-225"></a>                       ,"forall"
-<a name="line-226"></a>                       ]
-<a name="line-227"></a>    }
-<a name="line-228"></a>
-<a name="line-229"></a>}}} -}</span>
-<a name="line-230"></a>
-<a name="line-231"></a><span class='hs-comment'>{-
-<a name="line-232"></a>mondrian :: TokenParser st
-<a name="line-233"></a>A lexer for the mondrian language.
-<a name="line-234"></a>mondrian  = makeTokenParser mondrianDef
-<a name="line-235"></a>
-<a name="line-236"></a>haskell :: TokenParser st
-<a name="line-237"></a>A lexer for the haskell language.
-<a name="line-238"></a>mondrian  = makeTokenParser haskellDef
-<a name="line-239"></a>
-<a name="line-240"></a>
-<a name="line-241"></a>-}</span>
+<a name="line-136"></a><a name="rResOps"></a><span class='hs-definition'>rResOps</span> <span class='hs-keyglyph'>::</span> <span class='hs-keyglyph'>[</span><span class='hs-layout'>(</span><span class='hs-conid'>R_ResOp</span><span class='hs-layout'>,</span> <span class='hs-conid'>String</span><span class='hs-layout'>)</span><span class='hs-keyglyph'>]</span> 
+<a name="line-137"></a><span class='hs-definition'>rResOps</span>  <span class='hs-keyglyph'>=</span>  
+<a name="line-138"></a>  <span class='hs-keyglyph'>[</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinMinus</span><span class='hs-layout'>,</span> <span class='hs-str'>"-"</span><span class='hs-layout'>)</span>      <span class='hs-comment'>-- Minus can be unary or binary</span>
+<a name="line-139"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinPlus</span><span class='hs-layout'>,</span> <span class='hs-str'>"+"</span><span class='hs-layout'>)</span>       <span class='hs-comment'>-- Plus can be unary or binary</span>
+<a name="line-140"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>UnNot</span><span class='hs-layout'>,</span> <span class='hs-str'>"!"</span><span class='hs-layout'>)</span>         <span class='hs-comment'>-- Unary not</span>
+<a name="line-141"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>UnBinTilde</span><span class='hs-layout'>,</span> <span class='hs-str'>"~"</span><span class='hs-layout'>)</span>    <span class='hs-comment'>-- Tilde, used for model formulae, unary or binary</span>
+<a name="line-142"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>UnHelp</span><span class='hs-layout'>,</span> <span class='hs-str'>"?"</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Help</span>
+<a name="line-143"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinSeq</span><span class='hs-layout'>,</span> <span class='hs-str'>":"</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Sequence, binary (in model formulae: interaction)</span>
+<a name="line-144"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinMult</span><span class='hs-layout'>,</span> <span class='hs-str'>"*"</span><span class='hs-layout'>)</span>       <span class='hs-comment'>-- Multiplication, binary</span>
+<a name="line-145"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinDiv</span><span class='hs-layout'>,</span> <span class='hs-str'>"/"</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Division, binary</span>
+<a name="line-146"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinExp</span><span class='hs-layout'>,</span> <span class='hs-str'>"^"</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Exponentiation, binary</span>
+<a name="line-147"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinUndef</span><span class='hs-layout'>,</span> <span class='hs-str'>"%x%"</span><span class='hs-layout'>)</span>    <span class='hs-comment'>-- Special binary operators, x can be replaced by any valid name</span>
+<a name="line-148"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinMod</span><span class='hs-layout'>,</span> <span class='hs-str'>"%%"</span><span class='hs-layout'>)</span>       <span class='hs-comment'>-- Modulus, binary</span>
+<a name="line-149"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinIntDiv</span><span class='hs-layout'>,</span> <span class='hs-str'>"%/%"</span><span class='hs-layout'>)</span>   <span class='hs-comment'>-- Integer divide, binary</span>
+<a name="line-150"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinMatMult</span><span class='hs-layout'>,</span> <span class='hs-str'>"%*%"</span><span class='hs-layout'>)</span>  <span class='hs-comment'>-- Matrix product, binary</span>
+<a name="line-151"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinOutPr</span><span class='hs-layout'>,</span> <span class='hs-str'>"%o%"</span><span class='hs-layout'>)</span>    <span class='hs-comment'>-- Outer product, binary</span>
+<a name="line-152"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinKronPr</span><span class='hs-layout'>,</span> <span class='hs-str'>"%x%"</span><span class='hs-layout'>)</span>   <span class='hs-comment'>-- Kronecker product, binary</span>
+<a name="line-153"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinIntrsct</span><span class='hs-layout'>,</span> <span class='hs-str'>"%in%"</span><span class='hs-layout'>)</span> <span class='hs-comment'>-- Matching operator, binary (in model formulae: nesting)</span>
+<a name="line-154"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinLT</span><span class='hs-layout'>,</span> <span class='hs-str'>"&lt;"</span><span class='hs-layout'>)</span>         <span class='hs-comment'>-- Less than, binary</span>
+<a name="line-155"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinGT</span><span class='hs-layout'>,</span> <span class='hs-str'>"&gt;"</span><span class='hs-layout'>)</span>         <span class='hs-comment'>-- Greater than, binary</span>
+<a name="line-156"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinEQ</span><span class='hs-layout'>,</span> <span class='hs-str'>"=="</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Equal to, binary</span>
+<a name="line-157"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinGE</span><span class='hs-layout'>,</span> <span class='hs-str'>"&gt;="</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Greater than or equal to, binary</span>
+<a name="line-158"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinLE</span><span class='hs-layout'>,</span> <span class='hs-str'>"&lt;="</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Less than or equal to, binary</span>
+<a name="line-159"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinVecAnd</span><span class='hs-layout'>,</span> <span class='hs-str'>"&amp;"</span><span class='hs-layout'>)</span>     <span class='hs-comment'>-- And, binary, vectorized</span>
+<a name="line-160"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinAnd</span><span class='hs-layout'>,</span> <span class='hs-str'>"&amp;&amp;"</span><span class='hs-layout'>)</span>       <span class='hs-comment'>-- And, binary, not vectorized</span>
+<a name="line-161"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinVecOr</span><span class='hs-layout'>,</span> <span class='hs-str'>"| "</span><span class='hs-layout'>)</span>     <span class='hs-comment'>-- Or, binary, vectorized</span>
+<a name="line-162"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinOr</span><span class='hs-layout'>,</span> <span class='hs-str'>"||"</span><span class='hs-layout'>)</span>        <span class='hs-comment'>-- Or, binary, not vectorized</span>
+<a name="line-163"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinAsnLeft</span><span class='hs-layout'>,</span> <span class='hs-str'>"&lt;-"</span><span class='hs-layout'>)</span>   <span class='hs-comment'>-- Left assignment, binary</span>
+<a name="line-164"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinAsnRight</span><span class='hs-layout'>,</span> <span class='hs-str'>"-&gt;"</span><span class='hs-layout'>)</span>  <span class='hs-comment'>-- Right assignment, binary</span>
+<a name="line-165"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinElmnt</span><span class='hs-layout'>,</span> <span class='hs-str'>"$"</span><span class='hs-layout'>)</span>      <span class='hs-comment'>-- List subset, binary</span>
+<a name="line-166"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinMemAsn</span><span class='hs-layout'>,</span> <span class='hs-str'>"$&lt;-"</span><span class='hs-layout'>)</span>
+<a name="line-167"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinSlot</span><span class='hs-layout'>,</span> <span class='hs-str'>"@"</span><span class='hs-layout'>)</span>
+<a name="line-168"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinIndx</span><span class='hs-layout'>,</span> <span class='hs-str'>"["</span><span class='hs-layout'>)</span>
+<a name="line-169"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinElemnt</span><span class='hs-layout'>,</span> <span class='hs-str'>"[["</span><span class='hs-layout'>)</span>
+<a name="line-170"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinElemntAsn</span><span class='hs-layout'>,</span> <span class='hs-str'>"[[&lt;-"</span><span class='hs-layout'>)</span>
+<a name="line-171"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinIndxAsn</span><span class='hs-layout'>,</span> <span class='hs-str'>"[&lt;-"</span><span class='hs-layout'>)</span>
+<a name="line-172"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-conid'>BinEql</span><span class='hs-layout'>,</span> <span class='hs-str'>"="</span><span class='hs-layout'>)</span>
+<a name="line-173"></a>  <span class='hs-keyglyph'>]</span>
+<a name="line-174"></a>
+<a name="line-175"></a><a name="resOps"></a><span class='hs-definition'>resOps</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Map</span><span class='hs-varop'>.</span><span class='hs-conid'>Map</span> <span class='hs-conid'>R_ResOp</span> <span class='hs-conid'>String</span>
+<a name="line-176"></a><span class='hs-definition'>resOps</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Map</span><span class='hs-varop'>.</span><span class='hs-varid'>fromList</span> <span class='hs-varid'>rResOps</span>
+<a name="line-177"></a>
+<a name="line-178"></a><a name="rFuncPrims"></a><span class='hs-definition'>rFuncPrims</span> <span class='hs-keyglyph'>::</span> <span class='hs-keyglyph'>[</span><span class='hs-layout'>(</span><span class='hs-conid'>String</span><span class='hs-layout'>,</span> <span class='hs-conid'>R_Builtin</span><span class='hs-layout'>)</span><span class='hs-keyglyph'>]</span>
+<a name="line-179"></a><span class='hs-definition'>rFuncPrims</span>  <span class='hs-keyglyph'>=</span>  
+<a name="line-180"></a>  <span class='hs-keyglyph'>[</span> <span class='hs-layout'>(</span><span class='hs-str'>"abs"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-181"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"sign"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-182"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"sqrt"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-183"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"floor"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-184"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"ceiling"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-185"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"exp"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-186"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"expm1"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-187"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"log2"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-188"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"log10"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-189"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"log1p"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-190"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"cos"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-191"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"sin"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-192"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"tan"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-193"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"acos"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-194"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"asin"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-195"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"atan"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-196"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"cosh"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-197"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"sinh"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-198"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"tanh"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-199"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"acosh"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-200"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"asinh"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-201"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"atanh"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-202"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"gamma"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-203"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"lgamma"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-204"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"digamma"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-205"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"trigamma"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-206"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"cumsum"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-207"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"cumprod"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-208"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"cummax"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-209"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"cummin"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-210"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"Im"</span>                  <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-211"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"Re"</span>                  <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-212"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"Arg"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-213"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"Conj"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-214"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"Mod"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_MathFn</span><span class='hs-layout'>)</span>
+<a name="line-215"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"nargs"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-216"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"missing"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-217"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"interactive"</span>         <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-218"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"is.xxx"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-219"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"as.call"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-220"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"as.character"</span>        <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-221"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"as.complex"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-222"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"as.double"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-223"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"as.environment"</span>      <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-224"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"as.integer"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-225"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"as.logical   as.raw"</span> <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-226"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".Primitive"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-227"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".Internal"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-228"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"globalenv"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-229"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"baseenv"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-230"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"emptyenv"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-231"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"pos.to.env"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-232"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"unclass"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-233"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"invisible"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-234"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"seq_along"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-235"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"seq_len"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_PrgFn</span><span class='hs-layout'>)</span>
+<a name="line-236"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"browser"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_DbgFn</span><span class='hs-layout'>)</span>
+<a name="line-237"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"proc.time"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_DbgFn</span><span class='hs-layout'>)</span>
+<a name="line-238"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"gc.time"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_DbgFn</span><span class='hs-layout'>)</span>
+<a name="line-239"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"tracemem"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_DbgFn</span><span class='hs-layout'>)</span>
+<a name="line-240"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"retracemem"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_DbgFn</span><span class='hs-layout'>)</span>
+<a name="line-241"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"untracemem"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_DbgFn</span><span class='hs-layout'>)</span>
+<a name="line-242"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"length"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-243"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"length&lt;-"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-244"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"class"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-245"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"class&lt;-"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-246"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"oldClass"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-247"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"oldClass&lt;-"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-248"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"attr"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-249"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"attr&lt;-"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-250"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"attributes"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-251"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"attributes&lt;-"</span>        <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-252"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"names"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-253"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"names&lt;-"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-254"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"dim"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-255"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"dim&lt;-"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-256"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"dimnames"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-257"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"dimnames&lt;-"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-258"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"environment&lt;-"</span>       <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-259"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"levels&lt;-"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-260"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"storage.mode&lt;-"</span>      <span class='hs-layout'>,</span> <span class='hs-conid'>R_AsnFn</span><span class='hs-layout'>)</span>
+<a name="line-261"></a>  <span class='hs-comment'>-- , (":"                   , R_nArgEff)</span>
+<a name="line-262"></a>  <span class='hs-comment'>-- , ("~"                   , R_nArgEff)</span>
+<a name="line-263"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"c"</span>                   <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-264"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"list"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-265"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"call"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-266"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"expression"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-267"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"substitute"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-268"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"UseMethod"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-269"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"standardGeneric"</span>     <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-270"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".C"</span>                  <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-271"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".Fortran"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-272"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".Call"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-273"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".External"</span>           <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-274"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".Call.graphics"</span>      <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-275"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".External.graphics"</span>  <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-276"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".subset"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-277"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".subset2"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-278"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".primTrace"</span>          <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-279"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>".primUntrace"</span>        <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-280"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"round"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-281"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"signif"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-282"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"rep"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-283"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"seq.int"</span>             <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-284"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"lazyLoadDBfetch"</span>     <span class='hs-layout'>,</span> <span class='hs-conid'>R_nArgEff</span><span class='hs-layout'>)</span>
+<a name="line-285"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"break"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-286"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"for"</span>                 <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-287"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"function"</span>            <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-288"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"if"</span>                  <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-289"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"next"</span>                <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-290"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"repeat"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-291"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"return"</span>              <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-292"></a>  <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-str'>"while"</span>               <span class='hs-layout'>,</span> <span class='hs-conid'>R_CtrlFlow</span><span class='hs-layout'>)</span>
+<a name="line-293"></a>  <span class='hs-keyglyph'>]</span>
+<a name="line-294"></a>
+<a name="line-295"></a>
+<a name="line-296"></a><a name="funcPrims"></a><span class='hs-definition'>funcPrims</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Map</span><span class='hs-varop'>.</span><span class='hs-conid'>Map</span> <span class='hs-conid'>String</span> <span class='hs-conid'>R_Builtin</span>
+<a name="line-297"></a><span class='hs-definition'>funcPrims</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Map</span><span class='hs-varop'>.</span><span class='hs-varid'>fromList</span> <span class='hs-varid'>rFuncPrims</span>
+<a name="line-298"></a>
+<a name="line-299"></a>
+<a name="line-300"></a><a name="rStyle"></a><span class='hs-definition'>rStyle</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>L</span><span class='hs-varop'>.</span><span class='hs-conid'>LanguageDef</span> <span class='hs-varid'>st</span>
+<a name="line-301"></a><span class='hs-definition'>rStyle</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>L</span><span class='hs-varop'>.</span><span class='hs-varid'>emptyDef</span>
+<a name="line-302"></a>   <span class='hs-layout'>{</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>commentStart</span>   <span class='hs-keyglyph'>=</span> <span class='hs-str'>""</span>
+<a name="line-303"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>commentEnd</span>     <span class='hs-keyglyph'>=</span> <span class='hs-str'>""</span>
+<a name="line-304"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>commentLine</span>    <span class='hs-keyglyph'>=</span> <span class='hs-str'>"#"</span>
+<a name="line-305"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>nestedComments</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>False</span>
+<a name="line-306"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>identStart</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>letter</span> <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>char</span> <span class='hs-chr'>'.'</span>
+<a name="line-307"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>identLetter</span>    <span class='hs-keyglyph'>=</span> <span class='hs-varid'>alphaNum</span> <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>oneOf</span> <span class='hs-str'>"._"</span>
+<a name="line-308"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>opStart</span>        <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>opLetter</span> <span class='hs-conid'>L</span><span class='hs-varop'>.</span><span class='hs-varid'>emptyDef</span>
+<a name="line-309"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>opLetter</span>       <span class='hs-keyglyph'>=</span> <span class='hs-varid'>oneOf</span> <span class='hs-str'>":!#$%&amp;*+./&lt;=&gt;?@\\^|-~(){}[];,"</span>
+<a name="line-310"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>reservedOpNames</span><span class='hs-keyglyph'>=</span> <span class='hs-conid'>[]</span>  <span class='hs-comment'>-- map snd rResOps</span>
+<a name="line-311"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>reservedNames</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>[]</span>  <span class='hs-comment'>-- map fst rFuncPrims</span>
+<a name="line-312"></a>   <span class='hs-layout'>,</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>caseSensitive</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>True</span>
+<a name="line-313"></a>   <span class='hs-layout'>}</span>
+<a name="line-314"></a>
+<a name="line-315"></a>
+<a name="line-316"></a><a name="rlang"></a><span class='hs-definition'>rlang</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-conid'>TokenParser</span> <span class='hs-varid'>st</span>
+<a name="line-317"></a><span class='hs-definition'>rlang</span> <span class='hs-keyglyph'>=</span>  <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>makeTokenParser</span> <span class='hs-varid'>rStyle</span>
+<a name="line-318"></a>
+<a name="line-319"></a> 
+<a name="line-320"></a>
+<a name="line-321"></a><a name="identifier"></a><span class='hs-comment'>-- For ease of export</span>
+<a name="line-322"></a><span class='hs-definition'>identifier</span>     <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>identifier</span>     <span class='hs-varid'>rlang</span> 
+<a name="line-323"></a><a name="reserved"></a><span class='hs-definition'>reserved</span>       <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>reserved</span>       <span class='hs-varid'>rlang</span> 
+<a name="line-324"></a><a name="operator"></a><span class='hs-definition'>operator</span>       <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>operator</span>       <span class='hs-varid'>rlang</span> 
+<a name="line-325"></a><a name="reservedOp"></a><span class='hs-definition'>reservedOp</span>     <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>reservedOp</span>     <span class='hs-varid'>rlang</span> 
+<a name="line-326"></a><a name="charLiteral"></a><span class='hs-definition'>charLiteral</span>    <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>charLiteral</span>    <span class='hs-varid'>rlang</span> 
+<a name="line-327"></a><a name="stringLiteral"></a><span class='hs-definition'>stringLiteral</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>stringLiteral</span>  <span class='hs-varid'>rlang</span> 
+<a name="line-328"></a><a name="natural"></a><span class='hs-definition'>natural</span>        <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>natural</span>        <span class='hs-varid'>rlang</span> 
+<a name="line-329"></a><a name="integer"></a><span class='hs-definition'>integer</span>        <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>integer</span>        <span class='hs-varid'>rlang</span> 
+<a name="line-330"></a><a name="float"></a><span class='hs-definition'>float</span>          <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>float</span>          <span class='hs-varid'>rlang</span> 
+<a name="line-331"></a><a name="naturalOrFloat"></a><span class='hs-definition'>naturalOrFloat</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>naturalOrFloat</span> <span class='hs-varid'>rlang</span> 
+<a name="line-332"></a><a name="decimal"></a><span class='hs-definition'>decimal</span>        <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>decimal</span>        <span class='hs-varid'>rlang</span> 
+<a name="line-333"></a><a name="hexadecimal"></a><span class='hs-definition'>hexadecimal</span>    <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>hexadecimal</span>    <span class='hs-varid'>rlang</span> 
+<a name="line-334"></a><a name="octal"></a><span class='hs-definition'>octal</span>          <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>octal</span>          <span class='hs-varid'>rlang</span> 
+<a name="line-335"></a><a name="symbol"></a><span class='hs-definition'>symbol</span>         <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>symbol</span>         <span class='hs-varid'>rlang</span> 
+<a name="line-336"></a><a name="lexeme"></a><span class='hs-definition'>lexeme</span>         <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>lexeme</span>         <span class='hs-varid'>rlang</span> 
+<a name="line-337"></a><a name="whiteSpace"></a><span class='hs-definition'>whiteSpace</span>     <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>whiteSpace</span>     <span class='hs-varid'>rlang</span> 
+<a name="line-338"></a><a name="parens"></a><span class='hs-definition'>parens</span>         <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>parens</span>         <span class='hs-varid'>rlang</span> 
+<a name="line-339"></a><a name="braces"></a><span class='hs-definition'>braces</span>         <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>braces</span>         <span class='hs-varid'>rlang</span> 
+<a name="line-340"></a><a name="angles"></a><span class='hs-definition'>angles</span>         <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>angles</span>         <span class='hs-varid'>rlang</span> 
+<a name="line-341"></a><a name="brackets"></a><span class='hs-definition'>brackets</span>       <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>brackets</span>       <span class='hs-varid'>rlang</span> 
+<a name="line-342"></a><a name="squares"></a><span class='hs-definition'>squares</span>        <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>squares</span>        <span class='hs-varid'>rlang</span> 
+<a name="line-343"></a><a name="semi"></a><span class='hs-definition'>semi</span>           <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>semi</span>           <span class='hs-varid'>rlang</span> 
+<a name="line-344"></a><a name="comma"></a><span class='hs-definition'>comma</span>          <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>comma</span>          <span class='hs-varid'>rlang</span> 
+<a name="line-345"></a><a name="colon"></a><span class='hs-definition'>colon</span>          <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>colon</span>          <span class='hs-varid'>rlang</span> 
+<a name="line-346"></a><a name="dot"></a><span class='hs-definition'>dot</span>            <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>dot</span>            <span class='hs-varid'>rlang</span> 
+<a name="line-347"></a><a name="semiSep"></a><span class='hs-definition'>semiSep</span>        <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>semiSep</span>        <span class='hs-varid'>rlang</span> 
+<a name="line-348"></a><a name="semiSep1"></a><span class='hs-definition'>semiSep1</span>       <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>semiSep1</span>       <span class='hs-varid'>rlang</span> 
+<a name="line-349"></a><a name="commaSep"></a><span class='hs-definition'>commaSep</span>       <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>commaSep</span>       <span class='hs-varid'>rlang</span> 
+<a name="line-350"></a><a name="commaSep1"></a><span class='hs-definition'>commaSep1</span>      <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span><span class='hs-varop'>.</span><span class='hs-varid'>commaSep1</span>      <span class='hs-varid'>rlang</span> 
+<a name="line-351"></a>
+<a name="line-352"></a>
+<a name="line-353"></a>
+<a name="line-354"></a>
+<a name="line-355"></a><a name="rTokenize"></a><span class='hs-comment'>-- rTokenize :: ParsecT String TokSt Identity [Token]</span>
+<a name="line-356"></a><span class='hs-definition'>rTokenize</span>  <span class='hs-keyglyph'>=</span> 
+<a name="line-357"></a>  <span class='hs-varid'>setState</span> <span class='hs-conid'>[]</span> <span class='hs-varop'>&gt;&gt;</span>
+<a name="line-358"></a>  <span class='hs-varid'>whiteSpace</span> <span class='hs-varop'>&gt;&gt;</span>
+<a name="line-359"></a>  <span class='hs-varid'>many</span> <span class='hs-varid'>lexRtok2</span>
+<a name="line-360"></a>
+<a name="line-361"></a><a name="lexRtok2"></a><span class='hs-definition'>lexRtok2</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-362"></a>  <span class='hs-varid'>pos</span> <span class='hs-keyglyph'>&lt;-</span>  <span class='hs-varid'>getPosition</span>
+<a name="line-363"></a>  <span class='hs-varid'>st</span>  <span class='hs-keyglyph'>&lt;-</span>  <span class='hs-varid'>getState</span>
+<a name="line-364"></a>  <span class='hs-varid'>tok</span> <span class='hs-keyglyph'>&lt;-</span>  <span class='hs-varid'>lexComment</span>
+<a name="line-365"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexSpecialConstant</span>
+<a name="line-366"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexInteger</span>
+<a name="line-367"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexComplex</span> 
+<a name="line-368"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexNumeric</span>
+<a name="line-369"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexLogical</span>
+<a name="line-370"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexString</span>
+<a name="line-371"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexOperator</span>
+<a name="line-372"></a>      <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>lexReserved</span>
+<a name="line-373"></a><span class='hs-comment'>--      &lt;|&gt; lexPunctuation</span>
+<a name="line-374"></a><span class='hs-comment'>--      &lt;|&gt; lexIdentifier </span>
+<a name="line-375"></a>  <span class='hs-varid'>return</span> <span class='hs-varid'>tok</span>
+<a name="line-376"></a>
+<a name="line-377"></a><a name="lexSpecialConstant"></a><span class='hs-definition'>lexSpecialConstant</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-378"></a><span class='hs-definition'>lexSpecialConstant</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-379"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-380"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>choice</span> <span class='hs-keyglyph'>[</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"NA_integer_"</span><span class='hs-layout'>)</span>
+<a name="line-381"></a>               <span class='hs-layout'>,</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"NA_real_"</span><span class='hs-layout'>)</span>
+<a name="line-382"></a>	       <span class='hs-layout'>,</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"NA_complex_"</span><span class='hs-layout'>)</span>
+<a name="line-383"></a>	       <span class='hs-layout'>,</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"NA_character_"</span><span class='hs-layout'>)</span>
+<a name="line-384"></a>	       <span class='hs-layout'>,</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"NA"</span><span class='hs-layout'>)</span>
+<a name="line-385"></a>	       <span class='hs-layout'>,</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"NaN"</span><span class='hs-layout'>)</span>
+<a name="line-386"></a>	       <span class='hs-layout'>,</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"NULL"</span><span class='hs-layout'>)</span>
+<a name="line-387"></a>	       <span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"Inf"</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>]</span>
+<a name="line-388"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-389"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>SpecialConstantToken</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> 
+<a name="line-390"></a>               <span class='hs-varid'>tk</span> <span class='hs-layout'>(</span><span class='hs-varid'>read</span> <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>SpecialConstant</span><span class='hs-layout'>)</span>
+<a name="line-391"></a>
+<a name="line-392"></a>
+<a name="line-393"></a><a name="lexComment"></a><span class='hs-definition'>lexComment</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-394"></a><span class='hs-definition'>lexComment</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-395"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-396"></a>  <span class='hs-varid'>char</span> <span class='hs-chr'>'#'</span>
+<a name="line-397"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span>  <span class='hs-varid'>many</span> <span class='hs-layout'>(</span><span class='hs-varid'>noneOf</span> <span class='hs-str'>"\n\r"</span><span class='hs-layout'>)</span>
+<a name="line-398"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-399"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>CommentToken</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> <span class='hs-varid'>tk</span> 
+<a name="line-400"></a>
+<a name="line-401"></a>
+<a name="line-402"></a><a name="lexInteger"></a><span class='hs-definition'>lexInteger</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-403"></a><span class='hs-definition'>lexInteger</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-404"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-405"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>many</span> <span class='hs-varid'>digit</span>
+<a name="line-406"></a>  <span class='hs-varid'>char</span> <span class='hs-chr'>'L'</span>
+<a name="line-407"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-408"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>IntegerToken</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>tk</span> <span class='hs-varop'>++</span> <span class='hs-str'>"L"</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>read</span> <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Integer</span><span class='hs-layout'>)</span>
+<a name="line-409"></a>  
+<a name="line-410"></a>
+<a name="line-411"></a><a name="lexNumeric"></a><span class='hs-definition'>lexNumeric</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-412"></a><span class='hs-definition'>lexNumeric</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-413"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-414"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>naturalOrFloat</span>
+<a name="line-415"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>tk'</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>either</span> <span class='hs-varid'>fromIntegral</span> <span class='hs-varid'>id</span> <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Double</span>
+<a name="line-416"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-417"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>NumericToken</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>show</span> <span class='hs-varid'>tk</span><span class='hs-layout'>)</span> <span class='hs-varid'>tk'</span>
+<a name="line-418"></a>
+<a name="line-419"></a><a name="lexComplex"></a><span class='hs-definition'>lexComplex</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-420"></a><span class='hs-definition'>lexComplex</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-421"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-422"></a>  <span class='hs-layout'>(</span><span class='hs-varid'>re'</span><span class='hs-layout'>,</span> <span class='hs-varid'>im'</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-keyword'>do</span> 
+<a name="line-423"></a>    <span class='hs-varid'>re</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>naturalOrFloat</span>
+<a name="line-424"></a>    <span class='hs-varid'>char</span> <span class='hs-chr'>'+'</span>
+<a name="line-425"></a>    <span class='hs-varid'>im</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>naturalOrFloat</span>
+<a name="line-426"></a>    <span class='hs-varid'>char</span> <span class='hs-chr'>'i'</span>
+<a name="line-427"></a>    <span class='hs-keyword'>let</span> <span class='hs-varid'>re'</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>either</span> <span class='hs-varid'>fromIntegral</span> <span class='hs-varid'>id</span> <span class='hs-varid'>re</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Double</span>
+<a name="line-428"></a>    <span class='hs-keyword'>let</span> <span class='hs-varid'>im'</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>either</span> <span class='hs-varid'>fromIntegral</span> <span class='hs-varid'>id</span> <span class='hs-varid'>im</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Double</span>
+<a name="line-429"></a>    <span class='hs-varid'>return</span> <span class='hs-layout'>(</span><span class='hs-varid'>re'</span><span class='hs-layout'>,</span> <span class='hs-varid'>im'</span><span class='hs-layout'>)</span>  
+<a name="line-430"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-431"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>ComplexToken</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> 
+<a name="line-432"></a>                <span class='hs-layout'>(</span><span class='hs-varid'>show</span> <span class='hs-varid'>re'</span> <span class='hs-varop'>++</span> <span class='hs-str'>" + "</span> <span class='hs-varop'>++</span> <span class='hs-varid'>show</span> <span class='hs-varid'>im'</span> <span class='hs-varop'>++</span> <span class='hs-str'>"i"</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>re'</span><span class='hs-layout'>,</span> <span class='hs-varid'>im'</span><span class='hs-layout'>)</span>
+<a name="line-433"></a>
+<a name="line-434"></a>
+<a name="line-435"></a><a name="lexLogical"></a><span class='hs-definition'>lexLogical</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-436"></a><span class='hs-definition'>lexLogical</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-437"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-438"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>choice</span> <span class='hs-keyglyph'>[</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"TRUE"</span><span class='hs-layout'>)</span><span class='hs-layout'>,</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-str'>"FALSE"</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>]</span>
+<a name="line-439"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>tk'</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>read</span> <span class='hs-layout'>(</span><span class='hs-layout'>(</span><span class='hs-varid'>head</span> <span class='hs-varid'>tk</span><span class='hs-layout'>)</span> <span class='hs-conop'>:</span> <span class='hs-layout'>(</span><span class='hs-varid'>map</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span><span class='hs-varop'>.</span><span class='hs-varid'>toLower</span> <span class='hs-varop'>$</span> <span class='hs-varid'>tail</span> <span class='hs-varid'>tk</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Bool</span> 
+<a name="line-440"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-441"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>LogicalToken</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> <span class='hs-varid'>tk</span> <span class='hs-varid'>tk'</span> 
+<a name="line-442"></a>
+<a name="line-443"></a>
+<a name="line-444"></a><a name="lexString"></a><span class='hs-definition'>lexString</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-445"></a><span class='hs-definition'>lexString</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-446"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-447"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>quotedString</span>
+<a name="line-448"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-449"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-conid'>StringToken</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> <span class='hs-varid'>tk</span> 
+<a name="line-450"></a>
+<a name="line-451"></a>
+<a name="line-452"></a><a name="lexOperator"></a><span class='hs-definition'>lexOperator</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-453"></a><span class='hs-definition'>lexOperator</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-454"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-455"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>ops</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>map</span> <span class='hs-varid'>snd</span> <span class='hs-varid'>rResOps</span>
+<a name="line-456"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>choice</span> <span class='hs-layout'>(</span><span class='hs-varid'>map</span> <span class='hs-layout'>(</span><span class='hs-keyglyph'>\</span><span class='hs-varid'>z</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-varid'>z</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-varid'>ops</span><span class='hs-layout'>)</span>
+<a name="line-457"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-458"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>tk'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Map</span><span class='hs-varop'>.</span><span class='hs-varid'>lookup</span> <span class='hs-varid'>tk</span> <span class='hs-varid'>operatorMap</span>
+<a name="line-459"></a>  <span class='hs-varid'>res</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-keyword'>case</span> <span class='hs-varid'>tk'</span> <span class='hs-keyword'>of</span> 
+<a name="line-460"></a>              <span class='hs-conid'>Just</span> <span class='hs-varid'>x</span>  <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>return</span> <span class='hs-varid'>x</span>
+<a name="line-461"></a>              <span class='hs-conid'>Nothing</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>return</span> <span class='hs-conid'>ErrorToken</span>
+<a name="line-462"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-varid'>res</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> 
+<a name="line-463"></a>
+<a name="line-464"></a>
+<a name="line-465"></a><span class='hs-comment'>{-     &lt;|&gt; do 
+<a name="line-466"></a>           char '%'
+<a name="line-467"></a>           symb &lt;- many alphaNum
+<a name="line-468"></a>           char '%'
+<a name="line-469"></a>           return $ concat ["%", symb, "%"]
+<a name="line-470"></a>-}</span>
+<a name="line-471"></a>
+<a name="line-472"></a><a name="lexReserved"></a><span class='hs-definition'>lexReserved</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>ParsecT</span> <span class='hs-conid'>String</span> <span class='hs-varid'>u</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span><span class='hs-varop'>.</span><span class='hs-conid'>Identity</span> <span class='hs-conid'>Token</span>
+<a name="line-473"></a><span class='hs-definition'>lexReserved</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-474"></a>  <span class='hs-varid'>startPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span> 
+<a name="line-475"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>rsrvd</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>map</span> <span class='hs-varid'>fst</span> <span class='hs-varid'>rFuncPrims</span>
+<a name="line-476"></a>  <span class='hs-varid'>tk</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>choice</span> <span class='hs-layout'>(</span><span class='hs-varid'>map</span> <span class='hs-layout'>(</span><span class='hs-keyglyph'>\</span><span class='hs-varid'>z</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>try</span> <span class='hs-layout'>(</span><span class='hs-varid'>string</span> <span class='hs-varid'>z</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-varid'>rsrvd</span><span class='hs-layout'>)</span>
+<a name="line-477"></a>  <span class='hs-varid'>endPos</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>getPosition</span>
+<a name="line-478"></a>  <span class='hs-keyword'>let</span> <span class='hs-varid'>tk'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Map</span><span class='hs-varop'>.</span><span class='hs-varid'>lookup</span> <span class='hs-varid'>tk</span> <span class='hs-varid'>reservedMap</span>
+<a name="line-479"></a>  <span class='hs-varid'>res</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-keyword'>case</span> <span class='hs-varid'>tk'</span> <span class='hs-keyword'>of</span> 
+<a name="line-480"></a>              <span class='hs-conid'>Just</span> <span class='hs-varid'>x</span>  <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>return</span> <span class='hs-varid'>x</span>
+<a name="line-481"></a>              <span class='hs-conid'>Nothing</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>return</span> <span class='hs-conid'>ErrorToken</span>
+<a name="line-482"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-varid'>res</span> <span class='hs-layout'>(</span><span class='hs-varid'>mkSrcSpan'</span> <span class='hs-varid'>startPos</span> <span class='hs-varid'>endPos</span><span class='hs-layout'>)</span> 
+<a name="line-483"></a>
+<a name="line-484"></a><span class='hs-comment'>{-
+<a name="line-485"></a>lexIdentifier :: ParsecT String u Control.Monad.Identity.Identity Token
+<a name="line-486"></a>lexIdentifier = do
+<a name="line-487"></a>  startPos &lt;- getPosition 
+<a name="line-488"></a>  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+<a name="line-489"></a>  tk &lt;- identifier
+<a name="line-490"></a>  endPos &lt;- getPosition
+<a name="line-491"></a>  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+<a name="line-492"></a>      tok_sp = mkSrcSpan sp ep
+<a name="line-493"></a>      tok = IdentifierToken tok_sp tk 
+<a name="line-494"></a>  return tok
+<a name="line-495"></a>
+<a name="line-496"></a>lexPunctuation :: ParsecT String u Control.Monad.Identity.Identity Token
+<a name="line-497"></a>lexPunctuation = do
+<a name="line-498"></a>  startPos &lt;- getPosition 
+<a name="line-499"></a>  let sp = Sloc (sourceName startPos) (sourceLine startPos) (sourceColumn startPos)
+<a name="line-500"></a>
+<a name="line-501"></a>  endPos &lt;- getPosition
+<a name="line-502"></a>  let ep = Sloc (sourceName endPos) (sourceLine endPos) (sourceColumn endPos)
+<a name="line-503"></a>      tok_sp = mkSrcSpan sp ep
+<a name="line-504"></a>      tok = PunctuationToken tok_sp tk 
+<a name="line-505"></a>  return tok
+<a name="line-506"></a>
+<a name="line-507"></a>
+<a name="line-508"></a>
+<a name="line-509"></a>
+<a name="line-510"></a>
+<a name="line-511"></a>
+<a name="line-512"></a>
+<a name="line-513"></a>
+<a name="line-514"></a>
+<a name="line-515"></a>
+<a name="line-516"></a>
+<a name="line-517"></a>
+<a name="line-518"></a>
+<a name="line-519"></a>
+<a name="line-520"></a>
+<a name="line-521"></a>
+<a name="line-522"></a>
+<a name="line-523"></a>
+<a name="line-524"></a>
+<a name="line-525"></a>
+<a name="line-526"></a>
+<a name="line-527"></a>
+<a name="line-528"></a>
+<a name="line-529"></a>
+<a name="line-530"></a>-----------------------------------------------------------------------
+<a name="line-531"></a>-----------------------------------------------------------------------
+<a name="line-532"></a>-- deprecated 
+<a name="line-533"></a>--
+<a name="line-534"></a>lexFloat = do
+<a name="line-535"></a>  tk &lt;- float
+<a name="line-536"></a>  return $ RNumConst Dble tk
+<a name="line-537"></a>
+<a name="line-538"></a>lexInt = do
+<a name="line-539"></a>  tk &lt;- integer
+<a name="line-540"></a>  return $ RNumConst Intgr (fromIntegral tk)
+<a name="line-541"></a>
+<a name="line-542"></a>lexSym = do
+<a name="line-543"></a>  syms &lt;- many1 $ lexeme (oneOf ":!#$%&amp;*+./&lt;=&gt;?@\\^|-~();,{}[]")
+<a name="line-544"></a>  let tk = elem syms $ map snd rResOps 
+<a name="line-545"></a>  return $ ROper Oprator syms
+<a name="line-546"></a>
+<a name="line-547"></a>lexId = do
+<a name="line-548"></a>  tk &lt;- identifier
+<a name="line-549"></a>  return $ RIdent Variable tk
+<a name="line-550"></a>
+<a name="line-551"></a>lexComment = do
+<a name="line-552"></a>  char '#'
+<a name="line-553"></a>  tok &lt;-  many (noneOf "\n\r")
+<a name="line-554"></a>  return $ RComment Cmmnt tok
+<a name="line-555"></a>
+<a name="line-556"></a>
+<a name="line-557"></a>lexRtok  = do
+<a name="line-558"></a>  pos &lt;-  getPosition
+<a name="line-559"></a>  st  &lt;-  getState
+<a name="line-560"></a>  tok &lt;-  lexComment
+<a name="line-561"></a>      &lt;|&gt; lexInt
+<a name="line-562"></a>      &lt;|&gt; lexFloat
+<a name="line-563"></a>      &lt;|&gt; lexString
+<a name="line-564"></a>      &lt;|&gt; lexSym
+<a name="line-565"></a>      &lt;|&gt; lexId
+<a name="line-566"></a>  return (tok, pos)
+<a name="line-567"></a>
+<a name="line-568"></a>-}</span>
+<a name="line-569"></a>
+<a name="line-570"></a>
+<a name="line-571"></a><a name="dblQuotedString"></a><span class='hs-definition'>dblQuotedString</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Prim</span><span class='hs-varop'>.</span><span class='hs-conid'>Stream</span> <span class='hs-varid'>s</span> <span class='hs-varid'>m</span> <span class='hs-conid'>Char</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Prim</span><span class='hs-varop'>.</span><span class='hs-conid'>ParsecT</span> <span class='hs-varid'>s</span> <span class='hs-varid'>u</span> <span class='hs-varid'>m</span> <span class='hs-conid'>String</span>
+<a name="line-572"></a><span class='hs-definition'>dblQuotedString</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-573"></a>  <span class='hs-varid'>capture</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-layout'>(</span><span class='hs-varid'>between</span> <span class='hs-layout'>(</span><span class='hs-varid'>char</span> <span class='hs-chr'>'"'</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>char</span> <span class='hs-chr'>'"'</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>many</span> <span class='hs-varop'>$</span> <span class='hs-varid'>choice</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>char</span> <span class='hs-chr'>'\\'</span> <span class='hs-varop'>&gt;&gt;</span> <span class='hs-varid'>char</span> <span class='hs-chr'>'"'</span><span class='hs-layout'>,</span> <span class='hs-varid'>noneOf</span> <span class='hs-str'>"\""</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
+<a name="line-574"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-varid'>capture</span>
+<a name="line-575"></a>
+<a name="line-576"></a><a name="singQuotedString"></a><span class='hs-definition'>singQuotedString</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Prim</span><span class='hs-varop'>.</span><span class='hs-conid'>Stream</span> <span class='hs-varid'>s</span> <span class='hs-varid'>m</span> <span class='hs-conid'>Char</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Prim</span><span class='hs-varop'>.</span><span class='hs-conid'>ParsecT</span> <span class='hs-varid'>s</span> <span class='hs-varid'>u</span> <span class='hs-varid'>m</span> <span class='hs-conid'>String</span>
+<a name="line-577"></a><span class='hs-definition'>singQuotedString</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>do</span>
+<a name="line-578"></a>  <span class='hs-varid'>capture</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-layout'>(</span><span class='hs-varid'>between</span> <span class='hs-layout'>(</span><span class='hs-varid'>char</span> <span class='hs-chr'>'\''</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>char</span> <span class='hs-chr'>'\''</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>many</span> <span class='hs-varop'>$</span> <span class='hs-varid'>choice</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>char</span> <span class='hs-chr'>'\\'</span> <span class='hs-varop'>&gt;&gt;</span> <span class='hs-varid'>char</span> <span class='hs-chr'>'\''</span><span class='hs-layout'>,</span> <span class='hs-varid'>noneOf</span> <span class='hs-str'>"'"</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
+<a name="line-579"></a>  <span class='hs-varid'>return</span> <span class='hs-varop'>$</span> <span class='hs-varid'>capture</span>
+<a name="line-580"></a>
+<a name="line-581"></a>
+<a name="line-582"></a><a name="quotedString"></a><span class='hs-definition'>quotedString</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Prim</span><span class='hs-varop'>.</span><span class='hs-conid'>Stream</span> <span class='hs-varid'>s</span> <span class='hs-varid'>m</span> <span class='hs-conid'>Char</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-conid'>Parsec</span><span class='hs-varop'>.</span><span class='hs-conid'>Prim</span><span class='hs-varop'>.</span><span class='hs-conid'>ParsecT</span> <span class='hs-varid'>s</span> <span class='hs-varid'>u</span> <span class='hs-varid'>m</span> <span class='hs-conid'>String</span>
+<a name="line-583"></a><span class='hs-definition'>quotedString</span> <span class='hs-keyglyph'>=</span>  <span class='hs-varid'>try</span> <span class='hs-varid'>dblQuotedString</span>
+<a name="line-584"></a>            <span class='hs-varop'>&lt;|&gt;</span> <span class='hs-varid'>singQuotedString</span>
+<a name="line-585"></a>
+<a name="line-586"></a><span class='hs-comment'>{-
+<a name="line-587"></a>testParse = do 
+<a name="line-588"></a>  text &lt;- readFile "checkRegion.R"
+<a name="line-589"></a>  let res = runParser rTokenize [] "TEST" text
+<a name="line-590"></a>  return res
+<a name="line-591"></a>
+<a name="line-592"></a>
+<a name="line-593"></a>rLex text = 
+<a name="line-594"></a>  let res       = runParser rTokenize [] "rLex first pass" text
+<a name="line-595"></a>      tokStream = either (\z -&gt; []) id res
+<a name="line-596"></a>  in tokStream
+<a name="line-597"></a>-}</span>
 </pre></body>
 </html>
