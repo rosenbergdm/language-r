@@ -45,9 +45,97 @@ instance Annotated Ident where
 -- | A block of statements. A suite is a group of statements controlled by a clause, 
 -- for example, the body of a loop. 
 
-type Suite annot = [Statement annot] 
+-- type Suite annot = [Statement annot] 
 
-type SuiteSpan = Suite SrcSpan
+-- type SuiteSpan = Suite SrcSpan
+
+-- | SEXP types from `R Internals` manual section 1.1.1
+data SExp = NilSxp Nilsxp
+          | SymSxp Symsxp
+  deriving (Read, Show, Ord, Eq)
+
+data Nilsxp = Nilsxp
+  deriving (Read, Show, Ord, Eq)
+  -- -| @NULL@ object
+  -- = Nilsxp
+
+  -- | A variable name (identifier)
+  -- | SymSxp
+data Symsxp = Symsxp
+     { sym_name     :: String
+     , sym_internal :: Bool
+     , sym_value    :: SExp
+     }
+  deriving (Read, Eq, Ord, Show)
+{-
+  -- | A 'pairlist' object (internal use only)
+  | ListSxp
+    { tag  :: Either Nilsxp SymSxp 
+    , car  :: Either Nilsxp ListSxp
+    , cdr  :: Either Nilsxp ListSxp
+    }
+
+  -- | Function closure
+  | Cloxsp
+
+  -- | Environment (Current frame + enclosing frame)
+  | Envsxp
+
+  -- | A 'promise' object (unevaluated-but-promised function call)
+  | Promsxp
+
+  -- | Special functions
+  | Specialsxp
+
+  -- | Builtin functions
+  | Builinsxp
+
+  -- | Internal character string
+  | Charsxp
+
+  -- | Logical vector
+  | Lglsxp
+
+  -- | Integer vector
+  | Intsxp
+
+  -- | Numeric vector
+  | Realsxp
+
+  -- | complex vector
+  | Cplxsxp
+
+  -- | Character vector
+  | Strsxp
+
+  -- | dot-dot-dot object
+  | Dotsxp
+
+  -- | The 'any' arg for generic functions 
+  | Anysxp
+
+  -- | List structure (generic vector)
+  | Vexsxp
+
+  -- | Expression vector
+  | Exprsxp
+
+  -- | Byte code
+  | Bcodesxp
+
+  -- | External pointer reference
+  | Extptrsxp
+
+  -- | Weak reference
+  | Weakrefsxp
+
+  -- | Raw vector
+  | Rawsxp
+
+  -- | S4 classes not of simple type 
+  | S4sxp
+
+
 
 
 
@@ -182,7 +270,7 @@ data Expr annot
      , expr_annot :: annot
      }
    deriving (Eq,Ord,Show,Typeable,Data)
-{- 
+ 
    -- | Slicing, for example \'w [x:y:z]\'. 
    | SlicedExpr { slicee :: Expr annot, slices :: [Slice annot], expr_annot :: annot } 
 
@@ -214,6 +302,5 @@ instance Span ExprSpan where
 
 instance Annotated Expr where
    annot = expr_annot 
-
 
 -}
