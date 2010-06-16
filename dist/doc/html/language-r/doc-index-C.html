@@ -4,7 +4,7 @@
 ><HEAD
 ><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
 ><TITLE
->language-r-0.1.4: A package for parsing and compiling R/Splus code. (Index)</TITLE
+>language-r-0.1.5: A package for parsing and compiling R/Splus code. (Index)</TITLE
 ><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
 ></HEAD
 ><BODY
@@ -17,7 +17,7 @@
 ><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
 ></TD
 ><TD CLASS="title"
->language-r-0.1.4: A package for parsing and compiling R/Splus code.</TD
+>language-r-0.1.5: A package for parsing and compiling R/Splus code.</TD
 ><TD CLASS="topbut"
 ><A HREF="index.html"
 >Contents</A
@@ -135,17 +135,17 @@
 ><TABLE ID="indexlist" CELLPADDING="0" CELLSPACING="5"
 ><TR CLASS="indexrow"
 ><TD CLASS="indexentry"
->Call</TD
+>car</TD
 ><TD CLASS="indexlinks"
-><A HREF="Language-R-AST.html#v%3ACall"
+><A HREF="Language-R-AST.html#v%3Acar"
 >Language.R.AST</A
 ></TD
 ></TR
 ><TR CLASS="indexrow"
 ><TD CLASS="indexentry"
->call_fun</TD
+>cdr</TD
 ><TD CLASS="indexlinks"
-><A HREF="Language-R-AST.html#v%3Acall_fun"
+><A HREF="Language-R-AST.html#v%3Acdr"
 >Language.R.AST</A
 ></TD
 ></TR
@@ -159,17 +159,41 @@
 ></TR
 ><TR CLASS="indexrow"
 ><TD CLASS="indexentry"
->Char</TD
+>charLiteral</TD
 ><TD CLASS="indexlinks"
-><A HREF="Language-R-AST.html#v%3AChar"
+>Language.R.Lexer</TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>CharSxp</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#v%3ACharSxp"
 >Language.R.AST</A
 ></TD
 ></TR
 ><TR CLASS="indexrow"
 ><TD CLASS="indexentry"
->charLiteral</TD
+>Charsxp</TD
 ><TD CLASS="indexlinks"
->Language.R.Lexer</TD
+><A HREF="Language-R-AST.html#t%3ACharsxp"
+>Language.R.AST</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>CharSxpType</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#t%3ACharSxpType"
+>Language.R.AST</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>char_value</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#v%3Achar_value"
+>Language.R.AST</A
+></TD
 ></TR
 ><TR CLASS="indexrow"
 ><TD CLASS="indexentry"
@@ -193,6 +217,30 @@
 ><TD CLASS="indexlinks"
 ><A HREF="Language-R-Token.html#v%3AClassToken"
 >Language.R.Token</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>CloSxp</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#v%3ACloSxp"
+>Language.R.AST</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>Closxp</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#t%3AClosxp"
+>Language.R.AST</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>clos_env</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#v%3Aclos_env"
+>Language.R.AST</A
 ></TD
 ></TR
 ><TR CLASS="indexrow"
@@ -269,6 +317,14 @@
 ></TR
 ><TR CLASS="indexrow"
 ><TD CLASS="indexentry"
+>complex_value</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#v%3Acomplex_value"
+>Language.R.AST</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
 >ComTok</TD
 ><TD CLASS="indexlinks"
 ><A HREF="Language-R-Internal.html#v%3AComTok"
@@ -277,42 +333,10 @@
 ></TR
 ><TR CLASS="indexrow"
 ><TD CLASS="indexentry"
->Conditional</TD
-><TD CLASS="indexlinks"
-><A HREF="Language-R-AST.html#v%3AConditional"
->Language.R.AST</A
-></TD
-></TR
-><TR CLASS="indexrow"
-><TD CLASS="indexentry"
->cond_else</TD
-><TD CLASS="indexlinks"
-><A HREF="Language-R-AST.html#v%3Acond_else"
->Language.R.AST</A
-></TD
-></TR
-><TR CLASS="indexrow"
-><TD CLASS="indexentry"
->cond_guards</TD
-><TD CLASS="indexlinks"
-><A HREF="Language-R-AST.html#v%3Acond_guards"
->Language.R.AST</A
-></TD
-></TR
-><TR CLASS="indexrow"
-><TD CLASS="indexentry"
 >ConjToken</TD
 ><TD CLASS="indexlinks"
 ><A HREF="Language-R-Token.html#v%3AConjToken"
 >Language.R.Token</A
-></TD
-></TR
-><TR CLASS="indexrow"
-><TD CLASS="indexentry"
->Continue</TD
-><TD CLASS="indexlinks"
-><A HREF="Language-R-AST.html#v%3AContinue"
->Language.R.AST</A
 ></TD
 ></TR
 ><TR CLASS="indexrow"
@@ -329,6 +353,22 @@
 ><TD CLASS="indexlinks"
 ><A HREF="Language-R-Token.html#v%3ACosToken"
 >Language.R.Token</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>CplxSxp</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#v%3ACplxSxp"
+>Language.R.AST</A
+></TD
+></TR
+><TR CLASS="indexrow"
+><TD CLASS="indexentry"
+>Cplxsxp</TD
+><TD CLASS="indexlinks"
+><A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Language.R.AST</A
 ></TD
 ></TR
 ><TR CLASS="indexrow"

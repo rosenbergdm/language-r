@@ -8,13 +8,13 @@ import Data.Version (Version(..))
 import System.Environment (getEnv)
 
 version :: Version
-version = Version {versionBranch = [0,1,4], versionTags = []}
+version = Version {versionBranch = [0,1,5], versionTags = []}
 
 bindir, libdir, datadir, libexecdir :: FilePath
 
 bindir     = "/usr/local/bin"
-libdir     = "/usr/local/lib/language-r-0.1.4/ghc-6.12.2"
-datadir    = "/usr/doc/share/language-r-0.1.4"
+libdir     = "/usr/local/lib/language-r-0.1.5/ghc-6.12.2"
+datadir    = "/usr/doc/share/language-r-0.1.5"
 libexecdir = "/usr/local/libexec"
 
 getBinDir, getLibDir, getDataDir, getLibexecDir :: IO FilePath

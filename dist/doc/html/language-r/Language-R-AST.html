@@ -21,7 +21,7 @@
 ><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
 ></TD
 ><TD CLASS="title"
->language-r-0.1.4: A package for parsing and compiling R/Splus code.</TD
+>language-r-0.1.5: A package for parsing and compiling R/Splus code.</TD
 ><TD CLASS="topbut"
 ><A HREF="index.html"
 >Contents</A
@@ -79,724 +79,18 @@
 ><TR
 ><TD CLASS="doc"
 ><P
->Created     : 05<EM
->28</EM
+>created     : 06<EM
+>14</EM
 >10
 </P
 ><P
 >Description :
-    Representation of the R Abstract Syntax Tree.
+    DESCRIPTION HERE.
 </P
 ></TD
 ></TR
 ><TR
 ><TD CLASS="s15"
-></TD
-></TR
-><TR
-><TD CLASS="section1"
->Synopsis</TD
-></TR
-><TR
-><TD CLASS="s15"
-></TD
-></TR
-><TR
-><TD CLASS="body"
-><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->class</SPAN
->  <A HREF="#t%3AAnnotated"
->Annotated</A
-> t  <SPAN CLASS="keyword"
->where</SPAN
-></TD
-></TR
-><TR
-><TD CLASS="body"
-><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="decl"
-><A HREF="#v%3Aannot"
->annot</A
-> ::  t annot -&gt; annot</TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="s8"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->data</SPAN
->  <A HREF="#t%3AIdent"
->Ident</A
-> annot = <A HREF="#v%3AIdent"
->Ident</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aident_string"
->ident_string</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
->String</A
-></TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aident_annot"
->ident_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="s8"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->type</SPAN
-> <A HREF="#t%3AIdentSpan"
->IdentSpan</A
-> = <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
->SrcSpan</A
-></TD
-></TR
-><TR
-><TD CLASS="s8"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->type</SPAN
-> <A HREF="#t%3ASuite"
->Suite</A
-> annot = [<A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> annot]</TD
-></TR
-><TR
-><TD CLASS="s8"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->type</SPAN
-> <A HREF="#t%3ASuiteSpan"
->SuiteSpan</A
-> = <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
->SrcSpan</A
-></TD
-></TR
-><TR
-><TD CLASS="s8"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->data</SPAN
->  <A HREF="#t%3AStatement"
->Statement</A
-> annot </TD
-></TR
-><TR
-><TD CLASS="body"
-><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="decl"
->= <A HREF="#v%3AWhile"
->While</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Awhile_cond"
->while_cond</A
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Awhile_body"
->while_body</A
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AFor"
->For</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Afor_target"
->for_target</A
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Afor_values"
->for_values</A
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Afor_body"
->for_body</A
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AConditional"
->Conditional</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Acond_guards"
->cond_guards</A
-> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot, <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot)]</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Acond_else"
->cond_else</A
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AAssign"
->Assign</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aassign_to"
->assign_to</A
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aassign_expr"
->assign_expr</A
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AReturn"
->Return</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Areturn_expr"
->return_expr</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ABreak"
->Break</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AContinue"
->Continue</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ARepeat"
->Repeat</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Arepeat_expr"
->repeat_expr</A
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ASwitch"
->Switch</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aswitch_guards"
->switch_guards</A
-> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot, <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot)]</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AStmtExpr"
->StmtExpr</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_expr"
->stmt_expr</A
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3APrint"
->Print</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aprint_exprs"
->print_exprs</A
-> :: [<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot]</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AExec"
->Exec</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexec_expr"
->exec_expr</A
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexec_globals_locals"
->exec_globals_locals</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot))</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AFun"
->Fun</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Afun_name"
->fun_name</A
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Afun_result_annot"
->fun_result_annot</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Afun_body"
->fun_body</A
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astmt_annot"
->stmt_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-></TABLE
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="s8"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->type</SPAN
-> <A HREF="#t%3AStatementSpan"
->StatementSpan</A
-> = <A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
->SrcSpan</A
-></TD
-></TR
-><TR
-><TD CLASS="s8"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->data</SPAN
->  <A HREF="#t%3AExpr"
->Expr</A
-> annot </TD
-></TR
-><TR
-><TD CLASS="body"
-><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="decl"
->= <A HREF="#v%3AVar"
->Var</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Avar_ident"
->var_ident</A
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ANum"
->Num</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Anum_value"
->num_value</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
->Double</A
-></TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_literal"
->expr_literal</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
->String</A
-></TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ABool"
->Bool</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Alogical_value"
->logical_value</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
->Bool</A
-></TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ANull"
->Null</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ANaN"
->NaN</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ANA"
->NA</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AByteStrings"
->ByteStrings</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Abyte_string_strings"
->byte_string_strings</A
-> :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
->String</A
->]</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3AChar"
->Char</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Astrings_strings"
->strings_strings</A
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
->String</A
-></TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-><TR
-><TD CLASS="decl"
->| <A HREF="#v%3ACall"
->Call</A
-> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Acall_fun"
->call_fun</A
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-></TR
-><TR
-><TD CLASS="recfield"
-><A HREF="#v%3Aexpr_annot"
->expr_annot</A
-> :: annot</TD
-></TR
-></TABLE
->}</TD
-></TR
-></TABLE
-></TD
-></TR
-></TABLE
-></TD
-></TR
-></TABLE
 ></TD
 ></TR
 ><TR
@@ -814,25 +108,1525 @@
 ><TR
 ><TD CLASS="decl"
 ><SPAN CLASS="keyword"
->class</SPAN
->  <A NAME="t:Annotated"
-><A NAME="t%3AAnnotated"
+>data</SPAN
+>  <A NAME="t:Nilsxp"
+><A NAME="t%3ANilsxp"
 ></A
 ></A
 ><B
->Annotated</B
-> t  <SPAN CLASS="keyword"
+>Nilsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Nilsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Nilsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Symsxp"
+><A NAME="t%3ASymsxp"
+></A
+></A
+><B
+>Symsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Symsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Symsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Listsxp"
+><A NAME="t%3AListsxp"
+></A
+></A
+><B
+>Listsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Listsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Listsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Closxp"
+><A NAME="t%3AClosxp"
+></A
+></A
+><B
+>Closxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Closxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Closxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Envsxp"
+><A NAME="t%3AEnvsxp"
+></A
+></A
+><B
+>Envsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Envsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Envsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Promsxp"
+><A NAME="t%3APromsxp"
+></A
+></A
+><B
+>Promsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Promsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Promsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3APromsxp"
+>Promsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3APromsxp"
+>Promsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Langsxp"
+><A NAME="t%3ALangsxp"
+></A
+></A
+><B
+>Langsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Langsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Langsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Specialsxp"
+><A NAME="t%3ASpecialsxp"
+></A
+></A
+><B
+>Specialsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Specialsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Specialsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Builtinsxp"
+><A NAME="t%3ABuiltinsxp"
+></A
+></A
+><B
+>Builtinsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Builtinsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Builtinsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Charsxp"
+><A NAME="t%3ACharsxp"
+></A
+></A
+><B
+>Charsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Charsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Charsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Lglsxp"
+><A NAME="t%3ALglsxp"
+></A
+></A
+><B
+>Lglsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Lglsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Lglsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Intsxp"
+><A NAME="t%3AIntsxp"
+></A
+></A
+><B
+>Intsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Intsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Intsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Realsxp"
+><A NAME="t%3ARealsxp"
+></A
+></A
+><B
+>Realsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Realsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Realsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Cplxsxp"
+><A NAME="t%3ACplxsxp"
+></A
+></A
+><B
+>Cplxsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Cplxsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Cplxsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Strsxp"
+><A NAME="t%3AStrsxp"
+></A
+></A
+><B
+>Strsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Strsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Strsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Dotsxp"
+><A NAME="t%3ADotsxp"
+></A
+></A
+><B
+>Dotsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Dotsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Dotsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ADotsxp"
+>Dotsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ADotsxp"
+>Dotsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Anysxp"
+><A NAME="t%3AAnysxp"
+></A
+></A
+><B
+>Anysxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Anysxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Anysxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Vecsxp"
+><A NAME="t%3AVecsxp"
+></A
+></A
+><B
+>Vecsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Vecsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Vecsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Exprsxp"
+><A NAME="t%3AExprsxp"
+></A
+></A
+><B
+>Exprsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Exprsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Exprsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Bcodesxp"
+><A NAME="t%3ABcodesxp"
+></A
+></A
+><B
+>Bcodesxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Bcodesxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Bcodesxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ABcodesxp"
+>Bcodesxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABcodesxp"
+>Bcodesxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Extptrsxp"
+><A NAME="t%3AExtptrsxp"
+></A
+></A
+><B
+>Extptrsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Extptrsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Extptrsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Weakrefsxp"
+><A NAME="t%3AWeakrefsxp"
+></A
+></A
+><B
+>Weakrefsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Weakrefsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Weakrefsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AWeakrefsxp"
+>Weakrefsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AWeakrefsxp"
+>Weakrefsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Rawsxp"
+><A NAME="t%3ARawsxp"
+></A
+></A
+><B
+>Rawsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Rawsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Rawsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ARawsxp"
+>Rawsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARawsxp"
+>Rawsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:S4sxp"
+><A NAME="t%3AS4sxp"
+></A
+></A
+><B
+>S4sxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:S4sxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:S4sxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AS4sxp"
+>S4sxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AS4sxp"
+>S4sxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Funsxp"
+><A NAME="t%3AFunsxp"
+></A
+></A
+><B
+>Funsxp</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Funsxp')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Funsxp" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AFunsxp"
+>Funsxp</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:IsSexp"
+><A NAME="t%3AIsSexp"
+></A
+></A
+><B
+>IsSexp</B
+> a  <SPAN CLASS="keyword"
 >where</SPAN
 ></TD
 ></TR
 ><TR
 ><TD CLASS="body"
 ><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="ndoc"
->Convenient access to annotations in annotated types. 
-</TD
-></TR
 ><TR
 ><TD CLASS="s8"
 ></TD
@@ -846,13 +1640,15 @@
 ><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
 ><TR
 ><TD CLASS="decl"
-><A NAME="v:annot"
-><A NAME="v%3Aannot"
+><A NAME="v:isSexp"
+><A NAME="v%3AisSexp"
 ></A
 ></A
 ><B
->annot</B
-> ::  t annot -&gt; annot</TD
+>isSexp</B
+> :: a -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
 ></TR
 ></TABLE
 ></TD
@@ -863,27 +1659,211 @@
 ></TR
 ><TR
 ><TD CLASS="section4"
-><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Annotated')" ALT="show/hide"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:IsSexp')" ALT="show/hide"
 > Instances</TD
 ></TR
 ><TR
 ><TD CLASS="body"
-><DIV ID="i:Annotated" STYLE="display:block;"
+><DIV ID="i:IsSexp" STYLE="display:block;"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="decl"
-><A HREF="Language-R-AST.html#t%3AAnnotated"
->Annotated</A
-> <A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AFunsxp"
+>Funsxp</A
 ></TD
 ></TR
 ><TR
 ><TD CLASS="decl"
-><A HREF="Language-R-AST.html#t%3AAnnotated"
->Annotated</A
-> <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AS4sxp"
+>S4sxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ARawsxp"
+>Rawsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AWeakrefsxp"
+>Weakrefsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ABcodesxp"
+>Bcodesxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ADotsxp"
+>Dotsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3APromsxp"
+>Promsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
 ></TD
 ></TR
 ></TABLE
@@ -901,71 +1881,38 @@
 ><TD CLASS="decl"
 ><SPAN CLASS="keyword"
 >data</SPAN
->  <A NAME="t:Ident"
-><A NAME="t%3AIdent"
+>  <A NAME="t:ASExp"
+><A NAME="t%3AASExp"
 ></A
 ></A
 ><B
->Ident</B
-> annot </TD
+>ASExp</B
+>  </TD
 ></TR
 ><TR
 ><TD CLASS="body"
 ><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
-><TR
-><TD CLASS="ndoc"
->Identifier.
-</TD
-></TR
 ><TR
 ><TD CLASS="section4"
 >Constructors</TD
 ></TR
 ><TR
 ><TD CLASS="body"
-><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:Ident"
-><A NAME="v%3AIdent"
-></A
-></A
-><B
->Ident</B
-></TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:ident_string"
-><A NAME="v%3Aident_string"
+><SPAN CLASS="keyword"
+>forall</SPAN
+> a . <A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> a =&gt; <A NAME="v:ASExp"
+><A NAME="v%3AASExp"
 ></A
 ></A
 ><B
->ident_string</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
->String</A
-></TD
+>ASExp</B
+> a</TD
 ><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:ident_annot"
-><A NAME="v%3Aident_annot"
-></A
-></A
-><B
->ident_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
 ></TD
 ></TR
 ></TABLE
@@ -973,68 +1920,20 @@
 ></TR
 ><TR
 ><TD CLASS="section4"
-><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Ident')" ALT="show/hide"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:ASExp')" ALT="show/hide"
 > Instances</TD
 ></TR
 ><TR
 ><TD CLASS="body"
-><DIV ID="i:Ident" STYLE="display:block;"
+><DIV ID="i:ASExp" STYLE="display:block;"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable1"
->Typeable1</A
-> <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="Language-R-AST.html#t%3AAnnotated"
->Annotated</A
-> <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
->Eq</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
->Eq</A
-> (<A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot)</TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
->Data</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
->Data</A
-> (<A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot)</TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
->Ord</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
->Ord</A
-> (<A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot)</TD
-></TR
 ><TR
 ><TD CLASS="decl"
 ><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
 >Show</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
->Show</A
-> (<A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot)</TD
+> <A HREF="Language-R-AST.html#t%3AASExp"
+>ASExp</A
+></TD
 ></TR
 ></TABLE
 ></DIV
@@ -1050,856 +1949,80 @@
 ><TR
 ><TD CLASS="decl"
 ><SPAN CLASS="keyword"
->type</SPAN
-> <A NAME="t:IdentSpan"
-><A NAME="t%3AIdentSpan"
+>class</SPAN
+>  <A NAME="t:CharSxpType"
+><A NAME="t%3ACharSxpType"
 ></A
 ></A
 ><B
->IdentSpan</B
-> = <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
->SrcSpan</A
+>CharSxpType</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
 ></TD
-></TR
-><TR
-><TD CLASS="s15"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->type</SPAN
-> <A NAME="t:Suite"
-><A NAME="t%3ASuite"
-></A
-></A
-><B
->Suite</B
-> annot = [<A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> annot]</TD
-></TR
-><TR
-><TD CLASS="doc"
->A block of statements. A suite is a group of statements controlled by a clause, 
- for example, the body of a loop. 
-</TD
-></TR
-><TR
-><TD CLASS="s15"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->type</SPAN
-> <A NAME="t:SuiteSpan"
-><A NAME="t%3ASuiteSpan"
-></A
-></A
-><B
->SuiteSpan</B
-> = <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
->SrcSpan</A
-></TD
-></TR
-><TR
-><TD CLASS="s15"
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><SPAN CLASS="keyword"
->data</SPAN
->  <A NAME="t:Statement"
-><A NAME="t%3AStatement"
-></A
-></A
-><B
->Statement</B
-> annot </TD
 ></TR
 ><TR
 ><TD CLASS="body"
 ><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
 ><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
 ><TD CLASS="section4"
->Constructors</TD
+>Methods</TD
 ></TR
 ><TR
 ><TD CLASS="body"
-><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
 ><TR
-><TD CLASS="arg"
-><A NAME="v:While"
-><A NAME="v%3AWhile"
+><TD CLASS="decl"
+><A NAME="v:toCharSxp"
+><A NAME="v%3AtoCharSxp"
 ></A
 ></A
 ><B
->While</B
-></TD
-><TD CLASS="rdoc"
->While loop. 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:while_cond"
-><A NAME="v%3Awhile_cond"
-></A
-></A
-><B
->while_cond</B
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-><TD CLASS="rdoc"
->Loop condition.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:while_body"
-><A NAME="v%3Awhile_body"
-></A
-></A
-><B
->while_body</B
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-><TD CLASS="rdoc"
->Loop body.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
+>toCharSxp</B
+> :: a -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
 ></TD
 ></TR
 ></TABLE
 ></TD
 ></TR
 ><TR
-><TD CLASS="arg"
-><A NAME="v:For"
-><A NAME="v%3AFor"
-></A
-></A
-><B
->For</B
-></TD
-><TD CLASS="rdoc"
->For loop. 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:for_target"
-><A NAME="v%3Afor_target"
-></A
-></A
-><B
->for_target</B
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-><TD CLASS="rdoc"
->Loop variables.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:for_values"
-><A NAME="v%3Afor_values"
-></A
-></A
-><B
->for_values</B
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-><TD CLASS="rdoc"
->Loop generator. 
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:for_body"
-><A NAME="v%3Afor_body"
-></A
-></A
-><B
->for_body</B
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-><TD CLASS="rdoc"
->Loop body
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Conditional"
-><A NAME="v%3AConditional"
-></A
-></A
-><B
->Conditional</B
-></TD
-><TD CLASS="rdoc"
->Conditional statement (if-elif-else). 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:cond_guards"
-><A NAME="v%3Acond_guards"
-></A
-></A
-><B
->cond_guards</B
-> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot, <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot)]</TD
-><TD CLASS="rdoc"
->Sequence of if-elif
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:cond_else"
-><A NAME="v%3Acond_else"
-></A
-></A
-><B
->cond_else</B
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-><TD CLASS="rdoc"
->Possibly empty unconditional else clause.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Assign"
-><A NAME="v%3AAssign"
-></A
-></A
-><B
->Assign</B
-></TD
-><TD CLASS="rdoc"
->Assignment statement. 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:assign_to"
-><A NAME="v%3Aassign_to"
-></A
-></A
-><B
->assign_to</B
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-><TD CLASS="rdoc"
->Entity to assign to. 
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:assign_expr"
-><A NAME="v%3Aassign_expr"
-></A
-></A
-><B
->assign_expr</B
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-><TD CLASS="rdoc"
->Expression to evaluate.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Return"
-><A NAME="v%3AReturn"
-></A
-></A
-><B
->Return</B
-></TD
-><TD CLASS="rdoc"
->Return statement 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:return_expr"
-><A NAME="v%3Areturn_expr"
-></A
-></A
-><B
->return_expr</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Break"
-><A NAME="v%3ABreak"
-></A
-></A
-><B
->Break</B
-></TD
-><TD CLASS="rdoc"
->Break statement 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Continue"
-><A NAME="v%3AContinue"
-></A
-></A
-><B
->Continue</B
-></TD
-><TD CLASS="rdoc"
->Continue statement 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Repeat"
-><A NAME="v%3ARepeat"
-></A
-></A
-><B
->Repeat</B
-></TD
-><TD CLASS="rdoc"
->Repeat statment
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:repeat_expr"
-><A NAME="v%3Arepeat_expr"
-></A
-></A
-><B
->repeat_expr</B
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Switch"
-><A NAME="v%3ASwitch"
-></A
-></A
-><B
->Switch</B
-></TD
-><TD CLASS="rdoc"
->Switch statement
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:switch_guards"
-><A NAME="v%3Aswitch_guards"
-></A
-></A
-><B
->switch_guards</B
-> :: [(<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot, <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot)]</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:StmtExpr"
-><A NAME="v%3AStmtExpr"
-></A
-></A
-><B
->StmtExpr</B
-></TD
-><TD CLASS="rdoc"
->Expression statement. 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_expr"
-><A NAME="v%3Astmt_expr"
-></A
-></A
-><B
->stmt_expr</B
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Print"
-><A NAME="v%3APrint"
-></A
-></A
-><B
->Print</B
-></TD
-><TD CLASS="rdoc"
->Print statement.
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:print_exprs"
-><A NAME="v%3Aprint_exprs"
-></A
-></A
-><B
->print_exprs</B
-> :: [<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot]</TD
-><TD CLASS="rdoc"
->Arguments to print
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Exec"
-><A NAME="v%3AExec"
-></A
-></A
-><B
->Exec</B
-></TD
-><TD CLASS="rdoc"
->Exec statement. <EM
->Version 2 only</EM
->. 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:exec_expr"
-><A NAME="v%3Aexec_expr"
-></A
-></A
-><B
->exec_expr</B
-> :: <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot</TD
-><TD CLASS="rdoc"
->Expression to exec.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:exec_globals_locals"
-><A NAME="v%3Aexec_globals_locals"
-></A
-></A
-><B
->exec_globals_locals</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot))</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Fun"
-><A NAME="v%3AFun"
-></A
-></A
-><B
->Fun</B
-></TD
-><TD CLASS="rdoc"
->Function definition. 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:fun_name"
-><A NAME="v%3Afun_name"
-></A
-></A
-><B
->fun_name</B
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-><TD CLASS="rdoc"
->Function name.
- , fun_args :: [Parameter annot]          -- ^ Function parameter list.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:fun_result_annot"
-><A NAME="v%3Afun_result_annot"
-></A
-></A
-><B
->fun_result_annot</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Maybe.html#t%3AMaybe"
->Maybe</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
-><TD CLASS="rdoc"
->Optional result annotation.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:fun_body"
-><A NAME="v%3Afun_body"
-></A
-></A
-><B
->fun_body</B
-> :: <A HREF="Language-R-AST.html#t%3ASuite"
->Suite</A
-> annot</TD
-><TD CLASS="rdoc"
->Function body.
-</TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:stmt_annot"
-><A NAME="v%3Astmt_annot"
-></A
-></A
-><B
->stmt_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-></TABLE
+><TD CLASS="s8"
 ></TD
 ></TR
 ><TR
 ><TD CLASS="section4"
-><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Statement')" ALT="show/hide"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:CharSxpType')" ALT="show/hide"
 > Instances</TD
 ></TR
 ><TR
 ><TD CLASS="body"
-><DIV ID="i:Statement" STYLE="display:block;"
+><DIV ID="i:CharSxpType" STYLE="display:block;"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable1"
->Typeable1</A
-> <A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-></TD
+><A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+>)</TD
 ></TR
 ><TR
 ><TD CLASS="decl"
-><A HREF="Language-R-AST.html#t%3AAnnotated"
->Annotated</A
-> <A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-></TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
->Eq</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
->Eq</A
-> (<A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> annot)</TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
->Data</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
->Data</A
-> (<A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> annot)</TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
->Ord</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
->Ord</A
-> (<A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> annot)</TD
-></TR
-><TR
-><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
->Show</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
->Show</A
-> (<A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> annot)</TD
+><A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
 ></TR
 ></TABLE
 ></DIV
@@ -1915,17 +2038,694 @@
 ><TR
 ><TD CLASS="decl"
 ><SPAN CLASS="keyword"
->type</SPAN
-> <A NAME="t:StatementSpan"
-><A NAME="t%3AStatementSpan"
+>class</SPAN
+>  <A NAME="t:NilEnvExtPtrSxpType"
+><A NAME="t%3ANilEnvExtPtrSxpType"
 ></A
 ></A
 ><B
->StatementSpan</B
-> = <A HREF="Language-R-AST.html#t%3AStatement"
->Statement</A
-> <A HREF="Language-R-SrcLocation.html#t%3ASrcSpan"
->SrcSpan</A
+>NilEnvExtPtrSxpType</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:dummy_func"
+><A NAME="v%3Adummy_func"
+></A
+></A
+><B
+>dummy_func</B
+> :: a -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:NilEnvExtPtrSxpType')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:NilEnvExtPtrSxpType" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:SxpAnyType"
+><A NAME="t%3ASxpAnyType"
+></A
+></A
+><B
+>SxpAnyType</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:isSxp"
+><A NAME="v%3AisSxp"
+></A
+></A
+><B
+>isSxp</B
+> :: a -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SxpAnyType')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SxpAnyType" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AS4sxp"
+>S4sxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARawsxp"
+>Rawsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AWeakrefsxp"
+>Weakrefsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABcodesxp"
+>Bcodesxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ADotsxp"
+>Dotsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3APromsxp"
+>Promsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:SxpFuncType"
+><A NAME="t%3ASxpFuncType"
+></A
+></A
+><B
+>SxpFuncType</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:isFunc"
+><A NAME="v%3AisFunc"
+></A
+></A
+><B
+>isFunc</B
+> :: a -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SxpFuncType')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SxpFuncType" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:ListNilSxpType"
+><A NAME="t%3AListNilSxpType"
+></A
+></A
+><B
+>ListNilSxpType</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:toListSxp"
+><A NAME="v%3AtoListSxp"
+></A
+></A
+><B
+>toListSxp</B
+> :: a -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:ListNilSxpType')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:ListNilSxpType" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:ExprSxpType"
+><A NAME="t%3AExprSxpType"
+></A
+></A
+><B
+>ExprSxpType</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:dummy_func'"
+><A NAME="v%3Adummy_func%27"
+></A
+></A
+><B
+>dummy_func'</B
+> :: a -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:ExprSxpType')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:ExprSxpType" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
 ></TD
 ></TR
 ><TR
@@ -1936,13 +2736,13 @@
 ><TD CLASS="decl"
 ><SPAN CLASS="keyword"
 >data</SPAN
->  <A NAME="t:Expr"
-><A NAME="t%3AExpr"
+>  <A NAME="t:SExprecHeader"
+><A NAME="t%3ASExprecHeader"
 ></A
 ></A
 ><B
->Expr</B
-> annot </TD
+>SExprecHeader</B
+>  </TD
 ></TR
 ><TR
 ><TD CLASS="body"
@@ -1956,43 +2756,311 @@
 ><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:Var"
-><A NAME="v%3AVar"
+><A NAME="v:SExprecHeader"
+><A NAME="v%3ASExprecHeader"
 ></A
 ></A
 ><B
->Var</B
+>SExprecHeader</B
 ></TD
 ><TD CLASS="rdoc"
->Variable.
-</TD
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:var_ident"
-><A NAME="v%3Avar_ident"
+><A NAME="v:sExpType"
+><A NAME="v%3AsExpType"
 ></A
 ></A
 ><B
->var_ident</B
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
+>sExpType</B
+> :: <A HREF="Language-R-AST.html#t%3AASExp"
+>ASExp</A
+></TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
+><A NAME="v:seh_obj"
+><A NAME="v%3Aseh_obj"
 ></A
 ></A
 ><B
->expr_annot</B
-> :: annot</TD
+>seh_obj</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_named"
+><A NAME="v%3Aseh_named"
+></A
+></A
+><B
+>seh_named</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_gp"
+><A NAME="v%3Aseh_gp"
+></A
+></A
+><B
+>seh_gp</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_mark"
+><A NAME="v%3Aseh_mark"
+></A
+></A
+><B
+>seh_mark</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_debug"
+><A NAME="v%3Aseh_debug"
+></A
+></A
+><B
+>seh_debug</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_trace"
+><A NAME="v%3Aseh_trace"
+></A
+></A
+><B
+>seh_trace</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_spare"
+><A NAME="v%3Aseh_spare"
+></A
+></A
+><B
+>seh_spare</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_gcgen"
+><A NAME="v%3Aseh_gcgen"
+></A
+></A
+><B
+>seh_gcgen</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:seh_gccls"
+><A NAME="v%3Aseh_gccls"
+></A
+></A
+><B
+>seh_gccls</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SExprecHeader')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SExprecHeader" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Language-R-AST.html#t%3ASExprecHeader"
+>SExprecHeader</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:SExprec"
+><A NAME="t%3ASExprec"
+></A
+></A
+><B
+>SExprec</B
+> a <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:NilSxp"
+><A NAME="v%3ANilSxp"
+></A
+></A
+><B
+>NilSxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:SymSxp"
+><A NAME="v%3ASymSxp"
+></A
+></A
+><B
+>SymSxp</B
+> ::  (<A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:sym_name"
+><A NAME="v%3Asym_name"
+></A
+></A
+><B
+>sym_name</B
+> :: <A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:value"
+><A NAME="v%3Avalue"
+></A
+></A
+><B
+>value</B
+> :: <A HREF="Language-R-AST.html#t%3AIsSexp"
+>IsSexp</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:internal"
+><A NAME="v%3Ainternal"
+></A
+></A
+><B
+>internal</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2001,57 +3069,80 @@
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:Num"
-><A NAME="v%3ANum"
+><A NAME="v:ListSxp"
+><A NAME="v%3AListSxp"
 ></A
 ></A
 ><B
->Num</B
+>ListSxp</B
+> ::  (<A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
 ></TD
 ><TD CLASS="rdoc"
->Literal numerical
-</TD
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:num_value"
-><A NAME="v%3Anum_value"
+><A NAME="v:tag"
+><A NAME="v%3Atag"
 ></A
 ></A
 ><B
->num_value</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
->Double</A
-></TD
+>tag</B
+> :: <A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:expr_literal"
-><A NAME="v%3Aexpr_literal"
+><A NAME="v:car"
+><A NAME="v%3Acar"
 ></A
 ></A
 ><B
->expr_literal</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
->String</A
-></TD
+>car</B
+> :: <A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
+><A NAME="v:cdr"
+><A NAME="v%3Acdr"
 ></A
 ></A
 ><B
->expr_annot</B
-> :: annot</TD
+>cdr</B
+> :: <A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2060,16 +3151,829 @@
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:Bool"
-><A NAME="v%3ABool"
+><A NAME="v:CloSxp"
+><A NAME="v%3ACloSxp"
 ></A
 ></A
 ><B
->Bool</B
+>CloSxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
 ></TD
 ><TD CLASS="rdoc"
->Literal logical
-</TD
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:formals"
+><A NAME="v%3Aformals"
+></A
+></A
+><B
+>formals</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:body"
+><A NAME="v%3Abody"
+></A
+></A
+><B
+>body</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:clos_env"
+><A NAME="v%3Aclos_env"
+></A
+></A
+><B
+>clos_env</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:EnvSxp"
+><A NAME="v%3AEnvSxp"
+></A
+></A
+><B
+>EnvSxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:frame"
+><A NAME="v%3Aframe"
+></A
+></A
+><B
+>frame</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:env_env"
+><A NAME="v%3Aenv_env"
+></A
+></A
+><B
+>env_env</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:hash_table"
+><A NAME="v%3Ahash_table"
+></A
+></A
+><B
+>hash_table</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:CharSxp"
+><A NAME="v%3ACharSxp"
+></A
+></A
+><B
+>CharSxp</B
+> ::  [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AChar"
+>Char</A
+>] -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:char_value"
+><A NAME="v%3Achar_value"
+></A
+></A
+><B
+>char_value</B
+> :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AChar"
+>Char</A
+>]</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:PromSxp"
+><A NAME="v%3APromSxp"
+></A
+></A
+><B
+>PromSxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3APromsxp"
+>Promsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:prom_value"
+><A NAME="v%3Aprom_value"
+></A
+></A
+><B
+>prom_value</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:prom_env"
+><A NAME="v%3Aprom_env"
+></A
+></A
+><B
+>prom_env</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:prom_expr"
+><A NAME="v%3Aprom_expr"
+></A
+></A
+><B
+>prom_expr</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:LangSxp"
+><A NAME="v%3ALangSxp"
+></A
+></A
+><B
+>LangSxp</B
+> ::  (<A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:lang_tag"
+><A NAME="v%3Alang_tag"
+></A
+></A
+><B
+>lang_tag</B
+> :: <A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:lang_car"
+><A NAME="v%3Alang_car"
+></A
+></A
+><B
+>lang_car</B
+> :: <A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:lang_cdr"
+><A NAME="v%3Alang_cdr"
+></A
+></A
+><B
+>lang_cdr</B
+> :: <A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:SpecialSxp"
+><A NAME="v%3ASpecialSxp"
+></A
+></A
+><B
+>SpecialSxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BuiltinSxp"
+><A NAME="v%3ABuiltinSxp"
+></A
+></A
+><B
+>BuiltinSxp</B
+> ::  <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:prim_table_offset"
+><A NAME="v%3Aprim_table_offset"
+></A
+></A
+><B
+>prim_table_offset</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:DotSxp"
+><A NAME="v%3ADotSxp"
+></A
+></A
+><B
+>DotSxp</B
+> ::  (<A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ADotsxp"
+>Dotsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:dot_tag"
+><A NAME="v%3Adot_tag"
+></A
+></A
+><B
+>dot_tag</B
+> :: <A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:dot_car"
+><A NAME="v%3Adot_car"
+></A
+></A
+><B
+>dot_car</B
+> :: <A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:dot_cdr"
+><A NAME="v%3Adot_cdr"
+></A
+></A
+><B
+>dot_cdr</B
+> :: <A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AnySxp"
+><A NAME="v%3AAnySxp"
+></A
+></A
+><B
+>AnySxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:BCodeSxp"
+><A NAME="v%3ABCodeSxp"
+></A
+></A
+><B
+>BCodeSxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABcodesxp"
+>Bcodesxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:ExtPtrSxp"
+><A NAME="v%3AExtPtrSxp"
+></A
+></A
+><B
+>ExtPtrSxp</B
+> ::  <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3AInteger"
+>Integer</A
+> -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:ext_ptr_ref"
+><A NAME="v%3Aext_ptr_ref"
+></A
+></A
+><B
+>ext_ptr_ref</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3AInteger"
+>Integer</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:ext_protect"
+><A NAME="v%3Aext_protect"
+></A
+></A
+><B
+>ext_protect</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:ext_ptr_tag"
+><A NAME="v%3Aext_ptr_tag"
+></A
+></A
+><B
+>ext_ptr_tag</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:WeakRefSxp"
+><A NAME="v%3AWeakRefSxp"
+></A
+></A
+><B
+>WeakRefSxp</B
+> ::  (<A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; (<A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a) -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AWeakrefsxp"
+>Weakrefsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:wkref_key"
+><A NAME="v%3Awkref_key"
+></A
+></A
+><B
+>wkref_key</B
+> :: <A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:wkref_val"
+><A NAME="v%3Awkref_val"
+></A
+></A
+><B
+>wkref_val</B
+> :: <A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:wkref_next"
+><A NAME="v%3Awkref_next"
+></A
+></A
+><B
+>wkref_next</B
+> :: <A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:wkref_finalizer"
+><A NAME="v%3Awkref_finalizer"
+></A
+></A
+><B
+>wkref_finalizer</B
+> :: <A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> a =&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:RawSxp"
+><A NAME="v%3ARawSxp"
+></A
+></A
+><B
+>RawSxp</B
+> ::  <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/bytestring-0.9.1.6/Data-ByteString.html#t%3AByteString"
+>ByteString</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARawsxp"
+>Rawsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:raw_value"
+><A NAME="v%3Araw_value"
+></A
+></A
+><B
+>raw_value</B
+> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/bytestring-0.9.1.6/Data-ByteString.html#t%3AByteString"
+>ByteString</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:S4Sxp"
+><A NAME="v%3AS4Sxp"
+></A
+></A
+><B
+>S4Sxp</B
+> ::  <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+> -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AS4sxp"
+>S4sxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:s4_tag"
+><A NAME="v%3As4_tag"
+></A
+></A
+><B
+>s4_tag</B
+> :: <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:LglSxp"
+><A NAME="v%3ALglSxp"
+></A
+></A
+><B
+>LglSxp</B
+> ::  [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+>Bool</A
+>] -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
@@ -2082,21 +3986,9 @@
 ></A
 ><B
 >logical_value</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
+> :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Bool.html#t%3ABool"
 >Bool</A
-></TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
-></A
-></A
-><B
->expr_annot</B
-> :: annot</TD
+>]</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2105,29 +3997,36 @@
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:Null"
-><A NAME="v%3ANull"
+><A NAME="v:IntSxp"
+><A NAME="v%3AIntSxp"
 ></A
 ></A
 ><B
->Null</B
+>IntSxp</B
+> ::  [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+>] -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
 ></TD
 ><TD CLASS="rdoc"
->Literal 'NULL' value.
-</TD
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
+><A NAME="v:int_value"
+><A NAME="v%3Aint_value"
 ></A
 ></A
 ><B
->expr_annot</B
-> :: annot</TD
+>int_value</B
+> :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+>]</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2136,29 +4035,36 @@
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:NaN"
-><A NAME="v%3ANaN"
+><A NAME="v:RealSxp"
+><A NAME="v%3ARealSxp"
 ></A
 ></A
 ><B
->NaN</B
+>RealSxp</B
+> ::  [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+>] -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
 ></TD
 ><TD CLASS="rdoc"
->Literal 'NaN' value.
-</TD
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
+><A NAME="v:real_value"
+><A NAME="v%3Areal_value"
 ></A
 ></A
 ><B
->expr_annot</B
-> :: annot</TD
+>real_value</B
+> :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+>]</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2167,29 +4073,40 @@
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:NA"
-><A NAME="v%3ANA"
+><A NAME="v:CplxSxp"
+><A NAME="v%3ACplxSxp"
 ></A
 ></A
 ><B
->NA</B
+>CplxSxp</B
+> ::  [(<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+>, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+>)] -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
 ></TD
 ><TD CLASS="rdoc"
->Literal 'NA' value.
-</TD
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
+><A NAME="v:complex_value"
+><A NAME="v%3Acomplex_value"
 ></A
 ></A
 ><B
->expr_annot</B
-> :: annot</TD
+>complex_value</B
+> :: [(<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+>, <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Prelude.html#t%3ADouble"
+>Double</A
+>)]</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2198,43 +4115,78 @@
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:ByteStrings"
-><A NAME="v%3AByteStrings"
+><A NAME="v:StrSxp"
+><A NAME="v%3AStrSxp"
 ></A
 ></A
 ><B
->ByteStrings</B
+>StrSxp</B
+> ::  [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
+>String</A
+>] -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
 ></TD
 ><TD CLASS="rdoc"
->Literal raw
-</TD
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:byte_string_strings"
-><A NAME="v%3Abyte_string_strings"
+><A NAME="v:string_value"
+><A NAME="v%3Astring_value"
 ></A
 ></A
 ><B
->byte_string_strings</B
+>string_value</B
 > :: [<A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
 >String</A
 >]</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
+></TABLE
+></TD
+></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
+><A NAME="v:VecSxp"
+><A NAME="v%3AVecSxp"
 ></A
 ></A
 ><B
->expr_annot</B
-> :: annot</TD
+>VecSxp</B
+> ::  (<A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> a =&gt; [<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a]) -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:list_value"
+><A NAME="v%3Alist_value"
+></A
+></A
+><B
+>list_value</B
+> :: <A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> a =&gt; [<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a]</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2243,88 +4195,40 @@
 ></TR
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:Char"
-><A NAME="v%3AChar"
+><A NAME="v:ExprSxp"
+><A NAME="v%3AExprSxp"
 ></A
 ></A
 ><B
->Char</B
+>ExprSxp</B
+> ::  (<A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> a =&gt; [<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a]) -&gt; <A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
 ></TD
 ><TD CLASS="rdoc"
->Literal character
-</TD
+></TD
 ></TR
 ><TR
 ><TD CLASS="body" COLSPAN="2"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="arg"
-><A NAME="v:strings_strings"
-><A NAME="v%3Astrings_strings"
+><A NAME="v:expr_value"
+><A NAME="v%3Aexpr_value"
 ></A
 ></A
 ><B
->strings_strings</B
-> :: <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Char.html#t%3AString"
->String</A
-></TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
-></A
-></A
-><B
->expr_annot</B
-> :: annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-></TABLE
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:Call"
-><A NAME="v%3ACall"
-></A
-></A
-><B
->Call</B
-></TD
-><TD CLASS="rdoc"
->Function call. 
-</TD
-></TR
-><TR
-><TD CLASS="body" COLSPAN="2"
-><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
-><TR
-><TD CLASS="arg"
-><A NAME="v:call_fun"
-><A NAME="v%3Acall_fun"
-></A
-></A
-><B
->call_fun</B
-> :: <A HREF="Language-R-AST.html#t%3AIdent"
->Ident</A
-> annot</TD
-><TD CLASS="rdoc"
-></TD
-></TR
-><TR
-><TD CLASS="arg"
-><A NAME="v:expr_annot"
-><A NAME="v%3Aexpr_annot"
-></A
-></A
-><B
->expr_annot</B
-> :: annot</TD
+>expr_value</B
+> :: <A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> a =&gt; [<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> a]</TD
 ><TD CLASS="rdoc"
 ></TD
 ></TR
@@ -2336,63 +4240,626 @@
 ></TR
 ><TR
 ><TD CLASS="section4"
-><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Expr')" ALT="show/hide"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SExprec')" ALT="show/hide"
 > Instances</TD
 ></TR
 ><TR
 ><TD CLASS="body"
-><DIV ID="i:Expr" STYLE="display:block;"
+><DIV ID="i:SExprec" STYLE="display:block;"
 ><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
 ><TR
 ><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Typeable.html#t%3ATypeable1"
->Typeable1</A
-> <A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AExprSxpType"
+>ExprSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3AListNilSxpType"
+>ListNilSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpFuncType"
+>SxpFuncType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AS4sxp"
+>S4sxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARawsxp"
+>Rawsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AWeakrefsxp"
+>Weakrefsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABcodesxp"
+>Bcodesxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExprsxp"
+>Exprsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AVecsxp"
+>Vecsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AAnysxp"
+>Anysxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ADotsxp"
+>Dotsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ABuiltinsxp"
+>Builtinsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASpecialsxp"
+>Specialsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALangsxp"
+>Langsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3APromsxp"
+>Promsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AClosxp"
+>Closxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AListsxp"
+>Listsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ASymsxp"
+>Symsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASxpAnyType"
+>SxpAnyType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AExtptrsxp"
+>Extptrsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AEnvsxp"
+>Envsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ANilEnvExtPtrSxpType"
+>NilEnvExtPtrSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACharsxp"
+>Charsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ACharSxpType"
+>CharSxpType</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ANilsxp"
+>Nilsxp</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
 ></TD
 ></TR
 ><TR
 ><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
->Eq</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Eq.html#t%3AEq"
->Eq</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:SExprec_vector"
+><A NAME="t%3ASExprec_vector"
+></A
+></A
+><B
+>SExprec_vector</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v:len"
+><A NAME="v%3Alen"
+></A
+></A
+><B
+>len</B
+> :: a -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
 ></TR
 ><TR
 ><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
->Data</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Data.html#t%3AData"
->Data</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
+><A NAME="v:trueLen"
+><A NAME="v%3AtrueLen"
+></A
+></A
+><B
+>trueLen</B
+> :: a -&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Int.html#t%3AInt"
+>Int</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SExprec_vector')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SExprec_vector" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AStrsxp"
+>Strsxp</A
+>)</TD
 ></TR
 ><TR
 ><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
->Ord</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Data-Ord.html#t%3AOrd"
->Ord</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ACplxsxp"
+>Cplxsxp</A
+>)</TD
 ></TR
 ><TR
 ><TD CLASS="decl"
-><A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
->Show</A
-> annot =&gt; <A HREF="/Library/Frameworks/GHC.framework/Versions/612/usr/share/doc/ghc/html/libraries/base-4.2.0.1/Text-Show.html#t%3AShow"
->Show</A
-> (<A HREF="Language-R-AST.html#t%3AExpr"
->Expr</A
-> annot)</TD
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ARealsxp"
+>Realsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3AIntsxp"
+>Intsxp</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> (<A HREF="Language-R-AST.html#t%3ASExprec"
+>SExprec</A
+> <A HREF="Language-R-AST.html#t%3ALglsxp"
+>Lglsxp</A
+>)</TD
 ></TR
 ></TABLE
 ></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Vector_Sexprec"
+><A NAME="t%3AVector_Sexprec"
+></A
+></A
+><B
+>Vector_Sexprec</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><SPAN CLASS="keyword"
+>forall</SPAN
+> a . <A HREF="Language-R-AST.html#t%3ASExprec_vector"
+>SExprec_vector</A
+> a =&gt; <A NAME="v:Vector_Sexprec"
+><A NAME="v%3AVector_Sexprec"
+></A
+></A
+><B
+>Vector_Sexprec</B
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
 ></TD
 ></TR
 ></TABLE

@@ -1,5 +1,5 @@
 Name:                language-r
-Version:             0.1.4
+Version:             0.1.5
 Cabal-Version:       >= 1.6
 Build-Type:          Simple
 Stability:           pre-alpha
@@ -42,7 +42,8 @@ Library
                      mtl,
                      bytestring,
                      containers,
-                     primitive
+                     primitive,
+                     syb
     Extensions:      CPP, FlexibleInstances, TypeSynonymInstances, 
                      DeriveDataTypeable, FlexibleContexts
 
