@@ -2,6 +2,9 @@ import System.Random.Mersenne
 import qualified Data.Judy as J
 import Control.Monad
 
+data Nilsxp
+data SymSxp
+
 main = do
    g  <- getStdGen
    rs <- randoms g
