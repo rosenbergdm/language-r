@@ -294,8 +294,10 @@ classifyToken token =
       TabToken               {} -> Punctuation
       CommentToken           {} -> Comment
       StringToken            {} -> String
+      IntegerToken           {} -> Value
       NumericToken           {} -> Value
       LogicalToken           {} -> Value
+      ComplexToken           {} -> Value
       IdentifierToken        {} -> Identifier
       IfToken                {} -> Keyword
       ForToken               {} -> Keyword
@@ -419,6 +421,7 @@ tokenString token =
       NumericToken           {} -> token_literal token
       LogicalToken           {} -> token_literal token
       IdentifierToken        {} -> token_literal token
+      IntegerToken           {} -> token_literal token
 
       IfToken                {} -> "if" 
       ForToken               {} -> "for"

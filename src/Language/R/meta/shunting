@@ -1,0 +1,239 @@
+Shunting-yard algorithm
+
+From Wikipedia, the free encyclopedia
+
+Jump to: navigation, search
+
+The shunting-yard algorithm is a method for parsing mathematical equations
+specified in infix notation. It can be used to produce output in Reverse Polish
+notation (RPN) or as an abstract syntax tree (AST). The algorithm was invented
+by Edsger Dijkstra and named the "shunting yard" algorithm because its
+operation resembles that of a railroad shunting yard.
+
+Like the evaluation of RPN, the shunting yard algorithm is stack-based. Infix
+expressions are the form of mathematical notation most people are used to, for
+instance 3+4 or 3+4*(2−1). For the conversion there are two text variables (
+strings), the input and the output. There is also a stack that holds operators
+not yet added to the output queue. To convert, the program reads each symbol in
+order and does something based on that symbol.
+
+Contents
+
+  • 1 A simple conversion
+  • 2 The algorithm in detail
+  • 3 Detailed example
+  • 4 See also
+  • 5 External links
+
+[edit] A simple conversion
+
+    Input: 3+4
+
+ 1. Add 3 to the output queue (whenever a number is read it is added to the
+    output)
+ 2. Push + (or its ID) onto the operator stack
+ 3. Add 4 to the output queue
+ 4. After reading expression pop the operators off the stack and add them to
+    the output.
+ 5. In this case there is only one, "+".
+ 6. Output 3 4 +
+
+This already shows a couple of rules:
+
+  • All numbers are added to the output when they are read.
+  • At the end of reading the expression, pop all operators off the stack and
+    onto the output.
+
+[edit] The algorithm in detail
+
+  • While there are tokens to be read:
+
+      □ Read a token.
+      □ If the token is a number, then add it to the output queue.
+      □ If the token is a function token, then push it onto the stack.
+      □ If the token is a function argument separator (e.g., a comma):
+
+          ☆ Until the token at the top of the stack is a left parenthesis, pop
+            operators off the stack onto the output queue. If no left
+            parentheses are encountered, either the separator was misplaced or
+            parentheses were mismatched.
+
+      □ If the token is an operator, o[1], then:
+
+          ☆ while there is an operator token, o[2], at the top of the stack,
+            and
+
+                    either o[1] is left-associative and its precedence is less
+                    than or equal to that of o[2],
+                    or o[1] is right-associative and its precedence is less
+                    than that of o[2],
+
+                pop o[2] off the stack, onto the output queue;
+
+          ☆ push o[1] onto the stack.
+
+      □ If the token is a left parenthesis, then push it onto the stack.
+      □ If the token is a right parenthesis:
+
+          ☆ Until the token at the top of the stack is a left parenthesis, pop
+            operators off the stack onto the output queue.
+          ☆ Pop the left parenthesis from the stack, but not onto the output
+            queue.
+          ☆ If the token at the top of the stack is a function token, pop it
+            onto the output queue.
+          ☆ If the stack runs out without finding a left parenthesis, then
+            there are mismatched parentheses.
+
+  • When there are no more tokens to read:
+
+      □ While there are still operator tokens in the stack:
+
+          ☆ If the operator token on the top of the stack is a parenthesis,
+            then there are mismatched parentheses.
+          ☆ Pop the operator onto the output queue.
+
+  • Exit.
+
+To analyze the running time complexity of this algorithm, one has only to note
+that each token will be read once, each number, function, or operator will be
+printed once, and each function, operator, or parenthesis will be pushed onto
+the stack and popped off the stack once – therefore, there are at most a
+constant number of operations executed per token, and the running time is thus
+O(n) – linear in the size of the input.
+
+[edit] Detailed example
+
+                     Input: 3 + 4 * 2 / ( 1 − 5 ) ^ 2 ^ 3
+Token       Action          Output (in RPN)    Operator          Notes
+                                                Stack
+3     Add token to output 3
++     Push token to stack 3                            +
+4     Add token to output 3 4                          +
+*     Push token to stack 3 4                        * + * has higher
+                                                         precedence than +
+2     Add token to output 3 4 2                      * +
+      Pop stack to output 3 4 2 *                      + / and * have same
+/                                                        precedence
+      Push token to stack 3 4 2 *                    / + / has higher
+                                                         precedence than +
+(     Push token to stack 3 4 2 *                  ( / +
+1     Add token to output 3 4 2 * 1                ( / +
+−     Push token to stack 3 4 2 * 1              − ( / +
+5     Add token to output 3 4 2 * 1 5            − ( / +
+      Pop stack to output 3 4 2 * 1 5 −            ( / + Repeated until "("
+)                                                        found
+      Pop stack           3 4 2 * 1 5 −              / + Discard matching
+                                                         parenthesis
+^     Push token to stack 3 4 2 * 1 5 −            ^ / + ^ has higher
+                                                         precedence than /
+2     Add token to output 3 4 2 * 1 5 − 2          ^ / +
+^     Push token to stack 3 4 2 * 1 5 − 2        ^ ^ / + ^ is evaluated
+                                                         right-to-left
+3     Add token to output 3 4 2 * 1 5 − 2 3      ^ ^ / +
+end   Pop entire stack to 3 4 2 * 1 5 − 2 3 ^
+      output              ^ / +
+
+If you were writing an interpreter, this output would be tokenized and written
+to a compiled file to be later interpreted. Conversion from infix to RPN can
+also allow for easier simplification of expressions. To do this, act like you
+are solving the RPN expression, however, whenever you come to a variable its
+value is null, and whenever an operator has a null value, it and its parameters
+are written to the output (this is a simplification, problems arise when the
+parameters are operators). When an operator has no null parameters its value
+can simply be written to the output. This method obviously doesn't include all
+the simplifications possible: It's more of a constant folding optimization.
+
+[edit] See also
+
+  • Operator-precedence parser
+
+[edit] External links
+
+  • Java Applet demonstrating the Shunting yard algorithm
+  • Parsing Expressions by Recursive Descent Theodore Norvell © 1999–2001.
+    Access date September 14, 2006.
+  • Infix to RPN Algorithm
+  • Original description of the Shunting yard algorithm
+  • Extension to the ‘Shunting Yard’ algorithm to allow variable numbers of
+    arguments to functions
+
+Retrieved from "http://en.wikipedia.org/wiki/Shunting-yard_algorithm"
+Categories: Parsing algorithms
+
+Personal tools
+
+  • New features
+  • Log in / create account
+
+Namespaces
+
+  • Article
+  • Discussion
+
+Variants 
+
+Views
+
+  • Read
+  • Edit
+  • View history
+
+Actions 
+
+Search
+
+[                    ]  
+ 
+
+Navigation
+
+  • Main page
+  • Contents
+  • Featured content
+  • Current events
+  • Random article
+
+Interaction
+
+  • About Wikipedia
+  • Community portal
+  • Recent changes
+  • Contact Wikipedia
+  • Donate to Wikipedia
+  • Help
+
+Toolbox
+
+  • What links here
+  • Related changes
+  • Upload file
+  • Special pages
+  • Permanent link
+  • Cite this page
+
+Print/export
+
+  • Create a book
+  • Download as PDF
+  • Printable version
+
+Languages
+
+  • Česky
+  • Español
+  • Svenska
+
+  • This page was last modified on 29 January 2010 at 18:29.
+  • Text is available under the Creative Commons Attribution-ShareAlike License
+     ; additional terms may apply. See Terms of Use for details.
+    Wikipedia(R) is a registered trademark of the Wikimedia Foundation, Inc., a
+    non-profit organization.
+  • Contact us
+
+  • Privacy policy
+  • About Wikipedia
+  • Disclaimers
+
+  • Powered by MediaWiki
+  • Wikimedia Foundation
+

@@ -1,5 +1,5 @@
 Name:                language-r
-Version:             0.1.5
+Version:             0.1.6
 Cabal-Version:       >= 1.6
 Build-Type:          Simple
 Stability:           pre-alpha
@@ -15,6 +15,7 @@ Homepage:            http://www.davidrosenberg.me/projects/language-r/
 extra-source-files:  README
                      src/Language/R/Lexer.hs
                      src/Language/R/Parser.hs
+                     src/Language/R/ParserUtils.hs
                      src/Language/R/AST.hs
                      src/Language/R/Generator.hs
                      src/Language/R/Evaluate.hs
@@ -31,6 +32,7 @@ Library
                      Language.R.Generator
                      Language.R.Evaluate
                      Language.R.Internal
+                     Language.R.ParserUtils
                      Language.R.SrcLocation
                      Language.R.Token
                      Language.R.LexerUtils
@@ -43,7 +45,8 @@ Library
                      bytestring,
                      containers,
                      primitive,
-                     syb
+                     syb,
+                     MissingH
     Extensions:      CPP, FlexibleInstances, TypeSynonymInstances, 
                      DeriveDataTypeable, FlexibleContexts
 
