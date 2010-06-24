@@ -1,0 +1,7 @@
+dist/
+dist
+dist/*
+_darcs
+_darcs/
+_darcs/*
+

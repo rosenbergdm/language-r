@@ -13,6 +13,8 @@ Author:              David M. Rosenberg
 Maintainer:          dmr@davidrosenberg.me
 Homepage:            http://www.davidrosenberg.me/projects/language-r/
 extra-source-files:  README
+                     src/Language/R/Scanner.x
+                     src/Language/R/HParser.y
                      src/Language/R/Lexer.hs
                      src/Language/R/Parser.hs
                      src/Language/R/ParserUtils.hs
@@ -22,12 +24,14 @@ extra-source-files:  README
                      src/Language/R/Internal.hs
                      src/Language/R/SrcLocation.hs
                      src/Language/R/Token.hs
-                     -- src/Language/R/Main.hs
+
 
 Library
     Hs-source-dirs:  src
+    Build-tools:     happy, alex    
     Exposed-modules: Language.R.Lexer
                      Language.R.Parser
+                     Language.R.Scanner
                      Language.R.AST
                      Language.R.Generator
                      Language.R.Evaluate
@@ -36,7 +40,6 @@ Library
                      Language.R.SrcLocation
                      Language.R.Token
                      Language.R.LexerUtils
-    -- Other-modules:   Language.R.Internal
     Build-depends:   base < 5 && >= 4,
                      parsec >= 3,
                      pcre-light >= 0.2 && < 0.4,
@@ -46,7 +49,9 @@ Library
                      containers,
                      primitive,
                      syb,
-                     MissingH
+                     MissingH,
+                     alex,
+                     happy,
     Extensions:      CPP, FlexibleInstances, TypeSynonymInstances, 
                      DeriveDataTypeable, FlexibleContexts
 
