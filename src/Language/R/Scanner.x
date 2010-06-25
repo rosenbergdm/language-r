@@ -30,11 +30,11 @@ $not_double_quote = [. \n] # \" -- "
   | "|" | "||" | "~U" | "~B" | "->" | "->>" | "=" | "<-" 
   | "<<-"        
 
-@keywords 
+@keyword 
   = break|next|continue
 
 @flow_ctrl
-  = if|for|while|repeat|return|function
+  = if|for|while|else|repeat|return|function
   
 @math_builtins
   = abs|sign|sqrt|floor|ceiling|exp|expm1|log2|log10|log1p
@@ -71,25 +71,38 @@ $not_double_quote = [. \n] # \" -- "
   |names"<-"|dim"<-"|dimnames"<-"|environment"<-"|levels"<-"
   |storage.mode"<-"
 
+@lit_logical 
+  = TRUE|FALSE
+
+@nops 
+  = NA|NaN|Inf|NULL
+
+
 tokens :-
+
+  
+  $eol_char+                           { tok (\p s -> LinebreakToken p) }
+  $white_no_eol+                       ; -- No-op whitespace 
+  "#".*                                ; -- Comment 
 
   \" $short_str_char* \"               { tok (\p s -> StringToken p (tail $ init s) ) }
   "'" $not_single_quote* "'"           { tok (\p s -> StringToken p (tail $ init s) ) }
-  $eol_char+                           { tok (\p s -> LinebreakToken p) }
-  $white_no_eol+                       ;
-  "#".*                                ; 
+
   $digit+ "L"                          { tok (\p s -> IntegerToken p (read (init s) :: Int ) ) }
   $digit+ "." $digit+ "E" "-"? $digit+ { tok (\p s -> ScientificNumericToken p s ) }
   $digit+ "." $digit+ "i"              { tok (\p s -> ImaginaryToken p (read (init s) :: Double) ) }
   $digit+ "." $digit+                  { tok (\p s -> NumericToken p (read s :: Double ) ) }
   $digit+                              { tok (\p s -> NumericToken p (fromIntegral (read s :: Int) :: Double ) ) }
-  "TRUE"                               { tok (\p s -> TrueToken p ) }
-  "FALSE"                              { tok (\p s -> FalseToken p ) }
-  "NA"                                 { tok (\p s -> NA_Token p ) }
-  "NaN"                                { tok (\p s -> NaN_Token p ) }
-  "Inf"                                { tok (\p s -> Inf_Token p ) }
-  "NULL"                               { tok (\p s -> NULL_Token p ) }
+
+  @lit_logical                         { tok (\p s -> mkLogicalLitTok p s) }
+
+  @nops                                { tok (\p s -> mkSpecialToken p s) }
+
   @reserved_op                         { tok (\p s -> getOpToken p s ) }
+  @keyword                             { tok (\p s -> getKeywdToken p s) }
+  @flow_ctrl                           { tok (\p s -> getFCToken p s) }
+
+
   ","                                  { tok (\p s -> CommaToken p ) }
   "("                                  { tok (\p s -> ParenLeftToken p ) }
   ")"                                  { tok (\p s -> ParenRightToken p ) }
@@ -100,9 +113,46 @@ tokens :-
   ";"                                  { tok (\p s -> SemiToken p ) }
   "."                                  { tok (\p s -> DotToken p ) }
   "`"                                  { tok (\p s -> BackQuoteToken p ) }
+
   $ident_first_char $ident_other_char* { tok (\p s -> classifyIdentifier p s) }
 
 {
+
+mkLogicalLitTok :: AlexPosn -> String -> Token
+mkLogicalLitTok p "TRUE"  = LiteralToken p (LogicalLiteral [True ]) 
+mkLogicalLitTok p "FALSE" = LiteralToken p (LogicalLiteral [False]) 
+
+mkSpecialToken :: AlexPosn -> String -> Token
+mkSpecialToken p "NA"   = NA_Token   p
+mkSpecialToken p "NaN"  = NaN_Token  p
+mkSpecialToken p "NULL" = NULL_Token p
+mkSpecialToken p "Inf"  = Inf_Token  p
+
+getKeywdToken :: AlexPosn -> String -> Token
+getKeywdToken p "break"    = KeywordToken p BreakKeyword
+getKeywdToken p "next"     = KeywordToken p NextKeyword
+getKeywdToken p "continue" = KeywordToken p ContinueKeyword
+
+
+getFCToken :: AlexPosn -> String -> Token
+getFCToken p "if" = FlowControlToken p IfFCToken
+getFCToken p "for" = FlowControlToken p ForFCToken
+getFCToken p "while"  = FlowControlToken p WhileFCToken
+getFCToken p "else"  = FlowControlToken p ElseFCToken 
+getFCToken p "repeat"  = FlowControlToken p RepeatFCToken
+getFCToken p "return" = FlowControlToken p ReturnFCToken
+getFCToken p "function" = FlowControlToken p  FunctionFCToken
+
+data FlowCtrlTokenType
+  = IfFCToken
+  | ForFCToken
+  | WhileFCToken
+  | ElseFCToken
+  | RepeatFCToken
+  | ReturnFCToken
+  | FunctionFCToken
+  deriving (Show, Eq)
+
 
 data IdentifierType 
   = BuiltinIdent
@@ -198,24 +248,33 @@ classifyIdentifier p st =
   in IdentifierToken p idType st
 
 data LiteralTokenType 
-    = LogicalLiteral [Bool] 
-    | IntegerLiteral [Int]
-    | NumericLiteral [Double]
-    | ComplexLiteral [(Double, Double)]
-    | CharacterLiteral [String]
-    deriving (Show, Eq)
+  = LogicalLiteral [Bool] 
+  | IntegerLiteral [Int]
+  | NumericLiteral [Double]
+  | ComplexLiteral [(Double, Double)]
+  | CharacterLiteral [String]
+  deriving (Show, Eq)
+
+
+data KeywordTokenType
+  = BreakKeyword
+  | ContinueKeyword
+  | NextKeyword
+  deriving (Show, Eq)
+
 
 
 tok f p s = f p s
 
 -- The token type:
 data Token =
-  ErrorToken             AlexPosn String  |
-  LiteralToken           AlexPosn LiteralTokenType |
-  BinOpToken             AlexPosn BinOpPrec String |
-  UnOpToken              AlexPosn UnOpPrec String  |
-  KeywordToken           AlexPosn String           |
-  FlowControlToken       AlexPosn String           |
+  ErrorToken             AlexPosn String            |
+  LiteralToken           AlexPosn LiteralTokenType  |
+  BinOpToken             AlexPosn BinOpPrec String  |
+  UnOpToken              AlexPosn UnOpPrec String   |
+  KeywordToken           AlexPosn KeywordTokenType  |
+  FlowControlToken       AlexPosn FlowCtrlTokenType |
+
   DebugLinebreakToken                    |
   LinebreakToken         AlexPosn        | 
   Let                    AlexPosn        | 
