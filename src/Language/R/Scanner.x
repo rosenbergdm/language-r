@@ -23,6 +23,53 @@ $long_byte_str_char = \0-\127 # [' \"] -- "
 $not_single_quote = [. \n] # '
 $not_double_quote = [. \n] # \" -- "
 
+@reserved_op 
+  =  "-" | "+"   | "!"   | "~"   | "?"   | ":"    | "*"  | "/"  | "^"  
+  | "%%" | "%/%" | "%*%" | "%o%" | "%x%" | "%in%" | "<"  | ">"  | "%x%"
+  | "==" | ">="  | "<="  | "&"   |  "&&" |  "|"   | "||" | "<-" | "->" 
+  | "$"  
+
+@keywords 
+  = break|next|continue
+
+@flow_ctrl
+  = if|for|while|repeat|return|function
+  
+@math_builtins
+  = abs|sign|sqrt|floor|ceiling|exp|expm1|log2|log10|log1p
+  |cos|sin|tan|acos|asin|atan|cosh|sinh|tanh|acosh|asinh
+  |atanh|gamma|lgamma|digamma|trigamma|cumsum|cumprod
+  |cummax|cummin|Im|Re|Arg|Conj|Mod
+  
+@cast_builtins
+  = as.call|as.character|as.complex|as.double|as.environment|as.integer
+  |as.logical|as.raw
+  
+@refect_builtins
+  = nargs|missing|interactive|is.xxx.Primitive|.Internal|globalenv
+  |baseenv|emptyenv|pos.to.env|unclass|invisible|browser
+  
+@seq_builtins
+  = seq_along|seq_len
+
+@system_builtins
+  = proc.time|gc.time|tracemem|retracemem|untracemem
+
+@primitives
+  = c|list|call|expression|substitute|UseMethod|standardGeneric
+  |.C|.Fortran|.Call|.External|.Call.graphics|.External.graphics
+  |.subset|.subset2|.primTrace|.primUntrace|round|signif
+  |rep|seq.int|lazyLoadDBfetch
+
+@replaceable
+  = length|class|oldCLass|attr|attributes|names|dim|dimnames
+  |environment|levels|storage.mode
+
+@replacement
+  = length "<-"|class "<-"|oldCLass"<-" |attr"<-" |attributes"<-"
+  |names"<-"|dim"<-"|dimnames"<-"|environment"<-"|levels"<-"
+  |storage.mode"<-"
+
 tokens :-
 
   \" $short_str_char* \"               { tok (\p s -> StringToken p (tail $ init s) ) }
