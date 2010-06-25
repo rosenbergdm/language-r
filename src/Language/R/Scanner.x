@@ -1,5 +1,5 @@
 {
-module Language.R.Scanner where 
+-- module Language.R.Scanner where 
 import Text.PrettyPrint.ANSI.Leijen
 import qualified Data.Map as Map
 
@@ -24,10 +24,11 @@ $not_single_quote = [. \n] # '
 $not_double_quote = [. \n] # \" -- "
 
 @reserved_op 
-  =  "-" | "+"   | "!"   | "~"   | "?"   | ":"    | "*"  | "/"  | "^"  
-  | "%%" | "%/%" | "%*%" | "%o%" | "%x%" | "%in%" | "<"  | ">"  | "%x%"
-  | "==" | ">="  | "<="  | "&"   |  "&&" |  "|"   | "||" | "<-" | "->" 
-  | "$"  
+  = "::" | "@" | "$" | "^" | "-U" | "+U" | ":" | "%%" | "%/%" 
+  | "%*%" | "%o%" | "%x%" | "%in%" | "*" | "/" | "-B" | "+B" 
+  | "<" | ">" | "==" | "!=" | ">=" | "<=" | "!" | "&" | "&&" 
+  | "|" | "||" | "~U" | "~B" | "->" | "->>" | "=" | "<-" 
+  | "<<-"        
 
 @keywords 
   = break|next|continue
@@ -88,6 +89,7 @@ tokens :-
   "NaN"                                { tok (\p s -> NaN_Token p ) }
   "Inf"                                { tok (\p s -> Inf_Token p ) }
   "NULL"                               { tok (\p s -> NULL_Token p ) }
+  @reserved_op                         { tok (\p s -> getOpToken p s ) }
   ","                                  { tok (\p s -> CommaToken p ) }
   "("                                  { tok (\p s -> ParenLeftToken p ) }
   ")"                                  { tok (\p s -> ParenRightToken p ) }
@@ -96,34 +98,8 @@ tokens :-
   "{"                                  { tok (\p s -> BraceLeftToken p ) }
   "}"                                  { tok (\p s -> BraceRightToken p ) }
   ";"                                  { tok (\p s -> SemiToken p ) }
-  "+"                                  { tok (\p s -> PlusToken p ) }
-  "-"                                  { tok (\p s -> MinusToken p ) }
-  "*"                                  { tok (\p s -> MulitplyToken p ) }
-  "/"                                  { tok (\p s -> DivideToken p ) }
-  "^"                                  { tok (\p s -> PowerExponentialToken p ) }
-  "->"                                 { tok (\p s -> RightArrowToken p ) }
-  "->>"                                { tok (\p s -> DoubleRightArrowToken p ) }
-  "<-"                                 { tok (\p s -> LeftArrowToken p ) }
-  "<<-"                                { tok (\p s -> DoubleLeftArrowToken p ) }
   "."                                  { tok (\p s -> DotToken p ) }
-  "..."                                { tok (\p s -> EllipsisToken p ) }
-  "~"                                  { tok (\p s -> TildeToken p ) }
-  "/"                                  { tok (\p s -> DivToken p ) }
-  "<"                                  { tok (\p s -> LessThanToken p ) }
-  "<="                                 { tok (\p s -> LessThanEqualsToken p ) }
-  ">"                                  { tok (\p s -> GreaterThanToken p ) }
-  ">="                                 { tok (\p s -> GreaterThanEqualsToken p ) }
-  "=="                                 { tok (\p s -> EqualityToken p ) }
-  "!="                                 { tok (\p s -> NotEqualsToken p ) }
-  "|"                                  { tok (\p s -> BinaryOrToken p ) }
-  "&&"                                 { tok (\p s -> AndToken p ) }
-  "&"                                  { tok (\p s -> BinaryAndToken p ) }
-  "||"                                 { tok (\p s -> OrToken p ) }
-  ":"                                  { tok (\p s -> ColonToken p ) }
-  "="                                  { tok (\p s -> AssignToken p ) }
-  "@"                                  { tok (\p s -> AtToken p ) }
   "`"                                  { tok (\p s -> BackQuoteToken p ) }
-  "$"                                  { tok (\p s -> DollarSignToken p ) }
   $ident_first_char $ident_other_char* { tok (\p s -> classifyIdentifier p s) }
 
 {
@@ -135,7 +111,80 @@ data IdentifierType
   | UserIdent
   deriving (Read, Show, Eq)
 
+data OpAssocDir = AssocLeft | AssocRight 
+  deriving (Show, Eq)
 
+data BinOpPrec = BinOpPrec
+  { bPrecOrder :: Int
+  , assocDir   :: OpAssocDir
+  } deriving (Show, Eq)
+
+data UnOpPrec = UnOpPrec
+  { uPrecOrder :: Int
+  } deriving (Show, Eq)
+
+opTokenMap :: Map.Map String (Either BinOpPrec UnOpPrec)
+opTokenMap = Map.fromList  
+  [ ("::",   Left (BinOpPrec 0 AssocLeft ))
+  , ("@",    Left (BinOpPrec 1 AssocLeft ))
+  , ("$",    Left (BinOpPrec 1 AssocLeft ))
+  
+  , ("^",    Left (BinOpPrec 2 AssocRight ))
+  
+  , ("-U",    Right (UnOpPrec 3 ))
+  , ("+U",    Right (UnOpPrec 3 ))
+  
+  , (":",    Left (BinOpPrec 4 AssocRight ))
+
+  , ("%%",   Left (BinOpPrec 5 AssocLeft ))
+  , ("%/%",  Left (BinOpPrec 5 AssocLeft ))
+  , ("%*%",  Left (BinOpPrec 5 AssocLeft ))
+  , ("%o%",  Left (BinOpPrec 5 AssocLeft ))
+  , ("%x%",  Left (BinOpPrec 5 AssocLeft ))
+  , ("%in%", Left (BinOpPrec 5 AssocLeft ))
+  
+  , ("*",    Left (BinOpPrec 6 AssocLeft ))
+  , ("/",    Left (BinOpPrec 6 AssocLeft ))
+  
+  , ("-B",    Left (BinOpPrec 7 AssocLeft ))
+  , ("+B",    Left (BinOpPrec 7 AssocLeft ))
+
+  , ("<",    Left (BinOpPrec 8 AssocLeft ))
+  , (">",    Left (BinOpPrec 8 AssocLeft ))
+  , ("==",   Left (BinOpPrec 8 AssocLeft ))
+  , ("!=",   Left (BinOpPrec 8 AssocLeft ))
+  , (">=",   Left (BinOpPrec 8 AssocLeft ))
+  , ("<=",   Left (BinOpPrec 8 AssocLeft ))
+  
+  , ("!",    Right (UnOpPrec 9 ))
+  
+  , ("&",    Left (BinOpPrec 10 AssocLeft ))
+  , ("&&",   Left (BinOpPrec 10 AssocLeft ))
+  
+  , ("|",    Left (BinOpPrec 11 AssocLeft ))
+  , ("||",   Left (BinOpPrec 11 AssocLeft ))
+  
+  , ("~U",    Left (BinOpPrec 12 AssocLeft ))
+  , ("~B",    Right (UnOpPrec 12 ))
+
+  , ("->",   Left (BinOpPrec 13 AssocLeft ))
+  , ("->>",  Left (BinOpPrec 13 AssocLeft ))
+  
+  , ("=",    Left (BinOpPrec 14 AssocRight ))
+
+  , ("<-",   Left (BinOpPrec 15 AssocRight ))
+  , ("<<-",  Left (BinOpPrec 15 AssocRight ))
+  ]
+
+
+getOpToken :: AlexPosn -> String -> Token
+getOpToken p s = 
+  let ub_prec = Map.lookup s opTokenMap
+      tok     = case ub_prec of 
+                   Just (Left  (BinOpPrec pr dr)) -> BinOpToken p (BinOpPrec pr dr) s
+                   Just (Right (UnOpPrec  pr   )) -> UnOpToken  p (UnOpPrec  pr   ) s
+                   Nothing                        -> ErrorToken p s
+  in tok
 
 classifyIdentifier :: AlexPosn -> String -> Token
 classifyIdentifier p st =
@@ -148,12 +197,25 @@ classifyIdentifier p st =
                  (_, _, _   ) -> UserIdent
   in IdentifierToken p idType st
 
+data LiteralTokenType 
+    = LogicalLiteral [Bool] 
+    | IntegerLiteral [Int]
+    | NumericLiteral [Double]
+    | ComplexLiteral [(Double, Double)]
+    | CharacterLiteral [String]
+    deriving (Show, Eq)
 
 
 tok f p s = f p s
 
 -- The token type:
 data Token =
+  ErrorToken             AlexPosn String  |
+  LiteralToken           AlexPosn LiteralTokenType |
+  BinOpToken             AlexPosn BinOpPrec String |
+  UnOpToken              AlexPosn UnOpPrec String  |
+  KeywordToken           AlexPosn String           |
+  FlowControlToken       AlexPosn String           |
   DebugLinebreakToken                    |
   LinebreakToken         AlexPosn        | 
   Let                    AlexPosn        | 
@@ -171,43 +233,15 @@ data Token =
   BracketRightToken      AlexPosn        | 
   BraceLeftToken         AlexPosn        | 
   BraceRightToken        AlexPosn        | 
-  PlusToken              AlexPosn        | 
-  MinusToken             AlexPosn        | 
-  MulitplyToken          AlexPosn        | 
-  DivideToken            AlexPosn        | 
-  PowerExponentialToken  AlexPosn        | 
-  RightArrowToken        AlexPosn        | 
-  DoubleRightArrowToken  AlexPosn        | 
-  LeftArrowToken         AlexPosn        | 
-  DoubleLeftArrowToken   AlexPosn        | 
   DotToken               AlexPosn        | 
   EllipsisToken          AlexPosn        | 
-  TildeToken             AlexPosn        | 
-  DivToken               AlexPosn        | 
-  LessThanToken          AlexPosn        | 
-  LessThanEqualsToken    AlexPosn        | 
-  GreaterThanToken       AlexPosn        | 
-  GreaterThanEqualsToken AlexPosn        | 
-  EqualityToken          AlexPosn        | 
-  NotEqualsToken         AlexPosn        | 
-  BinaryOrToken          AlexPosn        | 
-  AndToken               AlexPosn        | 
-  BinaryAndToken         AlexPosn        | 
-  OrToken                AlexPosn        | 
-  ColonToken             AlexPosn        | 
-  AssignToken            AlexPosn        | 
-  AtToken                AlexPosn        | 
   BackQuoteToken         AlexPosn        | 
-  DollarSignToken        AlexPosn        | 
   SemiToken              AlexPosn        | 
   StringToken            AlexPosn String | 
   IntegerToken           AlexPosn Int    | 
   ImaginaryToken         AlexPosn Double | 
   NumericToken           AlexPosn Double | 
   ScientificNumericToken AlexPosn String | 
-  Sym                    AlexPosn Char   | 
-  Var                    AlexPosn String | 
-  Int                    AlexPosn Int    |
   IdentifierToken        AlexPosn IdentifierType String
   deriving (Eq,Show)
 
@@ -229,34 +263,9 @@ sshow (BracketLeftToken p)       = blue $ string $ (spacePad p) ++ (show (Bracke
 sshow (BracketRightToken p)      = blue $ string $ (spacePad p) ++ (show (BracketRightToken p))
 sshow (BraceLeftToken p)         = blue $ string $ (spacePad p) ++ (show (BraceLeftToken p))
 sshow (BraceRightToken p)        = blue $ string $ (spacePad p) ++ (show (BraceRightToken p))
-sshow (PlusToken p)              = magenta $ string $ (spacePad p) ++ (show (PlusToken p))
-sshow (MinusToken p)             = magenta $ string $ (spacePad p) ++ (show (MinusToken p))
-sshow (MulitplyToken p)          = magenta $ string $ (spacePad p) ++ (show (MulitplyToken p))
-sshow (DivideToken p)            = magenta $ string $ (spacePad p) ++ (show (DivideToken p))
-sshow (PowerExponentialToken p)  = magenta $ string $ (spacePad p) ++ (show (PowerExponentialToken p))
-sshow (RightArrowToken p)        = magenta $ string $ (spacePad p) ++ (show (RightArrowToken p))
-sshow (DoubleRightArrowToken p)  = magenta $ string $ (spacePad p) ++ (show (DoubleRightArrowToken p))
-sshow (LeftArrowToken p)         = magenta $ string $ (spacePad p) ++ (show (LeftArrowToken p))
-sshow (DoubleLeftArrowToken p)   = magenta $ string $ (spacePad p) ++ (show (DoubleLeftArrowToken p))
 sshow (DotToken p)               = blue $ string $ (spacePad p) ++ (show (DotToken p))
 sshow (EllipsisToken p)          = magenta $ string $ (spacePad p) ++ (show (EllipsisToken p))
-sshow (TildeToken p)             = magenta $ string $ (spacePad p) ++ (show (TildeToken p))
-sshow (DivToken p)               = magenta $ string $ (spacePad p) ++ (show (DivToken p))
-sshow (LessThanToken p)          = magenta $ string $ (spacePad p) ++ (show (LessThanToken p))
-sshow (LessThanEqualsToken p)    = magenta $ string $ (spacePad p) ++ (show (LessThanEqualsToken p))
-sshow (GreaterThanToken p)       = magenta $ string $ (spacePad p) ++ (show (GreaterThanToken p))
-sshow (GreaterThanEqualsToken p) = magenta $ string $ (spacePad p) ++ (show (GreaterThanEqualsToken p))
-sshow (EqualityToken p)          = magenta $ string $ (spacePad p) ++ (show (EqualityToken p))
-sshow (NotEqualsToken p)         = magenta $ string $ (spacePad p) ++ (show (NotEqualsToken p))
-sshow (BinaryOrToken p)          = magenta $ string $ (spacePad p) ++ (show (BinaryOrToken p))
-sshow (AndToken p)               = magenta $ string $ (spacePad p) ++ (show (AndToken p))
-sshow (BinaryAndToken p)         = magenta $ string $ (spacePad p) ++ (show (BinaryAndToken p))
-sshow (OrToken p)                = magenta $ string $ (spacePad p) ++ (show (OrToken p))
-sshow (ColonToken p)             = blue $ string $ (spacePad p) ++ (show (ColonToken p))
-sshow (AssignToken p)            = magenta $ string $ (spacePad p) ++ (show (AssignToken p))
-sshow (AtToken p)                = magenta $ string $ (spacePad p) ++ (show (AtToken p))
 sshow (BackQuoteToken p)         = blue $ string $ (spacePad p) ++ (show (BackQuoteToken p))
-sshow (DollarSignToken p)        = blue $ string $ (spacePad p) ++ (show (DollarSignToken p))
 sshow (SemiToken p)              = blue $ string $ (spacePad p) ++ (show (SemiToken p))
 
 sshow (StringToken p s)            = bold $ green $ string $ (spacePad p) ++ ( show (StringToken p s) )
@@ -264,9 +273,6 @@ sshow (IntegerToken p s)           = bold $ cyan $ string $ (spacePad p) ++ ( sh
 sshow (ImaginaryToken p s)         = bold $ cyan $ string $ (spacePad p) ++ ( show (ImaginaryToken p s) )
 sshow (NumericToken p s)           = bold $ cyan $ string $ (spacePad p) ++ ( show (NumericToken p s) )
 sshow (ScientificNumericToken p s) = bold $ cyan $ string $ (spacePad p) ++ ( show (ScientificNumericToken p s) )
-sshow (Sym p s)                    = dullwhite $ string $ (spacePad p) ++ ( show (Sym p s) )
-sshow (Var p s)                    = dullwhite $ string $ (spacePad p) ++ ( show (Var p s) )
-sshow (Int p s)                    = dullwhite $ string $ (spacePad p) ++ ( show (Int p s) )
 
 sshow (IdentifierToken p t s) = bold $ yellow  $ string $ (spacePad p) ++ ( show (IdentifierToken p t s) )
 
@@ -307,9 +313,6 @@ token_posn (IntegerToken p _) = p
 token_posn (ImaginaryToken p _) = p
 token_posn (NumericToken p _) = p
 token_posn (ScientificNumericToken p _) = p
-token_posn (Sym p _) = p
-token_posn (Var p _) = p
-token_posn (Int p _) = p
 token_posn (LinebreakToken p ) = p
 token_posn (Let p ) = p
 token_posn (In p ) = p
@@ -326,34 +329,9 @@ token_posn (BracketLeftToken p ) = p
 token_posn (BracketRightToken p ) = p
 token_posn (BraceLeftToken p ) = p
 token_posn (BraceRightToken p ) = p
-token_posn (PlusToken p ) = p
-token_posn (MinusToken p ) = p
-token_posn (MulitplyToken p ) = p
-token_posn (DivideToken p ) = p
-token_posn (PowerExponentialToken p ) = p
-token_posn (RightArrowToken p ) = p
-token_posn (DoubleRightArrowToken p ) = p
-token_posn (LeftArrowToken p ) = p
-token_posn (DoubleLeftArrowToken p ) = p
 token_posn (DotToken p ) = p
 token_posn (EllipsisToken p ) = p
-token_posn (TildeToken p ) = p
-token_posn (DivToken p ) = p
-token_posn (LessThanToken p ) = p
-token_posn (LessThanEqualsToken p ) = p
-token_posn (GreaterThanToken p ) = p
-token_posn (GreaterThanEqualsToken p ) = p
-token_posn (EqualityToken p ) = p
-token_posn (NotEqualsToken p ) = p
-token_posn (BinaryOrToken p ) = p
-token_posn (AndToken p ) = p
-token_posn (BinaryAndToken p ) = p
-token_posn (OrToken p ) = p
-token_posn (ColonToken p ) = p
-token_posn (AssignToken p ) = p
-token_posn (AtToken p ) = p
 token_posn (BackQuoteToken p ) = p
-token_posn (DollarSignToken p ) = p
 token_posn (SemiToken p ) = p
 
 
@@ -440,9 +418,9 @@ builtinsList =
 
 runScanner st = alexScanTokens st
 
-{-
+
 main = do
   s <- getContents
   print (alexScanTokens s)
--}
+
 }
